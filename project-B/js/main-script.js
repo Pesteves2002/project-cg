@@ -31,8 +31,8 @@ var trailerPosition = {
 };
 
 var trailerBoxValues = {
-  width: 24 * UNIT,
-  depth: 8 * UNIT,
+  width: 8 * UNIT,
+  depth: 24 * UNIT,
   height: 6 * UNIT,
   relativeX: 0 * UNIT,
   relativeY: 0 * UNIT,
@@ -44,12 +44,12 @@ var trailerBoxValues = {
 };
 
 var trailerDepositValues = {
-  width: 15 * UNIT,
-  depth: 6 * UNIT,
+  width: 6 * UNIT,
+  depth: 15 * UNIT,
   height: 2 * UNIT,
-  relativeX: 4.5 * UNIT,
+  relativeX: 0 * UNIT,
   relativeY: -4 * UNIT,
-  relativeZ: 0 * UNIT,
+  relativeZ: -4.5 * UNIT,
   material: new THREE.MeshBasicMaterial({
     color: 0x000000,
     wireframe: true,
@@ -72,12 +72,12 @@ var trailerWheelsValues = {
 };
 
 var trailerPinValues = {
-  width: 1 * UNIT,
-  depth: 2 * UNIT,
+  width: 2 * UNIT,
+  depth: 1 * UNIT,
   height: 2 * UNIT,
-  relativeX: -10 * UNIT,
+  relativeX: 0 * UNIT,
   relativeY: -4 * UNIT,
-  relativeZ: 0 * UNIT,
+  relativeZ: 10 * UNIT,
   material: new THREE.MeshBasicMaterial({
     color: 0x000000,
     wireframe: true,
@@ -208,7 +208,7 @@ function createTrailerDeposit() {
     trailerDepositValues.relativeX,
     trailerDepositValues.relativeY,
     trailerDepositValues.relativeZ
-  ); 
+  );
 
   var depositWithWheels = new THREE.Object3D();
 
@@ -239,7 +239,7 @@ function createTrailerWheel(relativePosition) {
     trailerWheelsValues.height
   );
 
-  geometry.rotateX(Math.PI / 2);
+  geometry.rotateZ(Math.PI / 2);
 
   var mesh = new THREE.Mesh(geometry, trailerWheelsValues.material);
   mesh.position.set(
