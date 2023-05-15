@@ -367,6 +367,14 @@ function onKeyDown(e) {
       break;
     case 53: //5
       currentCamera = cameras[4];
+      break;
+    case 54: //6
+      scene.traverse(function (node) {
+        // not working for wheels
+        if (node instanceof THREE.Mesh) {
+          node.material.wireframe = !node.material.wireframe;
+        }
+      });
   }
 
   render();
