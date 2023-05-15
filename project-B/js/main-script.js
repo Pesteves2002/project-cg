@@ -11,10 +11,11 @@ var cameras = [];
 var currentCamera;
 
 var cameraValues = [
-  [50, 50, 50],
   [0, 100, 0],
   [0, 0, 100],
   [100, 0, 0],
+  [50, 50, 50],
+  [10, 30, 40],
 ];
 /////////////////////
 /* CREATE SCENE(S) */
@@ -24,7 +25,10 @@ function createScene() {
 
   scene = new THREE.Scene();
 
-  scene.add(new THREE.AxesHelper(50));
+  // set the background color of the scene
+  scene.background = new THREE.Color(0xa2bce0);
+
+  scene.add(new THREE.AxesHelper(1000));
 }
 
 //////////////////////
@@ -34,11 +38,12 @@ function createScene() {
 function createCameras() {
   "use strict";
   cameraValues.forEach((cameraValue) => {
-    createCamera(cameraValue);
+    createOrtographicCamera(cameraValue);
   });
+  createPrespectiveCamera(cameraValues[4]);
 }
 
-function createCamera(cameraValue) {
+function createPrespectiveCamera(cameraValue) {
   "use strict";
   camera = new THREE.PerspectiveCamera(
     70,
@@ -46,6 +51,25 @@ function createCamera(cameraValue) {
     1,
     1000
   );
+  camera.position.x = cameraValue[0];
+  camera.position.y = cameraValue[1];
+  camera.position.z = cameraValue[2];
+  camera.lookAt(scene.position);
+
+  cameras.push(camera);
+}
+
+function createOrtographicCamera(cameraValue) {
+  "use strict";
+  camera = new THREE.OrthographicCamera(
+    -window.innerWidth / 2,
+    window.innerWidth / 2,
+    window.innerHeight / 2,
+    -window.innerHeight / 2,
+    1,
+    1000
+  );
+
   camera.position.x = cameraValue[0];
   camera.position.y = cameraValue[1];
   camera.position.z = cameraValue[2];
@@ -106,7 +130,7 @@ function init() {
   createScene();
   createCameras();
 
-  currentCamera = cameras[0];
+  currentCamera = cameras[4];
 
   render();
 
@@ -141,8 +165,6 @@ function onResize() {
 function onKeyDown(e) {
   "use strict";
 
-  console.log(currentCamera);
-
   switch (e.keyCode) {
     case 49: //1
       currentCamera = cameras[0];
@@ -153,6 +175,11 @@ function onKeyDown(e) {
     case 51: //3
       currentCamera = cameras[2];
       break;
+    case 52: //4
+      currentCamera = cameras[3];
+      break;
+    case 53: //5
+      currentCamera = cameras[4];
   }
 
   render();
