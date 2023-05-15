@@ -10,13 +10,80 @@ var cameras = [];
 
 var currentCamera;
 
+var UNIT = 10;
+
+// Green Y
+// BLUE Z
+// RED X
+
 var cameraValues = [
   [0, 100, 0],
   [0, 0, 100],
   [100, 0, 0],
-  [50, 50, 50],
-  [10, 30, 40],
+  [300, 300, 300],
+  [300, 300, 300],
 ];
+
+var trailerPosition = {
+  X: 3,
+  Y: 7,
+  Z: 3,
+};
+
+var trailerBoxValues = {
+  length: 24 * UNIT,
+  width: 8 * UNIT,
+  height: 6 * UNIT,
+  relativeX: 0 * UNIT,
+  relativeY: 0 * UNIT,
+  relativeZ: 0 * UNIT,
+  material: new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    wireframe: true,
+  }),
+};
+
+var trailerDepositValues = {
+  length: 15 * UNIT,
+  width: 6 * UNIT,
+  height: 2 * UNIT,
+  relativeX: 4.5 * UNIT,
+  relativeY: -4 * UNIT,
+  relativeZ: 0 * UNIT,
+  material: new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    wireframe: true,
+  }),
+};
+
+var trailerWheelsValues = {
+  radius: 1.5 * UNIT,
+  length: 1 * UNIT,
+  relativePositions: [
+    [3.5 * UNIT, -0.5 * UNIT, 3.5 * UNIT],
+    [3.5 * UNIT, -0.5 * UNIT, -3.5 * UNIT],
+    [-3.5 * UNIT, -0.5 * UNIT, 3.5 * UNIT],
+    [-3.5 * UNIT, -0.5 * UNIT, -3.5 * UNIT],
+  ],
+  material: new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    wireframe: true,
+  }),
+};
+
+var trailerPinValues = {
+  length: 1 * UNIT,
+  width: 2 * UNIT,
+  height: 2 * UNIT,
+  relativeX: -10 * UNIT,
+  relativeY: -4 * UNIT,
+  relativeZ: 0 * UNIT,
+  material: new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    wireframe: true,
+  }),
+};
+
 /////////////////////
 /* CREATE SCENE(S) */
 /////////////////////
@@ -28,7 +95,7 @@ function createScene() {
   // set the background color of the scene
   scene.background = new THREE.Color(0xa2bce0);
 
-  scene.add(new THREE.AxesHelper(1000));
+  scene.add(new THREE.AxesHelper(100));
 }
 
 //////////////////////
@@ -78,14 +145,114 @@ function createOrtographicCamera(cameraValue) {
   cameras.push(camera);
 }
 
-/////////////////////
-/* CREATE LIGHT(S) */
-/////////////////////
-
 ////////////////////////
 /* CREATE OBJECT3D(S) */
 ////////////////////////
 
+function createTrailer() {
+  "use strict";
+
+  var trailer = new THREE.Object3D();
+
+  createTrailerBox(trailer);
+  createTrailerDeposit(trailer);
+  createTrailerPin(trailer);
+
+  trailer.position.set(trailerPosition.X, trailerPosition.Y, trailerPosition.Z);
+
+  scene.add(trailer);
+}
+
+function createTrailerBox(trailer) {
+  "use strict";
+
+  var geometry = new THREE.BoxGeometry(
+    trailerBoxValues.length,
+    trailerBoxValues.height,
+    trailerBoxValues.width
+  );
+
+  var mesh = new THREE.Mesh(geometry, trailerBoxValues.material);
+  mesh.position.set(
+    trailerBoxValues.relativeX,
+    trailerBoxValues.relativeY,
+    trailerBoxValues.relativeZ
+  );
+  trailer.add(mesh);
+}
+
+function createTrailerDeposit(trailer) {
+  "use strict";
+
+  var geometry = new THREE.BoxGeometry(
+    trailerDepositValues.length,
+    trailerDepositValues.height,
+    trailerDepositValues.width
+  );
+
+  var deposit = new THREE.Mesh(geometry, trailerDepositValues.material);
+
+  var depositWithWheels = new THREE.Object3D();
+
+  depositWithWheels.add(deposit);
+  createTrailerWheels(depositWithWheels);
+  depositWithWheels.position.set(
+    trailerDepositValues.relativeX,
+    trailerDepositValues.relativeY,
+    trailerDepositValues.relativeZ
+  );
+
+  trailer.add(depositWithWheels);
+}
+
+function createTrailerWheels(depositWithWheels) {
+  "use strict";
+
+  trailerWheelsValues.relativePositions.forEach((relativePosition) => {
+    createTrailerWheel(depositWithWheels, relativePosition);
+  });
+}
+
+function createTrailerWheel(depositWithWheels, relativePosition) {
+  "use strict";
+
+  var geometry = new THREE.CylinderGeometry(
+    trailerWheelsValues.radius,
+    trailerWheelsValues.radius,
+    trailerWheelsValues.length
+  );
+
+  geometry.rotateX(Math.PI / 2);
+
+  var mesh = new THREE.Mesh(geometry, trailerWheelsValues.material);
+  mesh.position.set(
+    relativePosition[0],
+    relativePosition[1],
+    relativePosition[2]
+  );
+
+  depositWithWheels.add(mesh);
+}
+
+function createTrailerPin(trailer) {
+  "use strict";
+
+  var geometry = new THREE.BoxGeometry(
+    trailerPinValues.length,
+    trailerPinValues.height,
+    trailerPinValues.width
+  );
+
+  var mesh = new THREE.Mesh(geometry, trailerPinValues.material);
+
+  mesh.position.set(
+    trailerPinValues.relativeX,
+    trailerPinValues.relativeY,
+    trailerPinValues.relativeZ
+  );
+
+  trailer.add(mesh);
+}
 //////////////////////
 /* CHECK COLLISIONS */
 //////////////////////
@@ -128,9 +295,12 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   createScene();
+
   createCameras();
 
   currentCamera = cameras[4];
+
+  createTrailer();
 
   render();
 
