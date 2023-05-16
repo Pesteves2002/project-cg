@@ -2,21 +2,21 @@
 /* GLOBAL VARIABLES */
 //////////////////////
 
-var camera, scene, renderer;
+let camera, scene, renderer;
 
-var geometry, material, mesh;
+let geometry, material, mesh;
 
-var cameras = [];
+let cameras = [];
 
-var currentCamera;
+let currentCamera;
 
-var UNIT = 10;
+let UNIT = 30;
 
 // RED X WIDTH
 // Green Y HEIGHT
 // BLUE Z DEPTH
 
-var cameraValues = [
+let cameraValues = [
   [0, 100, 0],
   [0, 0, 100],
   [100, 0, 0],
@@ -24,39 +24,43 @@ var cameraValues = [
   [300, 300, 300],
 ];
 
-var trailerPosition = {
+let trailerPosition = {
   X: 3,
   Y: 7,
   Z: 3,
 };
 
-var trailerBoxValues = {
+let materialValues = {
+  tires: new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    wireframe: true,
+  }),
+
+  trailer: new THREE.MeshBasicMaterial({
+    color: 0x0000ff,
+    wireframe: true,
+  }),
+};
+
+let trailerBoxValues = {
   width: 8 * UNIT,
   depth: 24 * UNIT,
   height: 6 * UNIT,
   relativeX: 0 * UNIT,
   relativeY: 0 * UNIT,
   relativeZ: 0 * UNIT,
-  material: new THREE.MeshBasicMaterial({
-    color: 0x000000,
-    wireframe: true,
-  }),
 };
 
-var trailerDepositValues = {
+let trailerDepositValues = {
   width: 6 * UNIT,
   depth: 15 * UNIT,
   height: 2 * UNIT,
   relativeX: 0 * UNIT,
   relativeY: -4 * UNIT,
   relativeZ: -4.5 * UNIT,
-  material: new THREE.MeshBasicMaterial({
-    color: 0x000000,
-    wireframe: true,
-  }),
 };
 
-var trailerWheelsValues = {
+let trailerWheelsValues = {
   radius: 1.5 * UNIT,
   height: 1 * UNIT,
   relativePositions: [
@@ -65,23 +69,15 @@ var trailerWheelsValues = {
     [-3.5 * UNIT, -0.5 * UNIT, 3.5 * UNIT],
     [-3.5 * UNIT, -0.5 * UNIT, -3.5 * UNIT],
   ],
-  material: new THREE.MeshBasicMaterial({
-    color: 0x000000,
-    wireframe: true,
-  }),
 };
 
-var trailerPinValues = {
+let trailerPinValues = {
   width: 2 * UNIT,
   depth: 1 * UNIT,
   height: 2 * UNIT,
   relativeX: 0 * UNIT,
   relativeY: -4 * UNIT,
   relativeZ: 10 * UNIT,
-  material: new THREE.MeshBasicMaterial({
-    color: 0x000000,
-    wireframe: true,
-  }),
 };
 
 /////////////////////
@@ -152,7 +148,7 @@ function createOrtographicCamera(cameraValue) {
 function createTrailer() {
   "use strict";
 
-  var trailer = createTrailerBox();
+  let trailer = createTrailerBox();
 
   trailer.position.set(trailerPosition.X, trailerPosition.Y, trailerPosition.Z);
 
@@ -162,23 +158,23 @@ function createTrailer() {
 function createTrailerBox() {
   "use strict";
 
-  var wheelsWithDeposit = createTrailerDeposit();
-  var pin = createTrailerPin();
+  let wheelsWithDeposit = createTrailerDeposit();
+  let pin = createTrailerPin();
 
-  var geometry = new THREE.BoxGeometry(
+  let geometry = new THREE.BoxGeometry(
     trailerBoxValues.width,
     trailerBoxValues.height,
     trailerBoxValues.depth
   );
 
-  var mesh = new THREE.Mesh(geometry, trailerBoxValues.material);
+  let mesh = new THREE.Mesh(geometry, materialValues.trailer);
   mesh.position.set(
     trailerBoxValues.relativeX,
     trailerBoxValues.relativeY,
     trailerBoxValues.relativeZ
   );
 
-  var trailerBox = new THREE.Object3D();
+  let trailerBox = new THREE.Object3D();
 
   trailerBox.add(mesh);
   trailerBox.add(wheelsWithDeposit);
@@ -190,27 +186,27 @@ function createTrailerBox() {
 function createTrailerDeposit() {
   "use strict";
 
-  var wheels = createTrailerWheels();
+  let wheels = createTrailerWheels();
   wheels.position.set(
     trailerDepositValues.relativeX,
     trailerDepositValues.relativeY,
     trailerDepositValues.relativeZ
   );
 
-  var geometry = new THREE.BoxGeometry(
+  let geometry = new THREE.BoxGeometry(
     trailerDepositValues.width,
     trailerDepositValues.height,
     trailerDepositValues.depth
   );
 
-  var mesh = new THREE.Mesh(geometry, trailerDepositValues.material);
+  let mesh = new THREE.Mesh(geometry, materialValues.trailer);
   mesh.position.set(
     trailerDepositValues.relativeX,
     trailerDepositValues.relativeY,
     trailerDepositValues.relativeZ
   );
 
-  var depositWithWheels = new THREE.Object3D();
+  let depositWithWheels = new THREE.Object3D();
 
   depositWithWheels.add(wheels);
   depositWithWheels.add(mesh);
@@ -221,7 +217,7 @@ function createTrailerDeposit() {
 function createTrailerWheels() {
   "use strict";
 
-  var wheels = new THREE.Object3D();
+  let wheels = new THREE.Object3D();
 
   trailerWheelsValues.relativePositions.forEach((relativePosition) => {
     wheels.add(createTrailerWheel(relativePosition));
@@ -233,7 +229,7 @@ function createTrailerWheels() {
 function createTrailerWheel(relativePosition) {
   "use strict";
 
-  var geometry = new THREE.CylinderGeometry(
+  let geometry = new THREE.CylinderGeometry(
     trailerWheelsValues.radius,
     trailerWheelsValues.radius,
     trailerWheelsValues.height
@@ -241,7 +237,7 @@ function createTrailerWheel(relativePosition) {
 
   geometry.rotateZ(Math.PI / 2);
 
-  var mesh = new THREE.Mesh(geometry, trailerWheelsValues.material);
+  let mesh = new THREE.Mesh(geometry, materialValues.tires);
   mesh.position.set(
     relativePosition[0],
     relativePosition[1],
@@ -254,13 +250,13 @@ function createTrailerWheel(relativePosition) {
 function createTrailerPin() {
   "use strict";
 
-  var geometry = new THREE.BoxGeometry(
+  let geometry = new THREE.BoxGeometry(
     trailerPinValues.width,
     trailerPinValues.height,
     trailerPinValues.depth
   );
 
-  var mesh = new THREE.Mesh(geometry, trailerPinValues.material);
+  let mesh = new THREE.Mesh(geometry, materialValues.trailer);
 
   mesh.position.set(
     trailerPinValues.relativeX,
@@ -330,6 +326,10 @@ function init() {
 /////////////////////
 function animate() {
   "use strict";
+
+  render();
+
+  requestAnimationFrame(animate);
 }
 
 ////////////////////////////
@@ -369,15 +369,11 @@ function onKeyDown(e) {
       currentCamera = cameras[4];
       break;
     case 54: //6
-      scene.traverse(function (node) {
-        // not working for wheels
-        if (node instanceof THREE.Mesh) {
-          node.material.wireframe = !node.material.wireframe;
-        }
+      Object.values(materialValues).forEach((material) => {
+        material.wireframe = !material.wireframe;
       });
+      break;
   }
-
-  render();
 }
 
 ///////////////////////
