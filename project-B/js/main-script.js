@@ -6,6 +6,8 @@ let camera, scene, renderer;
 
 let geometry, material, mesh;
 
+let trailer;
+
 let cameras = [];
 
 let currentCamera;
@@ -28,6 +30,11 @@ let trailerPosition = {
   X: 3,
   Y: 7,
   Z: 3,
+};
+
+let trailerTransaltion = {
+  X: 0.3 * UNIT,
+  Z: 0.3 * UNIT,
 };
 
 let materialValues = {
@@ -148,7 +155,7 @@ function createOrtographicCamera(cameraValue) {
 function createTrailer() {
   "use strict";
 
-  let trailer = createTrailerBox();
+  trailer = createTrailerBox();
 
   trailer.position.set(trailerPosition.X, trailerPosition.Y, trailerPosition.Z);
 
@@ -318,6 +325,7 @@ function init() {
   render();
 
   window.addEventListener("keydown", onKeyDown);
+  window.addEventListener("keyup", onKeyUp);
   window.addEventListener("resize", onResize);
 }
 
@@ -326,6 +334,13 @@ function init() {
 /////////////////////
 function animate() {
   "use strict";
+
+  if (trailer.userData.x) {
+    trailer.position.x += trailer.userData.xStep;
+  }
+  if (trailer.userData.z) {
+    trailer.position.z += trailer.userData.zStep;
+  }
 
   render();
 
@@ -353,6 +368,22 @@ function onKeyDown(e) {
   "use strict";
 
   switch (e.keyCode) {
+    case 37: //left
+      trailer.userData.z = true;
+      trailer.userData.zStep = trailerTransaltion.Z;
+      break;
+    case 38: //up
+      trailer.userData.x = true;
+      trailer.userData.xStep = trailerTransaltion.X;
+      break;
+    case 39: //right
+      trailer.userData.z = true;
+      trailer.userData.zStep = -trailerTransaltion.Z;
+      break;
+    case 40: //down
+      trailer.userData.x = true;
+      trailer.userData.xStep = -trailerTransaltion.X;
+      break;
     case 49: //1
       currentCamera = cameras[0];
       break;
@@ -381,4 +412,19 @@ function onKeyDown(e) {
 ///////////////////////
 function onKeyUp(e) {
   "use strict";
+
+  switch (e.keyCode) {
+    case 37: //left
+      trailer.userData.z = false;
+      break;
+    case 38: //up
+      trailer.userData.x = false;
+      break;
+    case 39: //right
+      trailer.userData.z = false;
+      break;
+    case 40: //down
+      trailer.userData.x = false;
+      break;
+  }
 }
