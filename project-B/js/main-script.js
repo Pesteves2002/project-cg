@@ -6,7 +6,7 @@ let camera, scene, renderer;
 
 let geometry, material, mesh;
 
-let trailer;
+let trailer, robot;
 
 let cameras = [];
 
@@ -22,14 +22,20 @@ let cameraValues = [
   [0, 100, 0],
   [0, 0, 100],
   [100, 0, 0],
-  [300, 300, 300],
+  [20, 100, 300],
   [300, 300, 300],
 ];
 
 let trailerPosition = {
-  X: 3,
-  Y: 7,
-  Z: 3,
+  X: 800,
+  Y: 0,
+  Z: 200,
+};
+
+let robotPosition = {
+  X: 0,
+  Y: 0,
+  Z: 0,
 };
 
 let trailerTransaltion = {
@@ -47,6 +53,47 @@ let materialValues = {
     color: 0x0000ff,
     wireframe: true,
   }),
+
+  robot: new THREE.MeshBasicMaterial({
+    color: 0xffff00,
+    wireframe: true,
+  }),
+};
+
+let torsoValues = {
+  width: 8 * UNIT,
+  depth: 4 * UNIT,
+  height: 4 * UNIT,
+  relativeX: 0 * UNIT,
+  relativeY: 0 * UNIT,
+  relativeZ: 0 * UNIT,
+};
+
+let backValues = {
+  width: 4 * UNIT,
+  depth: 2 * UNIT,
+  height: 4 * UNIT,
+  relativeX: 0 * UNIT,
+  relativeY: 0 * UNIT,
+  relativeZ: -3 * UNIT,
+};
+
+let abdomenValues = {
+  width: 4 * UNIT,
+  depth: 3 * UNIT,
+  height: 2 * UNIT,
+  relativeX: 0 * UNIT,
+  relativeY: -3 * UNIT,
+  relativeZ: 0 * UNIT,
+};
+
+let waistValues = {
+  width: 6 * UNIT,
+  depth: 2 * UNIT,
+  height: 3 * UNIT,
+  relativeX: 0 * UNIT,
+  relativeY: -5.5 * UNIT,
+  relativeZ: 0 * UNIT,
 };
 
 let trailerBoxValues = {
@@ -151,6 +198,116 @@ function createOrtographicCamera(cameraValue) {
 ////////////////////////
 /* CREATE OBJECT3D(S) */
 ////////////////////////
+
+function createRobot() {
+  "use strict";
+
+  robot = createTorso();
+
+  robot.position.set(robotPosition.X, robotPosition.Y, robotPosition.Z);
+
+  scene.add(robot);
+}
+
+function createTorso() {
+  "use strict";
+
+  let back = createBack();
+  let abdomen = createAbdomen();
+
+  let torso = new THREE.Object3D();
+
+  let geometry = new THREE.BoxGeometry(
+    torsoValues.width,
+    torsoValues.height,
+    torsoValues.depth
+  );
+
+  let mesh = new THREE.Mesh(geometry, materialValues.robot);
+  mesh.position.set(
+    torsoValues.relativeX,
+    torsoValues.relativeY,
+    torsoValues.relativeZ
+  );
+
+  torso.add(back);
+  torso.add(abdomen);
+  torso.add(mesh);
+
+  return torso;
+}
+
+function createBack() {
+  "use strict";
+
+  let back = new THREE.Object3D();
+
+  let geometry = new THREE.BoxGeometry(
+    backValues.width,
+    backValues.height,
+    backValues.depth
+  );
+
+  let mesh = new THREE.Mesh(geometry, materialValues.robot);
+  mesh.position.set(
+    backValues.relativeX,
+    backValues.relativeY,
+    backValues.relativeZ
+  );
+
+  back.add(mesh);
+
+  return back;
+}
+
+function createAbdomen() {
+  "use strict";
+
+  let waist = createWaist();
+
+  let abdomen = new THREE.Object3D();
+
+  let geometry = new THREE.BoxGeometry(
+    abdomenValues.width,
+    abdomenValues.height,
+    abdomenValues.depth
+  );
+
+  let mesh = new THREE.Mesh(geometry, materialValues.robot);
+  mesh.position.set(
+    abdomenValues.relativeX,
+    abdomenValues.relativeY,
+    abdomenValues.relativeZ
+  );
+
+  abdomen.add(waist);
+  abdomen.add(mesh);
+
+  return abdomen;
+}
+
+function createWaist() {
+  "use strict";
+
+  let waist = new THREE.Object3D();
+
+  let geometry = new THREE.BoxGeometry(
+    waistValues.width,
+    waistValues.height,
+    waistValues.depth
+  );
+
+  let mesh = new THREE.Mesh(geometry, materialValues.robot);
+  mesh.position.set(
+    waistValues.relativeX,
+    waistValues.relativeY,
+    waistValues.relativeZ
+  );
+
+  waist.add(mesh);
+
+  return waist;
+}
 
 function createTrailer() {
   "use strict";
@@ -320,6 +477,7 @@ function init() {
 
   currentCamera = cameras[4];
 
+  createRobot();
   createTrailer();
 
   render();
