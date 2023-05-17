@@ -6,7 +6,7 @@ let camera, scene, renderer;
 
 let geometry, material, mesh;
 
-let trailer, robot;
+let trailer, robot, arms;
 
 let cameras = [];
 
@@ -23,7 +23,7 @@ let cameraValues = [
   [0, 0, 100],
   [100, 0, 0],
   [20, 100, 300],
-  [300, 300, 300],
+  [1000, 1000, 1000],
 ];
 
 let trailerPosition = {
@@ -67,6 +67,27 @@ let torsoValues = {
   relativeX: 0 * UNIT,
   relativeY: 0 * UNIT,
   relativeZ: 0 * UNIT,
+};
+
+let armValues = {
+  width: 2 * UNIT,
+  depth: 2 * UNIT,
+  height: 6 * UNIT,
+  relativePositions: [
+    [5 * UNIT, -1 * UNIT, -3 * UNIT],
+    [-5 * UNIT, -1 * UNIT, -3 * UNIT],
+  ],
+  positiveTranslations: [true, false],
+};
+
+let forearmValues = {
+  width: 2 * UNIT,
+  depth: 4 * UNIT,
+  height: 2 * UNIT,
+  relativePositions: [
+    [-5 * UNIT, -3 * UNIT, 0 * UNIT],
+    [5 * UNIT, -3 * UNIT, 0 * UNIT],
+  ],
 };
 
 let backValues = {
@@ -166,7 +187,7 @@ function createPrespectiveCamera(cameraValue) {
     70,
     window.innerWidth / window.innerHeight,
     1,
-    1000
+    10000
   );
   camera.position.x = cameraValue[0];
   camera.position.y = cameraValue[1];
@@ -184,7 +205,7 @@ function createOrtographicCamera(cameraValue) {
     window.innerHeight / 2,
     -window.innerHeight / 2,
     1,
-    1000
+    10000
   );
 
   camera.position.x = cameraValue[0];
@@ -212,6 +233,7 @@ function createRobot() {
 function createTorso() {
   "use strict";
 
+  let arms = createArms();
   let back = createBack();
   let abdomen = createAbdomen();
 
@@ -230,11 +252,74 @@ function createTorso() {
     torsoValues.relativeZ
   );
 
+  torso.add(arms);
   torso.add(back);
   torso.add(abdomen);
   torso.add(mesh);
 
   return torso;
+}
+
+function createArms() {
+  "use strict";
+
+  let arms = new THREE.Object3D();
+
+  for (let i = 0; i < armValues.relativePositions.length; i++) {
+    arms.add(createArm(i));
+  }
+
+  return arms;
+}
+
+function createArm(index) {
+  "use strict";
+
+  let forearm = createForearm(index);
+
+  let arm = new THREE.Object3D();
+
+  arm.add(forearm);
+
+  let geometry = new THREE.BoxGeometry(
+    armValues.width,
+    armValues.height,
+    armValues.depth
+  );
+
+  let mesh = new THREE.Mesh(geometry, materialValues.robot);
+  mesh.position.set(
+    armValues.relativePositions[index][0],
+    armValues.relativePositions[index][1],
+    armValues.relativePositions[index][2]
+  );
+
+  arm.add(mesh);
+
+  return arm;
+}
+
+function createForearm(index) {
+  "use strict";
+
+  let forearm = new THREE.Object3D();
+
+  let geometry = new THREE.BoxGeometry(
+    forearmValues.width,
+    forearmValues.height,
+    forearmValues.depth
+  );
+
+  let mesh = new THREE.Mesh(geometry, materialValues.robot);
+  mesh.position.set(
+    forearmValues.relativePositions[index][0],
+    forearmValues.relativePositions[index][1],
+    forearmValues.relativePositions[index][2]
+  );
+
+  forearm.add(mesh);
+
+  return forearm;
 }
 
 function createBack() {
@@ -532,7 +617,7 @@ function onKeyDown(e) {
       break;
     case 38: //up
       trailer.userData.x = true;
-      trailer.userData.xStep = trailerTransaltion.X;
+      trailer.userData.xStep = -trailerTransaltion.X;
       break;
     case 39: //right
       trailer.userData.z = true;
@@ -540,7 +625,7 @@ function onKeyDown(e) {
       break;
     case 40: //down
       trailer.userData.x = true;
-      trailer.userData.xStep = -trailerTransaltion.X;
+      trailer.userData.xStep = trailerTransaltion.X;
       break;
     case 49: //1
       currentCamera = cameras[0];
