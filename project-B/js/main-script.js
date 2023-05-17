@@ -6,7 +6,7 @@ let camera, scene, renderer;
 
 let geometry, material, mesh;
 
-let trailer, robot, arms;
+let trailer, robot, leftArm, rightArm;
 
 let cameras = [];
 
@@ -41,6 +41,10 @@ let robotPosition = {
 let trailerTransaltion = {
   X: 0.3 * UNIT,
   Z: 0.3 * UNIT,
+};
+
+let armTranslation = {
+  X: 0.1 * UNIT,
 };
 
 let materialValues = {
@@ -85,8 +89,8 @@ let forearmValues = {
   depth: 4 * UNIT,
   height: 2 * UNIT,
   relativePositions: [
-    [-5 * UNIT, -3 * UNIT, 0 * UNIT],
     [5 * UNIT, -3 * UNIT, 0 * UNIT],
+    [-5 * UNIT, -3 * UNIT, 0 * UNIT],
   ],
 };
 
@@ -265,9 +269,11 @@ function createArms() {
 
   let arms = new THREE.Object3D();
 
-  for (let i = 0; i < armValues.relativePositions.length; i++) {
-    arms.add(createArm(i));
-  }
+  leftArm = createArm(0);
+  rightArm = createArm(1);
+
+  arms.add(leftArm);
+  arms.add(rightArm);
 
   return arms;
 }
@@ -585,6 +591,17 @@ function animate() {
     trailer.position.z += trailer.userData.zStep;
   }
 
+  if (leftArm.userData.move) {
+    if (leftArm.userData.open) {
+      leftArm.position.x += armTranslation.X;
+      rightArm.position.x -= armTranslation.X;
+    }
+    if (!leftArm.userData.open) {
+      leftArm.position.x -= armTranslation.X;
+      rightArm.position.x += armTranslation.X;
+    }
+  }
+
   render();
 
   requestAnimationFrame(animate);
@@ -647,6 +664,14 @@ function onKeyDown(e) {
         material.wireframe = !material.wireframe;
       });
       break;
+    case 68: //d
+      leftArm.userData.move = true;
+      leftArm.userData.open = true;
+      break;
+    case 69: //e
+      leftArm.userData.move = true;
+      leftArm.userData.open = false;
+      break;
   }
 }
 
@@ -668,6 +693,12 @@ function onKeyUp(e) {
       break;
     case 40: //down
       trailer.userData.x = false;
+      break;
+    case 68: //d
+      leftArm.userData.move = false;
+      break;
+    case 69: //e
+      leftArm.userData.move = false;
       break;
   }
 }
