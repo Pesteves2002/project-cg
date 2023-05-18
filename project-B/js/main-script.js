@@ -6,13 +6,13 @@ let camera, scene, renderer;
 
 let geometry, material, mesh;
 
-let trailer, robot, leftArm, rightArm;
+let trailer, robot, head, leftArm, rightArm;
 
 let cameras = [];
 
 let currentCamera;
 
-let UNIT = 30;
+let UNIT = 20;
 
 // RED X WIDTH
 // Green Y HEIGHT
@@ -38,7 +38,11 @@ let robotPosition = {
   Z: 0,
 };
 
-let trailerTransaltion = {
+let headRotation = {
+  X: Math.PI / 100,
+};
+
+let trailerTranslation = {
   X: 0.3 * UNIT,
   Z: 0.3 * UNIT,
 };
@@ -62,6 +66,15 @@ let materialValues = {
     color: 0xffff00,
     wireframe: true,
   }),
+};
+
+let headValues = {
+  width: 2 * UNIT,
+  depth: 2 * UNIT,
+  height: 2 * UNIT,
+  relativeX: 0 * UNIT,
+  relativeY: 2 * UNIT,
+  relativeZ: 0 * UNIT,
 };
 
 let torsoValues = {
@@ -237,6 +250,7 @@ function createRobot() {
 function createTorso() {
   "use strict";
 
+  head = createHead();
   let arms = createArms();
   let back = createBack();
   let abdomen = createAbdomen();
@@ -256,12 +270,43 @@ function createTorso() {
     torsoValues.relativeZ
   );
 
+  torso.add(head);
   torso.add(arms);
   torso.add(back);
   torso.add(abdomen);
   torso.add(mesh);
 
   return torso;
+}
+
+function createHead() {
+  let headGeo = new THREE.Object3D();
+
+  head = new THREE.Group();
+
+  let geometry = new THREE.BoxGeometry(
+    headValues.width,
+    headValues.height,
+    headValues.depth
+  );
+
+  let mesh = new THREE.Mesh(geometry, materialValues.robot);
+  headGeo.add(mesh);
+  head.add(headGeo);
+
+  headGeo.position.set(
+    headValues.relativeX,
+    headValues.relativeY - headValues.height / 2,
+    headValues.relativeZ
+  );
+
+  head.position.set(
+    headValues.relativeX,
+    headValues.relativeY,
+    headValues.relativeZ
+  );
+
+  return head;
 }
 
 function createArms() {
@@ -602,6 +647,15 @@ function animate() {
     }
   }
 
+  if (head.userData.move) {
+    if (head.userData.open) {
+      head.rotation.x += headRotation.X;
+    }
+    if (!head.userData.open) {
+      head.rotation.x -= headRotation.X;
+    }
+  }
+
   render();
 
   requestAnimationFrame(animate);
@@ -630,19 +684,19 @@ function onKeyDown(e) {
   switch (e.keyCode) {
     case 37: //left
       trailer.userData.z = true;
-      trailer.userData.zStep = trailerTransaltion.Z;
+      trailer.userData.zStep = trailerTranslation.Z;
       break;
     case 38: //up
       trailer.userData.x = true;
-      trailer.userData.xStep = -trailerTransaltion.X;
+      trailer.userData.xStep = -trailerTranslation.X;
       break;
     case 39: //right
       trailer.userData.z = true;
-      trailer.userData.zStep = -trailerTransaltion.Z;
+      trailer.userData.zStep = -trailerTranslation.Z;
       break;
     case 40: //down
       trailer.userData.x = true;
-      trailer.userData.xStep = trailerTransaltion.X;
+      trailer.userData.xStep = trailerTranslation.X;
       break;
     case 49: //1
       currentCamera = cameras[0];
@@ -672,6 +726,16 @@ function onKeyDown(e) {
       leftArm.userData.move = true;
       leftArm.userData.open = false;
       break;
+
+    case 70: //f
+      head.userData.move = true;
+      head.userData.open = false;
+      break;
+
+    case 82: //r
+      head.userData.move = true;
+      head.userData.open = true;
+      break;
   }
 }
 
@@ -699,6 +763,12 @@ function onKeyUp(e) {
       break;
     case 69: //e
       leftArm.userData.move = false;
+      break;
+
+    case 70: //f
+    case 82: //r
+      head.userData.move = false;
+      head.userData.move = false;
       break;
   }
 }
