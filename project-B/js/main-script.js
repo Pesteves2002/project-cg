@@ -182,11 +182,11 @@ let legValues = {
 };
 
 let footValues = {
-  width: 4 * UNIT,
+  width: 8 * UNIT,
   depth: 3 * UNIT,
   height: 2 * UNIT,
   relativeX: 0 * UNIT,
-  relativeY: -4.5 * UNIT,
+  relativeY: -12.5 * UNIT,
   relativeZ: 0.5 * UNIT,
   type: Primitives.CUBE,
   material: materialValues.robot,
@@ -472,7 +472,7 @@ function createWaist() {
 
   const waist = createObject3D(waistValues);
 
-  thights = createThights();
+  const thights = createThights();
 
   group.add(waist);
   group.add(thights);
@@ -483,24 +483,42 @@ function createWaist() {
 function createThights() {
   "use strict";
 
+  thights = new THREE.Group();
+
   const group = new THREE.Group();
 
   const leftThight = createThight();
   setPosition(leftThight, thightValues);
 
+  const footCube = createFoot();
+
+  foot = new THREE.Group();
+  setPosition(foot, footValues);
+  foot.add(footCube);
+
+  // change footCube position to have pivot point to the right
+  footCube.position.z += UNIT / 2;
+
+  // change foot position to allow rotation around the pivot point
+  foot.position.z -= UNIT / 2;
+
   // recursive cloning and mirroring
   const rightThight = leftThight.clone(true);
   mirrorObject(rightThight, thightValues, "X");
 
-  leftThight.position.y += thightValues.relativeY;
-  rightThight.position.y += thightValues.relativeY;
-
   group.add(leftThight);
   group.add(rightThight);
+  group.add(foot);
 
-  group.position.y -= thightValues.relativeY;
+  thights.add(group);
 
-  return group;
+  // change group position to allow rotation around the pivot point
+  group.position.y += UNIT / 2;
+
+  // change thights position to have pivot point at the bottom
+  thights.position.y -= UNIT / 2;
+
+  return thights;
 }
 
 function createThight() {
@@ -526,11 +544,7 @@ function createLeg() {
 
   const leg = createObject3D(legValues);
 
-  const foot = createFoot();
-  setPosition(foot, footValues);
-
   group.add(leg);
-  group.add(foot);
   setPosition(group, legValues);
 
   return group;
@@ -539,7 +553,7 @@ function createLeg() {
 function createFoot() {
   "use strict";
 
-  foot = createObject3D(footValues);
+  const foot = createObject3D(footValues);
 
   return foot;
 }
