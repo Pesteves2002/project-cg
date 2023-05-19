@@ -6,9 +6,7 @@ let camera, scene, renderer;
 
 let geometry, material, mesh;
 
-let trailer, robot, head, leftArm, rightArm, waist, leftFoot, rightFoot;
-
-let feet = [leftFoot, rightFoot];
+let trailer, robot, head, leftArm, rightArm, thights, feet;
 
 let cameras = [];
 
@@ -49,7 +47,7 @@ let headRotation = {
   X: Math.PI / 100,
 };
 
-let waistRotation = {
+let thightsRotation = {
   X: Math.PI / 100,
 };
 
@@ -101,6 +99,8 @@ let torsoValues = {
   relativeX: 0 * UNIT,
   relativeY: 0 * UNIT,
   relativeZ: 0 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.robot,
 };
 
 let armValues = {
@@ -171,7 +171,7 @@ let thightValues = {
 };
 
 let legValues = {
-  width: 4 * UNIT,
+  width: 3 * UNIT,
   depth: 2 * UNIT,
   height: 7 * UNIT,
   relativeX: 0 * UNIT,
@@ -298,7 +298,7 @@ function createOrtographicCamera(cameraValue) {
 function createObject3D(objectValues) {
   "use strict";
 
-  let object = new THREE.Object3D();
+  const object = new THREE.Object3D();
 
   let geometry;
 
@@ -322,7 +322,7 @@ function createObject3D(objectValues) {
       break;
   }
 
-  let mesh = new THREE.Mesh(geometry, objectValues.material);
+  const mesh = new THREE.Mesh(geometry, objectValues.material);
   object.add(mesh);
 
   return object;
@@ -369,34 +369,23 @@ function createRobot() {
 function createTorso() {
   "use strict";
 
+  const group = new THREE.Group();
+
   head = createHead();
-  let arms = createArms();
-  let back = createBack();
-  let abdomen = createAbdomen();
+  const arms = createArms();
+  const back = createBack();
+  const abdomen = createAbdomen();
+  const torso = createObject3D(torsoValues);
 
-  let torso = new THREE.Object3D();
+  group.add(head);
+  group.add(arms);
+  group.add(back);
+  group.add(abdomen);
+  group.add(torso);
 
-  let geometry = new THREE.BoxGeometry(
-    torsoValues.width,
-    torsoValues.height,
-    torsoValues.depth
-  );
+  setPosition(group, torsoValues);
 
-  let mesh = new THREE.Mesh(geometry, materialValues.robot);
-
-  torso.add(head);
-  torso.add(arms);
-  torso.add(back);
-  torso.add(abdomen);
-  torso.add(mesh);
-
-  mesh.position.set(
-    torsoValues.relativeX,
-    torsoValues.relativeY,
-    torsoValues.relativeZ
-  );
-
-  return torso;
+  return group;
 }
 
 function createHead() {
@@ -408,18 +397,10 @@ function createHead() {
   head.add(headCube);
 
   // change cube position to have pivot point at the bottom
-  headCube.position.set(
-    headValues.relativeX,
-    headValues.height / 2,
-    headValues.relativeZ
-  );
+  headCube.position.y = headValues.height / 2;
 
   // change group position to allow rotation around the pivot point
-  head.position.set(
-    headValues.relativeX,
-    headValues.height,
-    headValues.relativeZ
-  );
+  head.position.y = headValues.height;
 
   return head;
 }
@@ -427,7 +408,7 @@ function createHead() {
 function createArms() {
   "use strict";
 
-  let arms = new THREE.Group();
+  const arms = new THREE.Group();
 
   leftArm = createArm();
   // recursive cloning and mirroring
@@ -491,7 +472,7 @@ function createWaist() {
 
   const waist = createObject3D(waistValues);
 
-  const thights = createThights();
+  thights = createThights();
 
   group.add(waist);
   group.add(thights);
@@ -505,12 +486,19 @@ function createThights() {
   const group = new THREE.Group();
 
   const leftThight = createThight();
+  setPosition(leftThight, thightValues);
+
   // recursive cloning and mirroring
   const rightThight = leftThight.clone(true);
   mirrorObject(rightThight, thightValues, "X");
 
+  leftThight.position.y += thightValues.relativeY;
+  rightThight.position.y += thightValues.relativeY;
+
   group.add(leftThight);
   group.add(rightThight);
+
+  group.position.y -= thightValues.relativeY;
 
   return group;
 }
@@ -527,7 +515,6 @@ function createThight() {
 
   group.add(thight);
   group.add(leg);
-  setPosition(group, thightValues);
 
   return group;
 }
@@ -725,7 +712,7 @@ function init() {
 
   createCameras();
 
-  currentCamera = cameras[4];
+  currentCamera = cameras[2];
 
   createRobot();
   createTrailer();
@@ -770,14 +757,14 @@ function animate() {
     }
   }
 
-  // if (waist.userData.move) {
-  //   if (waist.userData.open) {
-  //     waist.rotation.x += waistRotation.X;
-  //   }
-  //   if (!waist.userData.open) {
-  //     waist.rotation.x -= waistRotation.X;
-  //   }
-  // }
+  if (thights.userData.move) {
+    if (thights.userData.open) {
+      thights.rotation.x += thightsRotation.X;
+    }
+    if (!thights.userData.open) {
+      thights.rotation.x -= thightsRotation.X;
+    }
+  }
 
   render();
 
@@ -861,13 +848,13 @@ function onKeyDown(e) {
       break;
 
     case 87: // w
-      waist.userData.move = true;
-      waist.userData.open = true;
+      thights.userData.move = true;
+      thights.userData.open = true;
       break;
 
     case 83: // s
-      waist.userData.move = true;
-      waist.userData.open = false;
+      thights.userData.move = true;
+      thights.userData.open = false;
       break;
 
     case 65: //a
@@ -915,7 +902,7 @@ function onKeyUp(e) {
 
     case 87: // w
     case 83: // s
-      waist.userData.move = false;
+      thights.userData.move = false;
       break;
 
     case 65: //a
