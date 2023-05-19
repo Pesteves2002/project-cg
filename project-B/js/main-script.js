@@ -16,6 +16,11 @@ let currentCamera;
 
 let UNIT = 15;
 
+const Primitives = {
+  CUBE: "cube",
+  CYLINDER: "cylinder",
+};
+
 // RED X WIDTH
 // Green Y HEIGHT
 // BLUE Z DEPTH
@@ -83,8 +88,10 @@ let headValues = {
   depth: 2 * UNIT,
   height: 2 * UNIT,
   relativeX: 0 * UNIT,
-  relativeY: 2 * UNIT,
+  relativeY: 3 * UNIT,
   relativeZ: 0 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.robot,
 };
 
 let torsoValues = {
@@ -100,10 +107,11 @@ let armValues = {
   width: 2 * UNIT,
   depth: 2 * UNIT,
   height: 6 * UNIT,
-  relativePositions: [
-    [5 * UNIT, -1 * UNIT, -3 * UNIT],
-    [-5 * UNIT, -1 * UNIT, -3 * UNIT],
-  ],
+  relativeX: 5 * UNIT,
+  relativeY: -1 * UNIT,
+  relativeZ: -3 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.robot,
   positiveTranslations: [true, false],
 };
 
@@ -111,10 +119,11 @@ let forearmValues = {
   width: 2 * UNIT,
   depth: 4 * UNIT,
   height: 2 * UNIT,
-  relativePositions: [
-    [5 * UNIT, -3 * UNIT, 0 * UNIT],
-    [-5 * UNIT, -3 * UNIT, 0 * UNIT],
-  ],
+  relativeX: 0 * UNIT,
+  relativeY: -2 * UNIT,
+  relativeZ: 3 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.robot,
 };
 
 let backValues = {
@@ -277,11 +286,52 @@ function createOrtographicCamera(cameraValue) {
 /* CREATE OBJECT3D(S) */
 ////////////////////////
 
+function createObject3D(objectValues) {
+  "use strict";
+
+  let object = new THREE.Object3D();
+
+  let geometry;
+
+  switch (objectValues.type) {
+    case Primitives.CUBE:
+      geometry = new THREE.BoxGeometry(
+        objectValues.width,
+        objectValues.height,
+        objectValues.depth
+      );
+      break;
+    case Primitives.CYLINDER:
+      geometry = new THREE.CylinderGeometry(
+        objectValues.radiusTop,
+        objectValues.radiusBottom,
+        objectValues.height
+      );
+      break;
+    default:
+      console.log("Invalid object type");
+      break;
+  }
+
+  let mesh = new THREE.Mesh(geometry, objectValues.material);
+
+  object.add(mesh);
+
+  return object;
+}
+
+function setPosition(obj, objectValues) {
+  obj.position.set(
+    objectValues.relativeX,
+    objectValues.relativeY,
+    objectValues.relativeZ
+  );
+}
+
 function createRobot() {
   "use strict";
 
   robot = createTorso();
-
   robot.position.set(robotPosition.X, robotPosition.Y, robotPosition.Z);
 
   scene.add(robot);
@@ -304,11 +354,6 @@ function createTorso() {
   );
 
   let mesh = new THREE.Mesh(geometry, materialValues.robot);
-  mesh.position.set(
-    torsoValues.relativeX,
-    torsoValues.relativeY,
-    torsoValues.relativeZ
-  );
 
   torso.add(head);
   torso.add(arms);
@@ -316,33 +361,34 @@ function createTorso() {
   torso.add(abdomen);
   torso.add(mesh);
 
+  mesh.position.set(
+    torsoValues.relativeX,
+    torsoValues.relativeY,
+    torsoValues.relativeZ
+  );
+
   return torso;
 }
 
 function createHead() {
-  let headGeo = new THREE.Object3D();
+  "use strict";
 
-  head = new THREE.Group();
+  const head = new THREE.Group();
+  const headCube = createObject3D(headValues);
+  setPosition(headCube, headValues);
+  head.add(headCube);
 
-  let geometry = new THREE.BoxGeometry(
-    headValues.width,
-    headValues.height,
-    headValues.depth
-  );
-
-  let mesh = new THREE.Mesh(geometry, materialValues.robot);
-  headGeo.add(mesh);
-  head.add(headGeo);
-
-  headGeo.position.set(
+  // change cube position to have pivot point at the bottom
+  headCube.position.set(
     headValues.relativeX,
-    headValues.relativeY - headValues.height / 2,
+    -headValues.height,
     headValues.relativeZ
   );
 
+  // change group position to allow rotation around the pivot point
   head.position.set(
     headValues.relativeX,
-    headValues.relativeY,
+    headValues.height,
     headValues.relativeZ
   );
 
@@ -352,10 +398,16 @@ function createHead() {
 function createArms() {
   "use strict";
 
-  let arms = new THREE.Object3D();
+  let arms = new THREE.Group();
 
-  leftArm = createArm(0);
-  rightArm = createArm(1);
+  leftArm = createArm();
+  // recursive cloning and mirroring
+  rightArm = leftArm.clone(true);
+  rightArm.position.set(
+    -armValues.relativeX,
+    armValues.relativeY,
+    armValues.relativeZ
+  );
 
   arms.add(leftArm);
   arms.add(rightArm);
@@ -363,54 +415,21 @@ function createArms() {
   return arms;
 }
 
-function createArm(index) {
+function createArm() {
   "use strict";
 
-  let forearm = createForearm(index);
+  const group = new THREE.Group();
 
-  let arm = new THREE.Object3D();
+  const arm = createObject3D(armValues);
 
-  arm.add(forearm);
+  const forearm = createObject3D(forearmValues);
+  setPosition(forearm, forearmValues);
 
-  let geometry = new THREE.BoxGeometry(
-    armValues.width,
-    armValues.height,
-    armValues.depth
-  );
+  group.add(arm);
+  group.add(forearm);
+  setPosition(group, armValues);
 
-  let mesh = new THREE.Mesh(geometry, materialValues.robot);
-  mesh.position.set(
-    armValues.relativePositions[index][0],
-    armValues.relativePositions[index][1],
-    armValues.relativePositions[index][2]
-  );
-
-  arm.add(mesh);
-
-  return arm;
-}
-
-function createForearm(index) {
-  "use strict";
-
-  let forearm = new THREE.Object3D();
-
-  let geometry = new THREE.BoxGeometry(
-    forearmValues.width,
-    forearmValues.height,
-    forearmValues.depth
-  );
-
-  let mesh = new THREE.Mesh(geometry, materialValues.robot);
-  mesh.position.set(
-    forearmValues.relativePositions[index][0],
-    forearmValues.relativePositions[index][1],
-    forearmValues.relativePositions[index][2]
-  );
-
-  forearm.add(mesh);
-
-  return forearm;
+  return group;
 }
 
 function createBack() {
