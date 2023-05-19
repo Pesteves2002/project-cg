@@ -357,6 +357,28 @@ function mirrorObject(obj, objectValues, axis) {
   obj.position.set(x, y, z);
 }
 
+function changePivot(obj, group, offset, axis) {
+  switch (axis) {
+    case "X":
+      obj.position.x -= offset;
+      group.position.x += offset;
+      break;
+    case "Y":
+      y = offset;
+      obj.position.y -= offset;
+      group.position.y += offset;
+      break;
+    case "Z":
+      z = offset;
+      obj.position.z -= offset;
+      group.position.z += offset;
+      break;
+    default:
+      console.log("Invalid axis");
+      break;
+  }
+}
+
 function createRobot() {
   "use strict";
 
@@ -371,7 +393,7 @@ function createTorso() {
 
   const group = new THREE.Group();
 
-  head = createHead();
+  const head = createHead();
   const arms = createArms();
   const back = createBack();
   const abdomen = createAbdomen();
@@ -391,16 +413,12 @@ function createTorso() {
 function createHead() {
   "use strict";
 
-  const head = new THREE.Group();
+  head = new THREE.Group();
   const headCube = createObject3D(headValues);
   setPosition(headCube, headValues);
   head.add(headCube);
 
-  // change cube position to have pivot point at the bottom
-  headCube.position.y = headValues.height / 2;
-
-  // change group position to allow rotation around the pivot point
-  head.position.y = headValues.height;
+  changePivot(headCube, head, headValues.height, "Y");
 
   return head;
 }
@@ -496,11 +514,7 @@ function createThights() {
   setPosition(foot, footValues);
   foot.add(footCube);
 
-  // change footCube position to have pivot point to the right
-  footCube.position.z += UNIT / 2;
-
-  // change foot position to allow rotation around the pivot point
-  foot.position.z -= UNIT / 2;
+  changePivot(footCube, foot, -UNIT / 2, "Z");
 
   // recursive cloning and mirroring
   const rightThight = leftThight.clone(true);
@@ -512,11 +526,7 @@ function createThights() {
 
   thights.add(group);
 
-  // change group position to allow rotation around the pivot point
-  group.position.y += UNIT / 2;
-
-  // change thights position to have pivot point at the bottom
-  thights.position.y -= UNIT / 2;
+  changePivot(group, thights, -UNIT / 2, "Y");
 
   return thights;
 }
