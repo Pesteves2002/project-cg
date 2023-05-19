@@ -6,13 +6,15 @@ let camera, scene, renderer;
 
 let geometry, material, mesh;
 
-let trailer, robot, head, leftArm, rightArm;
+let trailer, robot, head, leftArm, rightArm, waist, leftFoot, rightFoot;
+
+let feet = [leftFoot, rightFoot];
 
 let cameras = [];
 
 let currentCamera;
 
-let UNIT = 20;
+let UNIT = 15;
 
 // RED X WIDTH
 // Green Y HEIGHT
@@ -39,6 +41,14 @@ let robotPosition = {
 };
 
 let headRotation = {
+  X: Math.PI / 100,
+};
+
+let waistRotation = {
+  X: Math.PI / 100,
+};
+
+let footRotation = {
   X: Math.PI / 100,
 };
 
@@ -132,6 +142,36 @@ let waistValues = {
   relativeX: 0 * UNIT,
   relativeY: -5.5 * UNIT,
   relativeZ: 0 * UNIT,
+};
+
+let thightValues = {
+  width: 2 * UNIT,
+  depth: 2 * UNIT,
+  height: 3 * UNIT,
+  relativePositions: [
+    [2 * UNIT, -8.5 * UNIT, 0 * UNIT],
+    [-2 * UNIT, -8.5 * UNIT, 0 * UNIT],
+  ],
+};
+
+let legValues = {
+  width: 4 * UNIT,
+  depth: 2 * UNIT,
+  height: 7 * UNIT,
+  relativePositions: [
+    [2 * UNIT, -13.5 * UNIT, 0 * UNIT],
+    [-2 * UNIT, -13.5 * UNIT, 0 * UNIT],
+  ],
+};
+
+let footValues = {
+  width: 4 * UNIT,
+  depth: 3 * UNIT,
+  height: 2 * UNIT,
+  relativePositions: [
+    [2 * UNIT, -18 * UNIT, 0 * UNIT],
+    [-2 * UNIT, -18 * UNIT, 0 * UNIT],
+  ],
 };
 
 let trailerBoxValues = {
@@ -399,7 +439,7 @@ function createBack() {
 function createAbdomen() {
   "use strict";
 
-  let waist = createWaist();
+  waist = createWaist();
 
   let abdomen = new THREE.Object3D();
 
@@ -425,6 +465,8 @@ function createAbdomen() {
 function createWaist() {
   "use strict";
 
+  let thights = createThights();
+
   let waist = new THREE.Object3D();
 
   let geometry = new THREE.BoxGeometry(
@@ -441,8 +483,99 @@ function createWaist() {
   );
 
   waist.add(mesh);
+  waist.add(thights);
 
   return waist;
+}
+
+function createThights() {
+  "use strict";
+
+  let thights = new THREE.Object3D();
+
+  let leftThight = createThight(0);
+  let rightThight = createThight(1);
+
+  thights.add(leftThight);
+  thights.add(rightThight);
+
+  return thights;
+}
+
+function createThight(index) {
+  "use strict";
+
+  let leg = createLeg(index);
+
+  let thight = new THREE.Object3D();
+
+  let geometry = new THREE.BoxGeometry(
+    thightValues.width,
+    thightValues.height,
+    thightValues.depth
+  );
+
+  thight.add(leg);
+
+  let mesh = new THREE.Mesh(geometry, materialValues.robot);
+  mesh.position.set(
+    thightValues.relativePositions[index][0],
+    thightValues.relativePositions[index][1],
+    thightValues.relativePositions[index][2]
+  );
+
+  thight.add(mesh);
+
+  return thight;
+}
+
+function createLeg(index) {
+  "use strict";
+
+  let foot = createFoot(index);
+
+  let leg = new THREE.Object3D();
+
+  let geometry = new THREE.BoxGeometry(
+    legValues.width,
+    legValues.height,
+    legValues.depth
+  );
+
+  let mesh = new THREE.Mesh(geometry, materialValues.robot);
+  mesh.position.set(
+    legValues.relativePositions[index][0],
+    legValues.relativePositions[index][1],
+    legValues.relativePositions[index][2]
+  );
+
+  leg.add(foot);
+  leg.add(mesh);
+
+  return leg;
+}
+
+function createFoot(index) {
+  "use strict";
+
+  feet[index] = new THREE.Object3D();
+
+  let geometry = new THREE.BoxGeometry(
+    footValues.width,
+    footValues.height,
+    footValues.depth
+  );
+
+  let mesh = new THREE.Mesh(geometry, materialValues.robot);
+  mesh.position.set(
+    footValues.relativePositions[index][0],
+    footValues.relativePositions[index][1],
+    footValues.relativePositions[index][2]
+  );
+
+  feet[index].add(mesh);
+
+  return feet[index];
 }
 
 function createTrailer() {
@@ -585,6 +718,8 @@ function handleCollisions() {
 ////////////
 function update() {
   "use strict";
+
+  // ANIMATE PARA AQUI
 }
 
 /////////////
@@ -653,6 +788,15 @@ function animate() {
     }
     if (!head.userData.open) {
       head.rotation.x -= headRotation.X;
+    }
+  }
+
+  if (waist.userData.move) {
+    if (waist.userData.open) {
+      waist.rotation.x += waistRotation.X;
+    }
+    if (!waist.userData.open) {
+      waist.rotation.x -= waistRotation.X;
     }
   }
 
@@ -736,6 +880,25 @@ function onKeyDown(e) {
       head.userData.move = true;
       head.userData.open = true;
       break;
+
+    case 87: // w
+      waist.userData.move = true;
+      waist.userData.open = true;
+      break;
+
+    case 83: // s
+      waist.userData.move = true;
+      waist.userData.open = false;
+      break;
+
+    case 65: //a
+      leftFoot.userData.move = true;
+      leftFoot.userData.open = true;
+      break;
+
+    case 81: //q
+      leftFoot.userData.move = true;
+      leftFoot.userData.open = false;
   }
 }
 
@@ -769,6 +932,16 @@ function onKeyUp(e) {
     case 82: //r
       head.userData.move = false;
       head.userData.move = false;
+      break;
+
+    case 87: // w
+    case 83: // s
+      waist.userData.move = false;
+      break;
+
+    case 65: //a
+    case 81: //q
+      leftFoot.userData.move = false;
       break;
   }
 }
