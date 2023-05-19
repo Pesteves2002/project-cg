@@ -14,7 +14,7 @@ let cameras = [];
 
 let currentCamera;
 
-let UNIT = 15;
+let UNIT = 20;
 
 const Primitives = {
   CUBE: "cube",
@@ -144,6 +144,8 @@ let abdomenValues = {
   relativeX: 0 * UNIT,
   relativeY: -3 * UNIT,
   relativeZ: 0 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.robot,
 };
 
 let waistValues = {
@@ -151,38 +153,43 @@ let waistValues = {
   depth: 2 * UNIT,
   height: 3 * UNIT,
   relativeX: 0 * UNIT,
-  relativeY: -5.5 * UNIT,
+  relativeY: -2.5 * UNIT,
   relativeZ: 0 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.robot,
 };
 
 let thightValues = {
   width: 2 * UNIT,
   depth: 2 * UNIT,
   height: 3 * UNIT,
-  relativePositions: [
-    [2 * UNIT, -8.5 * UNIT, 0 * UNIT],
-    [-2 * UNIT, -8.5 * UNIT, 0 * UNIT],
-  ],
+  relativeX: 2 * UNIT,
+  relativeY: -3 * UNIT,
+  relativeZ: 0 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.robot,
 };
 
 let legValues = {
   width: 4 * UNIT,
   depth: 2 * UNIT,
   height: 7 * UNIT,
-  relativePositions: [
-    [2 * UNIT, -13.5 * UNIT, 0 * UNIT],
-    [-2 * UNIT, -13.5 * UNIT, 0 * UNIT],
-  ],
+  relativeX: 0 * UNIT,
+  relativeY: -5 * UNIT,
+  relativeZ: 0 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.robot,
 };
 
 let footValues = {
   width: 4 * UNIT,
   depth: 3 * UNIT,
   height: 2 * UNIT,
-  relativePositions: [
-    [2 * UNIT, -18 * UNIT, 0 * UNIT],
-    [-2 * UNIT, -18 * UNIT, 0 * UNIT],
-  ],
+  relativeX: 0 * UNIT,
+  relativeY: -4.5 * UNIT,
+  relativeZ: 0.5 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.robot,
 };
 
 let trailerBoxValues = {
@@ -316,7 +323,6 @@ function createObject3D(objectValues) {
   }
 
   let mesh = new THREE.Mesh(geometry, objectValues.material);
-
   object.add(mesh);
 
   return object;
@@ -328,6 +334,27 @@ function setPosition(obj, objectValues) {
     objectValues.relativeY,
     objectValues.relativeZ
   );
+}
+
+function mirrorObject(obj, objectValues, axis) {
+  let x = objectValues.relativeX;
+  let y = objectValues.relativeY;
+  let z = objectValues.relativeZ;
+  switch (axis) {
+    case "X":
+      x = -x;
+      break;
+    case "Y":
+      y = -y;
+      break;
+    case "Z":
+      z = -z;
+      break;
+    default:
+      console.log("Invalid axis");
+      break;
+  }
+  obj.position.set(x, y, z);
 }
 
 function createRobot() {
@@ -405,11 +432,7 @@ function createArms() {
   leftArm = createArm();
   // recursive cloning and mirroring
   rightArm = leftArm.clone(true);
-  rightArm.position.set(
-    -armValues.relativeX,
-    armValues.relativeY,
-    armValues.relativeZ
-  );
+  mirrorObject(rightArm, armValues, "X");
 
   arms.add(leftArm);
   arms.add(rightArm);
@@ -446,143 +469,92 @@ function createBack() {
 function createAbdomen() {
   "use strict";
 
-  waist = createWaist();
+  const group = new THREE.Group();
 
-  let abdomen = new THREE.Object3D();
+  const abdomen = createObject3D(abdomenValues);
 
-  let geometry = new THREE.BoxGeometry(
-    abdomenValues.width,
-    abdomenValues.height,
-    abdomenValues.depth
-  );
+  const waist = createWaist(waistValues);
+  setPosition(waist, waistValues);
 
-  let mesh = new THREE.Mesh(geometry, materialValues.robot);
-  mesh.position.set(
-    abdomenValues.relativeX,
-    abdomenValues.relativeY,
-    abdomenValues.relativeZ
-  );
+  group.add(abdomen);
+  group.add(waist);
 
-  abdomen.add(waist);
-  abdomen.add(mesh);
+  setPosition(group, abdomenValues);
 
-  return abdomen;
+  return group;
 }
 
 function createWaist() {
   "use strict";
 
-  let thights = createThights();
+  const group = new THREE.Group();
 
-  let waist = new THREE.Object3D();
+  const waist = createObject3D(waistValues);
 
-  let geometry = new THREE.BoxGeometry(
-    waistValues.width,
-    waistValues.height,
-    waistValues.depth
-  );
+  const thights = createThights();
 
-  let mesh = new THREE.Mesh(geometry, materialValues.robot);
-  mesh.position.set(
-    waistValues.relativeX,
-    waistValues.relativeY,
-    waistValues.relativeZ
-  );
+  group.add(waist);
+  group.add(thights);
 
-  waist.add(mesh);
-  waist.add(thights);
-
-  return waist;
+  return group;
 }
 
 function createThights() {
   "use strict";
 
-  let thights = new THREE.Object3D();
+  const group = new THREE.Group();
 
-  let leftThight = createThight(0);
-  let rightThight = createThight(1);
+  const leftThight = createThight();
+  // recursive cloning and mirroring
+  const rightThight = leftThight.clone(true);
+  mirrorObject(rightThight, thightValues, "X");
 
-  thights.add(leftThight);
-  thights.add(rightThight);
+  group.add(leftThight);
+  group.add(rightThight);
 
-  return thights;
+  return group;
 }
 
-function createThight(index) {
+function createThight() {
   "use strict";
 
-  let leg = createLeg(index);
+  const group = new THREE.Group();
 
-  let thight = new THREE.Object3D();
+  const thight = createObject3D(thightValues);
 
-  let geometry = new THREE.BoxGeometry(
-    thightValues.width,
-    thightValues.height,
-    thightValues.depth
-  );
+  const leg = createLeg();
+  setPosition(leg, legValues);
 
-  thight.add(leg);
+  group.add(thight);
+  group.add(leg);
+  setPosition(group, thightValues);
 
-  let mesh = new THREE.Mesh(geometry, materialValues.robot);
-  mesh.position.set(
-    thightValues.relativePositions[index][0],
-    thightValues.relativePositions[index][1],
-    thightValues.relativePositions[index][2]
-  );
-
-  thight.add(mesh);
-
-  return thight;
+  return group;
 }
 
-function createLeg(index) {
+function createLeg() {
   "use strict";
 
-  let foot = createFoot(index);
+  const group = new THREE.Group();
 
-  let leg = new THREE.Object3D();
+  const leg = createObject3D(legValues);
 
-  let geometry = new THREE.BoxGeometry(
-    legValues.width,
-    legValues.height,
-    legValues.depth
-  );
+  const foot = createFoot();
+  setPosition(foot, footValues);
 
-  let mesh = new THREE.Mesh(geometry, materialValues.robot);
-  mesh.position.set(
-    legValues.relativePositions[index][0],
-    legValues.relativePositions[index][1],
-    legValues.relativePositions[index][2]
-  );
+  group.add(leg);
+  group.add(foot);
+  setPosition(group, legValues);
 
-  leg.add(foot);
-  leg.add(mesh);
-
-  return leg;
+  return group;
 }
 
-function createFoot(index) {
+function createFoot() {
   "use strict";
 
-  feet[index] = new THREE.Object3D();
+  const foot = createObject3D(footValues);
 
-  let geometry = new THREE.BoxGeometry(
-    footValues.width,
-    footValues.height,
-    footValues.depth
-  );
-
-  let mesh = new THREE.Mesh(geometry, materialValues.robot);
-  mesh.position.set(
-    footValues.relativePositions[index][0],
-    footValues.relativePositions[index][1],
-    footValues.relativePositions[index][2]
-  );
-
-  feet[index].add(mesh);
-
-  return feet[index];
+  return foot;
 }
 
 function createTrailer() {
@@ -798,14 +770,14 @@ function animate() {
     }
   }
 
-  if (waist.userData.move) {
-    if (waist.userData.open) {
-      waist.rotation.x += waistRotation.X;
-    }
-    if (!waist.userData.open) {
-      waist.rotation.x -= waistRotation.X;
-    }
-  }
+  // if (waist.userData.move) {
+  //   if (waist.userData.open) {
+  //     waist.rotation.x += waistRotation.X;
+  //   }
+  //   if (!waist.userData.open) {
+  //     waist.rotation.x -= waistRotation.X;
+  //   }
+  // }
 
   render();
 
