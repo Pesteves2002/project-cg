@@ -6,7 +6,7 @@ let camera, scene, renderer;
 
 let geometry, material, mesh;
 
-let trailer, robot, head, leftArm, rightArm, thights, feet;
+let trailer, robot, head, leftArm, rightArm, thights, foot;
 
 let cameras = [];
 
@@ -539,7 +539,7 @@ function createLeg() {
 function createFoot() {
   "use strict";
 
-  const foot = createObject3D(footValues);
+  foot = createObject3D(footValues);
 
   return foot;
 }
@@ -766,6 +766,15 @@ function animate() {
     }
   }
 
+  if (foot.userData.move) {
+    if (foot.userData.open) {
+      foot.rotation.x += footRotation.X;
+    }
+    if (!foot.userData.open) {
+      foot.rotation.x -= footRotation.X;
+    }
+  }
+
   render();
 
   requestAnimationFrame(animate);
@@ -858,13 +867,13 @@ function onKeyDown(e) {
       break;
 
     case 65: //a
-      leftFoot.userData.move = true;
-      leftFoot.userData.open = true;
+      foot.userData.move = true;
+      foot.userData.open = true;
       break;
 
     case 81: //q
-      leftFoot.userData.move = true;
-      leftFoot.userData.open = false;
+      foot.userData.move = true;
+      foot.userData.open = false;
   }
 }
 
@@ -907,7 +916,7 @@ function onKeyUp(e) {
 
     case 65: //a
     case 81: //q
-      leftFoot.userData.move = false;
+      foot.userData.move = false;
       break;
   }
 }
