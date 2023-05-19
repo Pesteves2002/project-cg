@@ -133,6 +133,8 @@ let backValues = {
   relativeX: 0 * UNIT,
   relativeY: 0 * UNIT,
   relativeZ: -3 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.robot,
 };
 
 let abdomenValues = {
@@ -381,7 +383,7 @@ function createHead() {
   // change cube position to have pivot point at the bottom
   headCube.position.set(
     headValues.relativeX,
-    -headValues.height,
+    headValues.height / 2,
     headValues.relativeZ
   );
 
@@ -435,22 +437,8 @@ function createArm() {
 function createBack() {
   "use strict";
 
-  let back = new THREE.Object3D();
-
-  let geometry = new THREE.BoxGeometry(
-    backValues.width,
-    backValues.height,
-    backValues.depth
-  );
-
-  let mesh = new THREE.Mesh(geometry, materialValues.robot);
-  mesh.position.set(
-    backValues.relativeX,
-    backValues.relativeY,
-    backValues.relativeZ
-  );
-
-  back.add(mesh);
+  const back = createObject3D(backValues);
+  setPosition(back, backValues);
 
   return back;
 }
