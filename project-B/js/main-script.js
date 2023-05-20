@@ -8,11 +8,40 @@ let geometry, material, mesh;
 
 let trailer, robot, head, leftArm, rightArm, thights, foot;
 
+let transformation;
+
 let cameras = [];
 
 let currentCamera;
 
+let debugPoints = [];
+
 let UNIT = 20;
+
+let points = {
+  truckMin: {
+    x: 0,
+    y: 0,
+    z: 0,
+  },
+  truckMax: {
+    x: 0,
+    y: 0,
+    z: 0,
+  },
+
+  trailerMin: {
+    x: 0,
+    y: 0,
+    z: 0,
+  },
+
+  trailerMax: {
+    x: 0,
+    y: 0,
+    z: 0,
+  },
+};
 
 const Primitives = {
   CUBE: "cube",
@@ -24,21 +53,21 @@ const Primitives = {
 // BLUE Z DEPTH
 
 let cameraValues = [
-  [0, 100, 0],
-  [0, 0, 100],
-  [100, 0, 0],
-  [20, 100, 300],
+  [0, 1000, 0],
+  [0, 0, 1000],
+  [1000, 0, 0],
+  [2000, 1000, 3000],
   [1000, 1000, 1000],
 ];
 
 let trailerPosition = {
   X: 100,
-  Y: 0,
+  Y: -UNIT * 2,
   Z: 100,
 };
 
 let robotPosition = {
-  X: 600,
+  X: 400,
   Y: 0,
   Z: 200,
 };
@@ -98,6 +127,11 @@ let materialValues = {
 
   robot: new THREE.MeshBasicMaterial({
     color: 0xffff00,
+    wireframe: true,
+  }),
+
+  debug: new THREE.MeshBasicMaterial({
+    color: 0x00ff00,
     wireframe: true,
   }),
 };
@@ -254,6 +288,14 @@ let trailerPinValues = {
   relativeZ: 10 * UNIT,
   type: Primitives.CUBE,
   material: materialValues.trailer,
+};
+
+let debugPoint = {
+  width: 1 * UNIT,
+  depth: 1 * UNIT,
+  height: 1 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.debug,
 };
 
 /////////////////////
@@ -692,6 +734,20 @@ function createTrailerPin() {
 //////////////////////
 function checkCollisions() {
   "use strict";
+
+  const minA = points.truckMin;
+  const maxA = points.truckMax;
+  const minB = points.trailerMin;
+  const maxB = points.trailerMax;
+
+  return (
+    maxA.x >= minB.x &&
+    minA.x <= maxB.x &&
+    maxA.y >= minB.y &&
+    minA.y <= maxB.y &&
+    maxA.z >= minB.z &&
+    minA.z <= maxB.z
+  );
 }
 
 ///////////////////////
@@ -699,6 +755,14 @@ function checkCollisions() {
 ///////////////////////
 function handleCollisions() {
   "use strict";
+
+  trailer.position.set(
+    robot.position.x,
+    trailer.position.y,
+    robot.position.z - torsoValues.depth * 4.5
+  );
+
+  transformation = false;
 }
 
 ////////////
@@ -708,6 +772,12 @@ function update() {
   "use strict";
 
   // ANIMATE PARA AQUI
+
+  if (checkCollisions() && !transformation) {
+    transformation = true;
+    console.log("COLLISION");
+    handleCollisions();
+  }
 }
 
 /////////////
@@ -741,6 +811,10 @@ function init() {
 
   intializeAnimations();
 
+  transformation = false;
+
+  initalizePoints();
+
   render();
 
   window.addEventListener("keydown", onKeyDown);
@@ -748,22 +822,64 @@ function init() {
   window.addEventListener("resize", onResize);
 }
 
+function initalizePoints() {
+  points.trailerMin.x = trailerPosition.X - trailerBoxValues.width / 2;
+  points.trailerMin.y = trailerPosition.Y - trailerBoxValues.height;
+  points.trailerMin.z = trailerPosition.Z - trailerBoxValues.depth / 2;
+
+  debugPositions(points.trailerMin);
+
+  points.trailerMax.x = trailerPosition.X + trailerBoxValues.width / 2;
+  points.trailerMax.y = trailerPosition.Y + trailerBoxValues.height / 2;
+  points.trailerMax.z = trailerPosition.Z + trailerBoxValues.depth / 2;
+
+  debugPositions(points.trailerMax);
+
+  points.truckMin.x = robotPosition.X - torsoValues.width / 2;
+  points.truckMin.y = robotPosition.Y - torsoValues.height * 1.8;
+  points.truckMin.z = robotPosition.Z - torsoValues.depth * 3.5;
+
+  debugPositions(points.truckMin);
+
+  points.truckMax.x = robotPosition.X + torsoValues.width / 2;
+  points.truckMax.y = robotPosition.Y + torsoValues.height / 2;
+  points.truckMax.z = robotPosition.Z + torsoValues.depth / 2;
+
+  debugPositions(points.truckMax);
+}
+
+function debugPositions(point) {
+  const obj = createObject3D(debugPoint);
+  obj.position.set(point.x, point.y, point.z);
+
+  debugPoints.push(obj);
+
+  scene.add(obj);
+}
+
 function intializeAnimations() {
   "use strict";
 
-  head.userData.step = 0;
   head.userData.value = 0;
-  leftArm.userData.step = 0;
   leftArm.userData.value = 0;
-  rightArm.userData.step = 0;
   rightArm.userData.value = 0;
-  thights.userData.step = 0;
   thights.userData.value = 0;
-  foot.userData.step = 0;
   foot.userData.value = 0;
+  trailer.userData.value = 0;
+
+  resetSteps();
+}
+
+function resetSteps() {
+  "use strict";
+
+  head.userData.step = 0;
+  leftArm.userData.step = 0;
+  rightArm.userData.step = 0;
+  thights.userData.step = 0;
+  foot.userData.step = 0;
   trailer.userData.xStep = 0;
   trailer.userData.zStep = 0;
-  trailer.userData.value = 0;
 }
 
 /////////////////////
@@ -824,13 +940,42 @@ function translateObject(object, transformationValues, axis) {
 function translateTrailer() {
   trailer.userData.step = trailer.userData.xStep;
   translateObject(trailer, trailerTranslation, "x");
+  points.trailerMin.x += trailer.userData.xStep;
+  points.trailerMax.x += trailer.userData.xStep;
+
+  debugPoints[0].position.set(
+    points.trailerMin.x,
+    points.trailerMin.y,
+    points.trailerMin.z
+  );
+
+  debugPoints[1].position.set(
+    points.trailerMax.x,
+    points.trailerMax.y,
+    points.trailerMax.z
+  );
 
   trailer.userData.step = trailer.userData.zStep;
   translateObject(trailer, trailerTranslation, "z");
+  points.trailerMin.z += trailer.userData.zStep;
+  points.trailerMax.z += trailer.userData.zStep;
+
+  debugPoints[0].position.set(
+    points.trailerMin.x,
+    points.trailerMin.y,
+    points.trailerMin.z
+  );
+
+  debugPoints[1].position.set(
+    points.trailerMax.x,
+    points.trailerMax.y,
+    points.trailerMax.z
+  );
 }
 
 function animate() {
   "use strict";
+  update();
 
   translateTrailer();
 
@@ -869,6 +1014,10 @@ function onResize() {
 function onKeyDown(e) {
   "use strict";
 
+  if (transformation) {
+    resetSteps();
+    return;
+  }
   switch (e.keyCode) {
     case 37: //left
       trailer.userData.zStep = trailerTranslation.stepZ;
