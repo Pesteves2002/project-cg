@@ -62,8 +62,10 @@ let footRotation = {
 };
 
 let trailerTranslation = {
-  X: 0.3 * UNIT,
-  Z: 0.3 * UNIT,
+  stepX: 0.3 * UNIT,
+  stepZ: 0.3 * UNIT,
+  min: -1000 * UNIT,
+  max: 1000 * UNIT,
 };
 
 const leftArmTranslation = {
@@ -742,6 +744,8 @@ function init() {
 }
 
 function intializeAnimations() {
+  "use strict";
+
   head.userData.step = 0;
   head.userData.value = 0;
   leftArm.userData.step = 0;
@@ -752,6 +756,9 @@ function intializeAnimations() {
   thights.userData.value = 0;
   foot.userData.step = 0;
   foot.userData.value = 0;
+  trailer.userData.xStep = 0;
+  trailer.userData.zStep = 0;
+  trailer.userData.value = 0;
 }
 
 /////////////////////
@@ -808,27 +815,29 @@ function translateObject(object, transformationValues, axis) {
     }
   }
 }
+
+function translateTrailer() {
+  trailer.userData.step = trailer.userData.xStep;
+  translateObject(trailer, trailerTranslation, "x");
+
+  trailer.userData.step = trailer.userData.zStep;
+  translateObject(trailer, trailerTranslation, "z");
+}
+
 function animate() {
   "use strict";
 
-  let auxValue;
+  translateTrailer();
 
-  if (trailer.userData.x) {
-    trailer.position.x += trailer.userData.xStep;
-  }
-  if (trailer.userData.z) {
-    trailer.position.z += trailer.userData.zStep;
-  }
-
-  translateObject(leftArm, leftArmTranslation, "x");
-
-  translateObject(rightArm, rightArmTranslation, "x");
-
-  rotateObject(head, headRotation, "x");
-
-  rotateObject(thights, thightsRotation, "x");
-
-  rotateObject(foot, footRotation, "x");
+  //translateObject(leftArm, leftArmTranslation, "x");
+  //
+  //translateObject(rightArm, rightArmTranslation, "x");
+  //
+  //rotateObject(head, headRotation, "x");
+  //
+  //rotateObject(thights, thightsRotation, "x");
+  //
+  //rotateObject(foot, footRotation, "x");
 
   render();
 
@@ -857,20 +866,16 @@ function onKeyDown(e) {
 
   switch (e.keyCode) {
     case 37: //left
-      trailer.userData.z = true;
-      trailer.userData.zStep = trailerTranslation.Z;
+      trailer.userData.zStep = trailerTranslation.stepZ;
       break;
     case 38: //up
-      trailer.userData.x = true;
-      trailer.userData.xStep = -trailerTranslation.X;
+      trailer.userData.xStep = -trailerTranslation.stepX;
       break;
     case 39: //right
-      trailer.userData.z = true;
-      trailer.userData.zStep = -trailerTranslation.Z;
+      trailer.userData.zStep = -trailerTranslation.stepZ;
       break;
     case 40: //down
-      trailer.userData.x = true;
-      trailer.userData.xStep = trailerTranslation.X;
+      trailer.userData.xStep = trailerTranslation.stepX;
       break;
     case 49: //1
       currentCamera = cameras[0];
@@ -937,16 +942,12 @@ function onKeyUp(e) {
 
   switch (e.keyCode) {
     case 37: //left
-      trailer.userData.z = false;
+    case 39: //right
+      trailer.userData.zStep = 0;
       break;
     case 38: //up
-      trailer.userData.x = false;
-      break;
-    case 39: //right
-      trailer.userData.z = false;
-      break;
     case 40: //down
-      trailer.userData.x = false;
+      trailer.userData.xStep = 0;
       break;
 
     case 68: //d
