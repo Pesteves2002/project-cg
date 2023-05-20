@@ -44,15 +44,21 @@ let robotPosition = {
 };
 
 let headRotation = {
-  X: Math.PI / 100,
+  step: Math.PI / 100,
+  min: -Math.PI - Math.PI / 100,
+  max: Math.PI / 100,
 };
 
 let thightsRotation = {
-  X: Math.PI / 100,
+  step: Math.PI / 100,
+  min: -Math.PI / 100,
+  max: Math.PI / 2 + Math.PI / 100,
 };
 
 let footRotation = {
-  X: Math.PI / 100,
+  step: Math.PI / 100,
+  min: -Math.PI / 100,
+  max: Math.PI / 2 + Math.PI / 100,
 };
 
 let trailerTranslation = {
@@ -61,7 +67,9 @@ let trailerTranslation = {
 };
 
 let armTranslation = {
-  X: 0.1 * UNIT,
+  step: 0.1 * UNIT,
+  min: -2 * UNIT,
+  max: 0 * UNIT,
 };
 
 let materialValues = {
@@ -741,11 +749,26 @@ function init() {
   createRobot();
   createTrailer();
 
+  intializeAnimations();
+
   render();
 
   window.addEventListener("keydown", onKeyDown);
   window.addEventListener("keyup", onKeyUp);
   window.addEventListener("resize", onResize);
+}
+
+function intializeAnimations() {
+  head.userData.step = 0;
+  head.userData.value = 0;
+  leftArm.userData.step = 0;
+  leftArm.userData.value = 0;
+  rightArm.userData.step = 0;
+  rightArm.userData.value = 0;
+  thights.userData.step = 0;
+  thights.userData.value = 0;
+  foot.userData.step = 0;
+  foot.userData.value = 0;
 }
 
 /////////////////////
@@ -754,6 +777,8 @@ function init() {
 function animate() {
   "use strict";
 
+  let auxValue;
+
   if (trailer.userData.x) {
     trailer.position.x += trailer.userData.xStep;
   }
@@ -761,41 +786,79 @@ function animate() {
     trailer.position.z += trailer.userData.zStep;
   }
 
-  if (leftArm.userData.move) {
-    if (leftArm.userData.open) {
-      leftArm.position.x += armTranslation.X;
-      rightArm.position.x -= armTranslation.X;
-    }
-    if (!leftArm.userData.open) {
-      leftArm.position.x -= armTranslation.X;
-      rightArm.position.x += armTranslation.X;
+  if (
+    armTranslation.min <= leftArm.userData.value &&
+    leftArm.userData.value <= armTranslation.max
+  ) {
+    console.log(leftArm.userData.value);
+    auxValue = leftArm.userData.value + leftArm.userData.step;
+
+    if (
+      parseFloat(armTranslation.min) <= parseFloat(auxValue) &&
+      parseFloat(auxValue) <= parseFloat(armTranslation.max)
+    ) {
+      leftArm.userData.value += leftArm.userData.step;
+      leftArm.position.x += leftArm.userData.step;
     }
   }
 
-  if (head.userData.move) {
-    if (head.userData.open) {
-      head.rotation.x += headRotation.X;
-    }
-    if (!head.userData.open) {
-      head.rotation.x -= headRotation.X;
+  if (
+    armTranslation.min <= rightArm.userData.value &&
+    rightArm.userData.value <= armTranslation.max
+  ) {
+    auxValue = rightArm.userData.value - rightArm.userData.step;
+
+    if (
+      parseFloat(armTranslation.min) <= parseFloat(auxValue) &&
+      parseFloat(auxValue) <= parseFloat(armTranslation.max)
+    ) {
+      rightArm.userData.value -= rightArm.userData.step;
+      rightArm.position.x += rightArm.userData.step;
     }
   }
 
-  if (thights.userData.move) {
-    if (thights.userData.open) {
-      thights.rotation.x += thightsRotation.X;
-    }
-    if (!thights.userData.open) {
-      thights.rotation.x -= thightsRotation.X;
+  if (
+    headRotation.min <= head.userData.value &&
+    head.userData.value <= headRotation.max
+  ) {
+    auxValue = head.userData.value + head.userData.step;
+
+    if (
+      parseFloat(headRotation.min) <= parseFloat(auxValue) &&
+      parseFloat(auxValue) <= parseFloat(headRotation.max)
+    ) {
+      head.userData.value += head.userData.step;
+      head.rotation.x += head.userData.step;
     }
   }
 
-  if (foot.userData.move) {
-    if (foot.userData.open) {
-      foot.rotation.x += footRotation.X;
+  if (
+    thightsRotation.min <= thights.userData.value &&
+    thights.userData.value <= thightsRotation.max
+  ) {
+    auxValue = thights.userData.value + thights.userData.step;
+
+    if (
+      parseFloat(thightsRotation.min) <= parseFloat(auxValue) &&
+      parseFloat(auxValue) <= parseFloat(thightsRotation.max)
+    ) {
+      thights.userData.value += thights.userData.step;
+      thights.rotation.x += thights.userData.step;
     }
-    if (!foot.userData.open) {
-      foot.rotation.x -= footRotation.X;
+  }
+
+  if (
+    footRotation.min <= foot.userData.value &&
+    foot.userData.value <= footRotation.max
+  ) {
+    auxValue = foot.userData.value + foot.userData.step;
+
+    if (
+      parseFloat(footRotation.min) <= parseFloat(auxValue) &&
+      parseFloat(auxValue) <= parseFloat(footRotation.max)
+    ) {
+      foot.userData.value += foot.userData.step;
+      foot.rotation.x += foot.userData.step;
     }
   }
 
@@ -862,42 +925,36 @@ function onKeyDown(e) {
       });
       break;
     case 68: //d
-      leftArm.userData.move = true;
-      leftArm.userData.open = true;
+      leftArm.userData.step = -armTranslation.step;
+      rightArm.userData.step = armTranslation.step;
       break;
     case 69: //e
-      leftArm.userData.move = true;
-      leftArm.userData.open = false;
+      leftArm.userData.step = armTranslation.step;
+      rightArm.userData.step = -armTranslation.step;
       break;
 
     case 70: //f
-      head.userData.move = true;
-      head.userData.open = false;
+      head.userData.step = headRotation.step;
       break;
 
     case 82: //r
-      head.userData.move = true;
-      head.userData.open = true;
+      head.userData.step = -headRotation.step;
       break;
 
     case 87: // w
-      thights.userData.move = true;
-      thights.userData.open = true;
+      thights.userData.step = thightsRotation.step;
       break;
 
     case 83: // s
-      thights.userData.move = true;
-      thights.userData.open = false;
+      thights.userData.step = -thightsRotation.step;
       break;
 
     case 65: //a
-      foot.userData.move = true;
-      foot.userData.open = true;
+      foot.userData.step = footRotation.step;
       break;
 
     case 81: //q
-      foot.userData.move = true;
-      foot.userData.open = false;
+      foot.userData.step = -footRotation.step;
   }
 }
 
@@ -920,27 +977,26 @@ function onKeyUp(e) {
     case 40: //down
       trailer.userData.x = false;
       break;
+
     case 68: //d
-      leftArm.userData.move = false;
-      break;
     case 69: //e
-      leftArm.userData.move = false;
+      leftArm.userData.step = 0;
+      rightArm.userData.step = 0;
       break;
 
     case 70: //f
     case 82: //r
-      head.userData.move = false;
-      head.userData.move = false;
+      head.userData.step = 0;
       break;
 
     case 87: // w
     case 83: // s
-      thights.userData.move = false;
+      thights.userData.step = 0;
       break;
 
     case 65: //a
     case 81: //q
-      foot.userData.move = false;
+      foot.userData.step = 0;
       break;
   }
 }
