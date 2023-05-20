@@ -440,17 +440,17 @@ function createHead() {
 function createArms() {
   "use strict";
 
-  const arms = new THREE.Group();
+  const group = new THREE.Group();
 
   leftArm = createArm();
   // recursive cloning and mirroring
   rightArm = leftArm.clone(true);
   mirrorObject(rightArm, armValues, "X");
 
-  arms.add(leftArm);
-  arms.add(rightArm);
+  group.add(leftArm);
+  group.add(rightArm);
 
-  return arms;
+  return group;
 }
 
 function createArm() {
@@ -487,7 +487,6 @@ function createAbdomen() {
   const abdomen = createObject3D(abdomenValues);
 
   const waist = createWaist(waistValues);
-  setPosition(waist, waistValues);
 
   group.add(abdomen);
   group.add(waist);
@@ -509,6 +508,8 @@ function createWaist() {
   group.add(waist);
   group.add(thights);
 
+  setPosition(group, waistValues);
+
   return group;
 }
 
@@ -522,6 +523,10 @@ function createThights() {
   const leftThight = createThight();
   setPosition(leftThight, thightValues);
 
+  // recursive cloning and mirroring
+  const rightThight = leftThight.clone(true);
+  mirrorObject(rightThight, thightValues, "X");
+
   const footCube = createFoot();
 
   foot = new THREE.Group();
@@ -529,10 +534,6 @@ function createThights() {
   foot.add(footCube);
 
   changePivot(footCube, foot, -UNIT / 2, "Z");
-
-  // recursive cloning and mirroring
-  const rightThight = leftThight.clone(true);
-  mirrorObject(rightThight, thightValues, "X");
 
   group.add(leftThight);
   group.add(rightThight);
@@ -553,7 +554,6 @@ function createThight() {
   const thight = createObject3D(thightValues);
 
   const leg = createLeg();
-  setPosition(leg, legValues);
 
   group.add(thight);
   group.add(leg);
