@@ -924,13 +924,15 @@ function onKeyDown(e) {
         material.wireframe = !material.wireframe;
       });
       break;
+
     case 68: //d
-      leftArm.userData.step = -armTranslation.step;
-      rightArm.userData.step = armTranslation.step;
-      break;
-    case 69: //e
       leftArm.userData.step = armTranslation.step;
       rightArm.userData.step = -armTranslation.step;
+      break;
+
+    case 69: //e
+      leftArm.userData.step = -armTranslation.step;
+      rightArm.userData.step = armTranslation.step;
       break;
 
     case 70: //f
@@ -950,11 +952,12 @@ function onKeyDown(e) {
       break;
 
     case 65: //a
-      foot.userData.step = footRotation.step;
+      foot.userData.step = -footRotation.step;
       break;
 
     case 81: //q
-      foot.userData.step = -footRotation.step;
+      foot.userData.step = footRotation.step;
+      break;
   }
 }
 
