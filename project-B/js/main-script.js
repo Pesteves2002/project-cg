@@ -91,6 +91,11 @@ let materialValues = {
     wireframe: true,
   }),
 
+  trailerBox: new THREE.MeshBasicMaterial({
+    map: THREE.ImageUtils.loadTexture("imgs/obama.jpg"),
+    wireframe: true,
+  }),
+
   robot: new THREE.MeshBasicMaterial({
     color: 0xffff00,
     wireframe: true,
@@ -215,7 +220,7 @@ let trailerBoxValues = {
   relativeY: 0 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.trailer,
+  material: materialValues.trailerBox,
 };
 
 let trailerDepositValues = {
