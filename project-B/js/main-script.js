@@ -32,15 +32,15 @@ let cameraValues = [
 ];
 
 let trailerPosition = {
-  X: 800,
+  X: 100,
   Y: 0,
-  Z: 200,
+  Z: 100,
 };
 
 let robotPosition = {
-  X: 0,
+  X: 600,
   Y: 0,
-  Z: 0,
+  Z: 200,
 };
 
 let headRotation = {
@@ -126,7 +126,6 @@ let armValues = {
   relativeZ: -3 * UNIT,
   type: Primitives.CUBE,
   material: materialValues.robot,
-  positiveTranslations: [true, false],
 };
 
 let forearmValues = {
@@ -213,6 +212,8 @@ let trailerBoxValues = {
   relativeX: 0 * UNIT,
   relativeY: 0 * UNIT,
   relativeZ: 0 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.trailer,
 };
 
 let trailerDepositValues = {
@@ -222,17 +223,19 @@ let trailerDepositValues = {
   relativeX: 0 * UNIT,
   relativeY: -4 * UNIT,
   relativeZ: -4.5 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.trailer,
 };
 
 let trailerWheelsValues = {
-  radius: 1.5 * UNIT,
+  radiusTop: 1.5 * UNIT,
+  radiusBottom: 1.5 * UNIT,
   height: 1 * UNIT,
-  relativePositions: [
-    [3.5 * UNIT, -0.5 * UNIT, 3.5 * UNIT],
-    [3.5 * UNIT, -0.5 * UNIT, -3.5 * UNIT],
-    [-3.5 * UNIT, -0.5 * UNIT, 3.5 * UNIT],
-    [-3.5 * UNIT, -0.5 * UNIT, -3.5 * UNIT],
-  ],
+  relativeX: 3.5 * UNIT,
+  relativeY: -0.5 * UNIT,
+  relativeZ: 3.5 * UNIT,
+  type: Primitives.CYLINDER,
+  material: materialValues.tires,
 };
 
 let trailerPinValues = {
@@ -242,6 +245,8 @@ let trailerPinValues = {
   relativeX: 0 * UNIT,
   relativeY: -4 * UNIT,
   relativeZ: 10 * UNIT,
+  type: Primitives.CUBE,
+  material: materialValues.trailer,
 };
 
 /////////////////////
@@ -586,7 +591,6 @@ function createTrailer() {
   "use strict";
 
   trailer = createTrailerBox();
-
   trailer.position.set(trailerPosition.X, trailerPosition.Y, trailerPosition.Z);
 
   scene.add(trailer);
@@ -595,113 +599,86 @@ function createTrailer() {
 function createTrailerBox() {
   "use strict";
 
-  let wheelsWithDeposit = createTrailerDeposit();
-  let pin = createTrailerPin();
+  const group = new THREE.Group();
 
-  let geometry = new THREE.BoxGeometry(
-    trailerBoxValues.width,
-    trailerBoxValues.height,
-    trailerBoxValues.depth
-  );
+  const deposit = createTrailerDeposit();
+  const pin = createTrailerPin();
+  const trailerBox = createObject3D(trailerBoxValues);
+  setPosition(group, trailerBoxValues);
 
-  let mesh = new THREE.Mesh(geometry, materialValues.trailer);
-  mesh.position.set(
-    trailerBoxValues.relativeX,
-    trailerBoxValues.relativeY,
-    trailerBoxValues.relativeZ
-  );
+  group.add(deposit);
+  group.add(pin);
+  group.add(trailerBox);
 
-  let trailerBox = new THREE.Object3D();
-
-  trailerBox.add(mesh);
-  trailerBox.add(wheelsWithDeposit);
-  trailerBox.add(pin);
-
-  return trailerBox;
+  return group;
 }
 
 function createTrailerDeposit() {
   "use strict";
 
-  let wheels = createTrailerWheels();
-  wheels.position.set(
-    trailerDepositValues.relativeX,
-    trailerDepositValues.relativeY,
-    trailerDepositValues.relativeZ
-  );
+  const group = new THREE.Group();
 
-  let geometry = new THREE.BoxGeometry(
-    trailerDepositValues.width,
-    trailerDepositValues.height,
-    trailerDepositValues.depth
-  );
+  const wheels = createTrailerWheels();
 
-  let mesh = new THREE.Mesh(geometry, materialValues.trailer);
-  mesh.position.set(
-    trailerDepositValues.relativeX,
-    trailerDepositValues.relativeY,
-    trailerDepositValues.relativeZ
-  );
+  const deposit = createObject3D(trailerDepositValues);
 
-  let depositWithWheels = new THREE.Object3D();
+  group.add(wheels);
+  group.add(deposit);
 
-  depositWithWheels.add(wheels);
-  depositWithWheels.add(mesh);
-
-  return depositWithWheels;
+  setPosition(group, trailerDepositValues);
+  return group;
 }
 
 function createTrailerWheels() {
   "use strict";
 
-  let wheels = new THREE.Object3D();
+  const group = new THREE.Group();
 
-  trailerWheelsValues.relativePositions.forEach((relativePosition) => {
-    wheels.add(createTrailerWheel(relativePosition));
-  });
+  let wheels = new THREE.Group();
 
-  return wheels;
+  let wheel = createTrailerWheel();
+  wheels.add(wheel);
+
+  wheel = wheel.clone(true);
+  mirrorObject(wheel, trailerWheelsValues, "X");
+  wheels.add(wheel);
+
+  wheel = wheel.clone(true);
+  mirrorObject(wheel, trailerWheelsValues, "Z");
+  wheels.add(wheel);
+
+  wheel = wheel.clone(true);
+  wheel.position.set(
+    -trailerWheelsValues.relativeX,
+    trailerWheelsValues.relativeY,
+    -trailerWheelsValues.relativeZ
+  );
+  wheels.add(wheel);
+
+  group.add(wheels);
+
+  return group;
 }
 
-function createTrailerWheel(relativePosition) {
+function createTrailerWheel() {
   "use strict";
 
-  let geometry = new THREE.CylinderGeometry(
-    trailerWheelsValues.radius,
-    trailerWheelsValues.radius,
-    trailerWheelsValues.height
-  );
+  const wheel = createObject3D(trailerWheelsValues);
 
-  geometry.rotateZ(Math.PI / 2);
+  setPosition(wheel, trailerWheelsValues);
 
-  let mesh = new THREE.Mesh(geometry, materialValues.tires);
-  mesh.position.set(
-    relativePosition[0],
-    relativePosition[1],
-    relativePosition[2]
-  );
+  wheel.rotateZ(Math.PI / 2);
 
-  return mesh;
+  return wheel;
 }
 
 function createTrailerPin() {
   "use strict";
 
-  let geometry = new THREE.BoxGeometry(
-    trailerPinValues.width,
-    trailerPinValues.height,
-    trailerPinValues.depth
-  );
+  const trailerPin = createObject3D(trailerPinValues);
+  setPosition(trailerPin, trailerPinValues);
 
-  let mesh = new THREE.Mesh(geometry, materialValues.trailer);
-
-  mesh.position.set(
-    trailerPinValues.relativeX,
-    trailerPinValues.relativeY,
-    trailerPinValues.relativeZ
-  );
-
-  return mesh;
+  return trailerPin;
 }
 //////////////////////
 /* CHECK COLLISIONS */
@@ -750,7 +727,7 @@ function init() {
 
   createCameras();
 
-  currentCamera = cameras[2];
+  currentCamera = cameras[4];
 
   createRobot();
   createTrailer();
