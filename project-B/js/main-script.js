@@ -829,15 +829,15 @@ function animate() {
 
   translateTrailer();
 
-  //translateObject(leftArm, leftArmTranslation, "x");
-  //
-  //translateObject(rightArm, rightArmTranslation, "x");
-  //
-  //rotateObject(head, headRotation, "x");
-  //
-  //rotateObject(thights, thightsRotation, "x");
-  //
-  //rotateObject(foot, footRotation, "x");
+  translateObject(leftArm, leftArmTranslation, "x");
+
+  translateObject(rightArm, rightArmTranslation, "x");
+
+  rotateObject(head, headRotation, "x");
+
+  rotateObject(thights, thightsRotation, "x");
+
+  rotateObject(foot, footRotation, "x");
 
   render();
 
