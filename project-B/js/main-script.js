@@ -66,10 +66,16 @@ let trailerTranslation = {
   Z: 0.3 * UNIT,
 };
 
-let armTranslation = {
-  step: 0.1 * UNIT,
+const leftArmTranslation = {
+  step: -0.1 * UNIT,
   min: -2 * UNIT,
   max: 0 * UNIT,
+};
+
+let rightArmTranslation = {
+  step: 0.1 * UNIT,
+  min: 0 * UNIT,
+  max: 2 * UNIT,
 };
 
 let materialValues = {
@@ -774,6 +780,57 @@ function intializeAnimations() {
 /////////////////////
 /* ANIMATION CYCLE */
 /////////////////////
+function rotateObject(object, transformationValues, axis) {
+  if (
+    transformationValues.min <= object.userData.value &&
+    object.userData.value <= transformationValues.max
+  ) {
+    const auxValue = object.userData.value + object.userData.step;
+
+    if (
+      parseFloat(transformationValues.min) <= parseFloat(auxValue) &&
+      parseFloat(auxValue) <= parseFloat(transformationValues.max)
+    ) {
+      object.userData.value += object.userData.step;
+      switch (axis) {
+        case "x":
+          object.rotation.x += object.userData.step;
+          break;
+        case "y":
+          object.rotation.y += object.userData.step;
+          break;
+        case "z":
+          object.rotation.z += object.userData.step;
+      }
+    }
+  }
+}
+
+function translateObject(object, transformationValues, axis) {
+  if (
+    transformationValues.min <= object.userData.value &&
+    object.userData.value <= transformationValues.max
+  ) {
+    const auxValue = object.userData.value + object.userData.step;
+
+    if (
+      parseFloat(transformationValues.min) <= parseFloat(auxValue) &&
+      parseFloat(auxValue) <= parseFloat(transformationValues.max)
+    ) {
+      object.userData.value += object.userData.step;
+      switch (axis) {
+        case "x":
+          object.position.x += object.userData.step;
+          break;
+        case "y":
+          object.position.y += object.userData.step;
+          break;
+        case "z":
+          object.position.z += object.userData.step;
+      }
+    }
+  }
+}
 function animate() {
   "use strict";
 
@@ -786,81 +843,15 @@ function animate() {
     trailer.position.z += trailer.userData.zStep;
   }
 
-  if (
-    armTranslation.min <= leftArm.userData.value &&
-    leftArm.userData.value <= armTranslation.max
-  ) {
-    console.log(leftArm.userData.value);
-    auxValue = leftArm.userData.value + leftArm.userData.step;
+  translateObject(leftArm, leftArmTranslation, "x");
 
-    if (
-      parseFloat(armTranslation.min) <= parseFloat(auxValue) &&
-      parseFloat(auxValue) <= parseFloat(armTranslation.max)
-    ) {
-      leftArm.userData.value += leftArm.userData.step;
-      leftArm.position.x += leftArm.userData.step;
-    }
-  }
+  translateObject(rightArm, rightArmTranslation, "x");
 
-  if (
-    armTranslation.min <= rightArm.userData.value &&
-    rightArm.userData.value <= armTranslation.max
-  ) {
-    auxValue = rightArm.userData.value - rightArm.userData.step;
+  rotateObject(head, headRotation, "x");
 
-    if (
-      parseFloat(armTranslation.min) <= parseFloat(auxValue) &&
-      parseFloat(auxValue) <= parseFloat(armTranslation.max)
-    ) {
-      rightArm.userData.value -= rightArm.userData.step;
-      rightArm.position.x += rightArm.userData.step;
-    }
-  }
+  rotateObject(thights, thightsRotation, "x");
 
-  if (
-    headRotation.min <= head.userData.value &&
-    head.userData.value <= headRotation.max
-  ) {
-    auxValue = head.userData.value + head.userData.step;
-
-    if (
-      parseFloat(headRotation.min) <= parseFloat(auxValue) &&
-      parseFloat(auxValue) <= parseFloat(headRotation.max)
-    ) {
-      head.userData.value += head.userData.step;
-      head.rotation.x += head.userData.step;
-    }
-  }
-
-  if (
-    thightsRotation.min <= thights.userData.value &&
-    thights.userData.value <= thightsRotation.max
-  ) {
-    auxValue = thights.userData.value + thights.userData.step;
-
-    if (
-      parseFloat(thightsRotation.min) <= parseFloat(auxValue) &&
-      parseFloat(auxValue) <= parseFloat(thightsRotation.max)
-    ) {
-      thights.userData.value += thights.userData.step;
-      thights.rotation.x += thights.userData.step;
-    }
-  }
-
-  if (
-    footRotation.min <= foot.userData.value &&
-    foot.userData.value <= footRotation.max
-  ) {
-    auxValue = foot.userData.value + foot.userData.step;
-
-    if (
-      parseFloat(footRotation.min) <= parseFloat(auxValue) &&
-      parseFloat(auxValue) <= parseFloat(footRotation.max)
-    ) {
-      foot.userData.value += foot.userData.step;
-      foot.rotation.x += foot.userData.step;
-    }
-  }
+  rotateObject(foot, footRotation, "x");
 
   render();
 
@@ -926,13 +917,13 @@ function onKeyDown(e) {
       break;
 
     case 68: //d
-      leftArm.userData.step = armTranslation.step;
-      rightArm.userData.step = -armTranslation.step;
+      leftArm.userData.step = -leftArmTranslation.step;
+      rightArm.userData.step = -rightArmTranslation.step;
       break;
 
     case 69: //e
-      leftArm.userData.step = -armTranslation.step;
-      rightArm.userData.step = armTranslation.step;
+      leftArm.userData.step = leftArmTranslation.step;
+      rightArm.userData.step = rightArmTranslation.step;
       break;
 
     case 70: //f
