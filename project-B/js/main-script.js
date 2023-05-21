@@ -220,7 +220,7 @@ let waistWheelsValues = {
   radiusBottom: 1.5 * UNIT,
   height: 1 * UNIT,
   relativeX: 2 * UNIT,
-  relativeY: -3 * UNIT,
+  relativeY: -2.75 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CYLINDER,
   material: materialValues.tires,
