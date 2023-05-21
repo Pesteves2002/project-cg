@@ -826,26 +826,23 @@ function createTrailerWheels() {
 
   const group = new THREE.Group();
 
-  let wheels = new THREE.Group();
+  const wheels = new THREE.Group();
 
-  let wheel = createTrailerWheel();
+  const wheel = createTrailerWheel();
   wheels.add(wheel);
 
-  wheel = wheel.clone(true);
-  mirrorObject(wheel, "X");
-  wheels.add(wheel);
+  const wheel1 = wheel.clone(true);
+  mirrorObject(wheel1, "X");
+  wheels.add(wheel1);
 
-  wheel = wheel.clone(true);
-  mirrorObject(wheel, "Z");
-  wheels.add(wheel);
+  const wheel2 = wheel.clone(true);
+  mirrorObject(wheel2, "Z");
+  wheels.add(wheel2);
 
-  wheel = wheel.clone(true);
-  wheel.position.set(
-    -trailerWheelsValues.relativeX,
-    trailerWheelsValues.relativeY,
-    -trailerWheelsValues.relativeZ
-  );
-  wheels.add(wheel);
+  const wheel3 = wheel.clone(true);
+  mirrorObject(wheel3, "X");
+  mirrorObject(wheel3, "Z");
+  wheels.add(wheel3);
 
   group.add(wheels);
 
