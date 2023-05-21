@@ -171,6 +171,17 @@ let armValues = {
   material: materialValues.robot,
 };
 
+let tubeValues = {
+  radiusTop: 0.5 * UNIT,
+  radiusBottom: 0.5 * UNIT,
+  height: 6 * UNIT,
+  relativeX: 1 * UNIT,
+  relativeY: 3 * UNIT,
+  relativeZ: -1.5 * UNIT,
+  type: Primitives.CYLINDER,
+  material: materialValues.robot,
+};
+
 let forearmValues = {
   width: 2 * UNIT,
   depth: 4 * UNIT,
@@ -528,7 +539,7 @@ function createArms() {
   leftArm = createArm();
   // recursive cloning and mirroring
   rightArm = leftArm.clone(true);
-  mirrorObject(rightArm, "X");
+  mirrorObject(rightArm, "X", true);
 
   group.add(leftArm);
   group.add(rightArm);
@@ -543,12 +554,28 @@ function createArm() {
 
   const arm = createObject3D(armValues);
 
+  const tube = createTube();
+
   const forearm = createObject3D(forearmValues);
   setPosition(forearm, forearmValues);
 
   group.add(arm);
   group.add(forearm);
+  group.add(tube);
   setPosition(group, armValues);
+
+  return group;
+}
+
+function createTube() {
+  "use strict";
+
+  const group = new THREE.Group();
+
+  const tube = createObject3D(tubeValues);
+  setPosition(tube, tubeValues);
+
+  group.add(tube);
 
   return group;
 }
