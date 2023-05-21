@@ -67,7 +67,7 @@ let trailerPosition = {
 };
 
 let robotPosition = {
-  X: 400,
+  X: 127,
   Y: 0,
   Z: 200,
 };
@@ -109,9 +109,11 @@ let rightArmTranslation = {
   max: 2 * UNIT,
 };
 
+const loader = new THREE.TextureLoader();
+
 let materialValues = {
   tires: new THREE.MeshBasicMaterial({
-    color: 0x000000,
+    map: loader.load("imgs/tire.jpg"),
     wireframe: true,
   }),
 
@@ -121,7 +123,7 @@ let materialValues = {
   }),
 
   trailerBox: new THREE.MeshBasicMaterial({
-    map: THREE.ImageUtils.loadTexture("imgs/obama.jpg"),
+    map: loader.load("imgs/obama.jpg"),
     wireframe: true,
   }),
 
@@ -213,6 +215,17 @@ let waistValues = {
   material: materialValues.robot,
 };
 
+let waistWheelsValues = {
+  radiusTop: 1.5 * UNIT,
+  radiusBottom: 1.5 * UNIT,
+  height: 1 * UNIT,
+  relativeX: 2 * UNIT,
+  relativeY: -3 * UNIT,
+  relativeZ: 0 * UNIT,
+  type: Primitives.CYLINDER,
+  material: materialValues.tires,
+};
+
 let thightValues = {
   width: 2 * UNIT,
   depth: 2 * UNIT,
@@ -235,6 +248,17 @@ let legValues = {
   material: materialValues.robot,
 };
 
+let legWheelsValues = {
+  radiusTop: 1.5 * UNIT,
+  radiusBottom: 1.5 * UNIT,
+  height: 1 * UNIT,
+  relativeX: 2 * UNIT,
+  relativeY: 2 * UNIT,
+  relativeZ: 0.5 * UNIT,
+  type: Primitives.CYLINDER,
+  material: materialValues.tires,
+};
+
 let footValues = {
   width: 8 * UNIT,
   depth: 3 * UNIT,
@@ -247,7 +271,7 @@ let footValues = {
 };
 
 let trailerBoxValues = {
-  width: 8 * UNIT,
+  width: 9 * UNIT,
   depth: 24 * UNIT,
   height: 6 * UNIT,
   relativeX: 0 * UNIT,
@@ -258,7 +282,7 @@ let trailerBoxValues = {
 };
 
 let trailerDepositValues = {
-  width: 6 * UNIT,
+  width: 6.75 * UNIT,
   depth: 15 * UNIT,
   height: 2 * UNIT,
   relativeX: 0 * UNIT,
@@ -272,7 +296,7 @@ let trailerWheelsValues = {
   radiusTop: 1.5 * UNIT,
   radiusBottom: 1.5 * UNIT,
   height: 1 * UNIT,
-  relativeX: 3.5 * UNIT,
+  relativeX: 4 * UNIT,
   relativeY: -0.5 * UNIT,
   relativeZ: 3.5 * UNIT,
   type: Primitives.CYLINDER,
@@ -404,25 +428,30 @@ function setPosition(obj, objectValues) {
   );
 }
 
-function mirrorObject(obj, objectValues, axis) {
-  let x = objectValues.relativeX;
-  let y = objectValues.relativeY;
-  let z = objectValues.relativeZ;
+function mirrorObject(obj, axis, mirror = false) {
   switch (axis) {
     case "X":
-      x = -x;
+      obj.position.x = -obj.position.x;
+      if (mirror) {
+        obj.scale.x = -obj.scale.x;
+      }
       break;
     case "Y":
-      y = -y;
+      obj.position.y = -obj.position.y;
+      if (mirror) {
+        obj.scale.y = -obj.scale.y;
+      }
       break;
     case "Z":
-      z = -z;
+      obj.position.z = -obj.position.z;
+      if (mirror) {
+        obj.scale.z = -obj.scale.z;
+      }
       break;
     default:
       console.log("Invalid axis");
       break;
   }
-  obj.position.set(x, y, z);
 }
 
 function changePivot(obj, group, offset, axis) {
@@ -499,7 +528,7 @@ function createArms() {
   leftArm = createArm();
   // recursive cloning and mirroring
   rightArm = leftArm.clone(true);
-  mirrorObject(rightArm, armValues, "X");
+  mirrorObject(rightArm, "X");
 
   group.add(leftArm);
   group.add(rightArm);
@@ -555,14 +584,38 @@ function createWaist() {
 
   const group = new THREE.Group();
 
+  const wheel = createWaistWheels();
+  setPosition(wheel, waistWheelsValues);
+
+  const wheel2 = wheel.clone(true);
+  mirrorObject(wheel2, "X", true);
+
   const waist = createObject3D(waistValues);
 
   const thights = createThights();
 
+  group.add(wheel);
+  group.add(wheel2);
   group.add(waist);
   group.add(thights);
 
   setPosition(group, waistValues);
+
+  return group;
+}
+
+function createWaistWheels() {
+  "use strict";
+
+  const group = new THREE.Group();
+
+  const wheel = createObject3D(legWheelsValues);
+  setPosition(wheel, legWheelsValues);
+
+  wheel.rotation.x = Math.PI / 2;
+  wheel.rotation.z = Math.PI / 2;
+
+  group.add(wheel);
 
   return group;
 }
@@ -579,7 +632,7 @@ function createThights() {
 
   // recursive cloning and mirroring
   const rightThight = leftThight.clone(true);
-  mirrorObject(rightThight, thightValues, "X");
+  mirrorObject(rightThight, "X", true);
 
   const footCube = createFoot();
 
@@ -620,10 +673,33 @@ function createLeg() {
 
   const group = new THREE.Group();
 
+  const wheels = createRobotWheels();
+
   const leg = createObject3D(legValues);
 
+  group.add(wheels);
   group.add(leg);
   setPosition(group, legValues);
+
+  return group;
+}
+
+function createRobotWheels() {
+  "use strict";
+
+  const group = new THREE.Group();
+
+  const wheel = createObject3D(legWheelsValues);
+  setPosition(wheel, legWheelsValues);
+
+  wheel.rotation.x = Math.PI / 2;
+  wheel.rotation.z = Math.PI / 2;
+
+  const wheel2 = wheel.clone(true);
+  mirrorObject(wheel2, "Y");
+
+  group.add(wheel);
+  group.add(wheel2);
 
   return group;
 }
@@ -689,11 +765,11 @@ function createTrailerWheels() {
   wheels.add(wheel);
 
   wheel = wheel.clone(true);
-  mirrorObject(wheel, trailerWheelsValues, "X");
+  mirrorObject(wheel, "X");
   wheels.add(wheel);
 
   wheel = wheel.clone(true);
-  mirrorObject(wheel, trailerWheelsValues, "Z");
+  mirrorObject(wheel, "Z");
   wheels.add(wheel);
 
   wheel = wheel.clone(true);
