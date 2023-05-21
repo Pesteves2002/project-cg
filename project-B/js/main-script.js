@@ -150,13 +150,24 @@ let headValues = {
 };
 
 let eyesValues = {
-  width: 0.5 * UNIT,
-  depth: 0.5 * UNIT,
+  radiusBottom: 0.25 * UNIT,
+  radiusTop: 0.25 * UNIT,
   height: 0.5 * UNIT,
   relativeX: 0.5 * UNIT,
   relativeY: 1.5 * UNIT,
   relativeZ: 1 * UNIT,
-  type: Primitives.CUBE,
+  type: Primitives.CYLINDER,
+  material: materialValues.robot,
+};
+
+let hornsValues = {
+  radiusBottom: 0.25 * UNIT,
+  radiusTop: 0.25 * UNIT,
+  height: 4 * UNIT,
+  relativeX: 0.5 * UNIT,
+  relativeY: 4 * UNIT,
+  relativeZ: -0.75 * UNIT,
+  type: Primitives.CYLINDER,
   material: materialValues.robot,
 };
 
@@ -540,11 +551,19 @@ function createHead() {
   const eye2 = eye.clone(true);
   mirrorObject(eye2, "X", true);
 
+  const horn = createObject3D(hornsValues);
+  setPosition(horn, hornsValues);
+
+  const horn2 = horn.clone(true);
+  mirrorObject(horn2, "X", true);
+
   const headCube = createObject3D(headValues);
   setPosition(headCube, headValues);
 
   head.add(eye);
   head.add(eye2);
+  head.add(horn);
+  head.add(horn2);
   head.add(headCube);
 
   changePivot(headCube, head, headValues.height, "Y");
