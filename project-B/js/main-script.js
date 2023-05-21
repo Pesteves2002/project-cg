@@ -1027,14 +1027,14 @@ function resetSteps() {
 /////////////////////
 function rotateObject(object, transformationValues, axis) {
   if (
-    transformationValues.min <= object.userData.value &&
-    object.userData.value <= transformationValues.max
+    transformationValues.min < object.userData.value &&
+    object.userData.value < transformationValues.max
   ) {
     const auxValue = object.userData.value + object.userData.step;
 
     if (
-      parseFloat(transformationValues.min) <= parseFloat(auxValue) &&
-      parseFloat(auxValue) <= parseFloat(transformationValues.max)
+      parseFloat(transformationValues.min) < parseFloat(auxValue) &&
+      parseFloat(auxValue) < parseFloat(transformationValues.max)
     ) {
       object.userData.value += object.userData.step;
       switch (axis) {
