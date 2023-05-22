@@ -795,8 +795,6 @@ function animate() {
 
   rotateObject(foot, footRotation, "x");
 
-  checkIfRobot();
-
   render();
 
   requestAnimationFrame(animate);
@@ -863,35 +861,45 @@ function onKeyDown(e) {
     case 37: //left
       trailer.userData.zStep = trailerTranslation.stepZ;
       break;
+
     case 38: //up
       trailer.userData.xStep = -trailerTranslation.stepX;
       break;
+
     case 39: //right
       trailer.userData.zStep = -trailerTranslation.stepZ;
       break;
+
     case 40: //down
       trailer.userData.xStep = trailerTranslation.stepX;
       break;
+
     case 49: //1
       currentCamera = cameras[0];
       break;
+
     case 50: //2
       currentCamera = cameras[1];
       break;
+
     case 51: //3
       currentCamera = cameras[2];
       break;
+
     case 52: //4
       currentCamera = cameras[3];
       break;
+
     case 53: //5
       currentCamera = cameras[4];
       break;
+
     case 54: //6
       Object.values(materialValues).forEach((material) => {
         material.wireframe = !material.wireframe;
       });
       break;
+
     case 55: //7
       currentCamera = cameras[5];
       break;
@@ -943,6 +951,7 @@ function onKeyUp(e) {
     case 39: //right
       trailer.userData.zStep = 0;
       break;
+
     case 38: //up
     case 40: //down
       trailer.userData.xStep = 0;
