@@ -336,7 +336,7 @@ const trailerPinValues = {
   relativeY: -4 * UNIT,
   relativeZ: 10 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.trailer,
+  material: materialValues.trailer_silver,
 };
 
 const debugPoint = {
