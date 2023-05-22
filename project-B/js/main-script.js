@@ -717,11 +717,15 @@ function translateObject(object, translationValues, axis) {
 function translateTrailer() {
   trailer.userData.step = trailer.userData.xStep;
   translateObject(trailer, trailerTranslation, AXIS.X);
+  points.trailerMin.x += trailer.userData.xStep;
+  points.trailerMax.x += trailer.userData.xStep;
   debugPoints[0].position.x += trailer.userData.xStep;
   debugPoints[1].position.x += trailer.userData.xStep;
 
   trailer.userData.step = trailer.userData.zStep;
   translateObject(trailer, trailerTranslation, AXIS.Z);
+  points.trailerMin.z += trailer.userData.zStep;
+  points.trailerMax.z += trailer.userData.zStep;
   debugPoints[0].position.z += trailer.userData.zStep;
   debugPoints[1].position.z += trailer.userData.zStep;
 }
