@@ -40,6 +40,7 @@ const cameraValues = [
   [1000, 0, 0],
   [2000, 1000, 3000],
   [1000, 1000, 1000],
+  [500, 2000, 2000],
 ];
 
 const trailerPosition = {

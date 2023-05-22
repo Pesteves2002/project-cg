@@ -2,7 +2,7 @@
 /* GLOBAL VARIABLES */
 //////////////////////
 
-let camera, scene, renderer;
+let camera, scene, renderer, controls;
 
 let geometry, material, mesh;
 
@@ -42,6 +42,10 @@ function createCameras() {
     createOrtographicCamera(cameraValue);
   });
   createPrespectiveCamera(cameraValues[4]);
+  createPrespectiveCamera(cameraValues[5]);
+  controls = new THREE.OrbitControls(cameras[5], renderer.domElement);
+
+  controls.update();
 }
 
 function createPrespectiveCamera(cameraValue) {
@@ -889,6 +893,9 @@ function onKeyDown(e) {
       Object.values(materialValues).forEach((material) => {
         material.wireframe = !material.wireframe;
       });
+      break;
+    case 55: //7
+      currentCamera = cameras[5];
       break;
 
     case 68: //d
