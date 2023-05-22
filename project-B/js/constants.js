@@ -58,7 +58,7 @@ const cameraValues = [
 ];
 
 const trailerPosition = {
-  X: 100,
+  X: 10000,
   Y: -UNIT * 2,
   Z: 100,
 };
@@ -69,10 +69,12 @@ const robotPosition = {
   Z: 200,
 };
 
+const rotationUnit = Math.PI / 50;
+
 const headRotation = {
-  step: Math.PI / 100,
-  min: -Math.PI - Math.PI / 100,
-  max: Math.PI / 100,
+  step: rotationUnit,
+  min: -Math.PI,
+  max: 0,
 };
 
 const leftArmTranslation = {
@@ -88,15 +90,15 @@ const rightArmTranslation = {
 };
 
 const thighsRotation = {
-  step: Math.PI / 100,
-  min: -Math.PI / 100,
-  max: Math.PI / 2 + Math.PI / 100,
+  step: rotationUnit,
+  min: 0,
+  max: Math.PI / 2,
 };
 
 const footRotation = {
-  step: Math.PI / 100,
-  min: -Math.PI / 100,
-  max: Math.PI / 2 + Math.PI / 100,
+  step: rotationUnit,
+  min: 0,
+  max: Math.PI / 2,
 };
 
 const trailerTranslation = {
@@ -150,7 +152,7 @@ const headValues = {
   depth: 2 * UNIT,
   height: 2 * UNIT,
   relativeX: 0 * UNIT,
-  relativeY: 2 * UNIT,
+  relativeY: 1 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CUBE,
   material: materialValues.robot_blue,

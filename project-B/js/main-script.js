@@ -672,56 +672,70 @@ function resetSteps() {
 /////////////////////
 /* ANIMATION CYCLE */
 /////////////////////
-function rotateObject(object, transformationValues, axis) {
-  if (
-    transformationValues.min < object.userData.value &&
-    object.userData.value < transformationValues.max
-  ) {
-    const auxValue = object.userData.value + object.userData.step;
+function rotateObject(object, rotationValues, axis) {
+  const auxValue = object.userData.value + object.userData.step;
 
-    if (
-      parseFloat(transformationValues.min) < parseFloat(auxValue) &&
-      parseFloat(auxValue) < parseFloat(transformationValues.max)
-    ) {
-      object.userData.value += object.userData.step;
-      switch (axis) {
-        case AXIS.X:
-          object.rotation.x += object.userData.step;
-          break;
-        case AXIS.Y:
-          object.rotation.y += object.userData.step;
-          break;
-        case AXIS.Z:
-          object.rotation.z += object.userData.step;
-      }
-    }
+  if (!lessOrEqualThan(rotationValues.min, auxValue)) {
+    rotateAxis(object, rotationValues.min - object.userData.value, axis);
+    return;
   }
+
+  if (!lessOrEqualThan(auxValue, rotationValues.max)) {
+    rotateAxis(object, rotationValues.max - object.userData.value, axis);
+    return;
+  }
+
+  rotateAxis(object, object.userData.step, axis);
 }
 
-function translateObject(object, transformationValues, axis) {
-  if (
-    transformationValues.min <= object.userData.value &&
-    object.userData.value <= transformationValues.max
-  ) {
-    const auxValue = object.userData.value + object.userData.step;
-
-    if (
-      parseFloat(transformationValues.min) <= parseFloat(auxValue) &&
-      parseFloat(auxValue) <= parseFloat(transformationValues.max)
-    ) {
-      object.userData.value += object.userData.step;
-      switch (axis) {
-        case AXIS.X:
-          object.position.x += object.userData.step;
-          break;
-        case AXIS.Y:
-          object.position.y += object.userData.step;
-          break;
-        case AXIS.Z:
-          object.position.z += object.userData.step;
-      }
-    }
+function rotateAxis(object, step, axis) {
+  switch (axis) {
+    case AXIS.X:
+      object.rotation.x += step;
+      break;
+    case AXIS.Y:
+      object.rotation.y += step;
+      break;
+    case AXIS.Z:
+      object.rotation.z += step;
+      break;
+    default:
+      console.log("Invalid axis");
   }
+  object.userData.value += step;
+}
+
+function translateAxis(object, step, axis) {
+  switch (axis) {
+    case AXIS.X:
+      object.position.x += step;
+      break;
+    case AXIS.Y:
+      object.position.y += step;
+      break;
+    case AXIS.Z:
+      object.position.z += step;
+      break;
+    default:
+      console.log("Invalid axis");
+  }
+  object.userData.value += step;
+}
+
+function translateObject(object, translationValues, axis) {
+  const auxValue = object.userData.value + object.userData.step;
+
+  if (!lessOrEqualThan(translationValues.min, auxValue)) {
+    translateAxis(object, translationValues.min - object.userData.value, axis);
+    return;
+  }
+
+  if (!lessOrEqualThan(auxValue, translationValues.max)) {
+    translateAxis(object, translationValues.max - object.userData.value, axis);
+    return;
+  }
+
+  translateAxis(object, object.userData.step, axis);
 }
 
 function translateTrailer() {
@@ -781,8 +795,12 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-function greaterThan(a, b) {
-  return parseFloat(a) > parseFloat(b);
+function greaterOrEqualThan(a, b) {
+  return parseFloat(a) >= parseFloat(b);
+}
+
+function lessOrEqualThan(a, b) {
+  return parseFloat(a) <= parseFloat(b);
 }
 
 function checkIfRobot() {
