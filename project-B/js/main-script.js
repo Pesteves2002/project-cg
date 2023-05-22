@@ -604,29 +604,12 @@ function init() {
 }
 
 function initalizePoints() {
-  points.trailerMin.x = trailerPosition.X - trailerBoxValues.width / 2;
-  points.trailerMin.y = trailerPosition.Y - trailerBoxValues.height;
-  points.trailerMin.z = trailerPosition.Z - trailerBoxValues.depth / 2;
+  "use strict";
 
-  debugPositions(points.trailerMin);
-
-  points.trailerMax.x = trailerPosition.X + trailerBoxValues.width / 2;
-  points.trailerMax.y = trailerPosition.Y + trailerBoxValues.height / 2;
-  points.trailerMax.z = trailerPosition.Z + trailerBoxValues.depth / 2;
-
-  debugPositions(points.trailerMax);
-
-  points.truckMin.x = robotPosition.X - torsoValues.width / 2;
-  points.truckMin.y = robotPosition.Y - torsoValues.height * 1.8;
-  points.truckMin.z = robotPosition.Z - torsoValues.depth * 3.5;
-
-  debugPositions(points.truckMin);
-
-  points.truckMax.x = robotPosition.X + torsoValues.width / 2;
-  points.truckMax.y = robotPosition.Y + torsoValues.height / 2;
-  points.truckMax.z = robotPosition.Z + torsoValues.depth / 2;
-
-  debugPositions(points.truckMax);
+  Object.values(points).forEach((point) => {
+    debugPositions(point);
+    console.log(point);
+  });
 }
 
 function debugPositions(point) {

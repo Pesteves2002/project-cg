@@ -14,31 +14,6 @@ const AXIS = {
   Z: "z",
 };
 
-const points = {
-  truckMin: {
-    x: 0,
-    y: 0,
-    z: 0,
-  },
-  truckMax: {
-    x: 0,
-    y: 0,
-    z: 0,
-  },
-
-  trailerMin: {
-    x: 0,
-    y: 0,
-    z: 0,
-  },
-
-  trailerMax: {
-    x: 0,
-    y: 0,
-    z: 0,
-  },
-};
-
 const Primitives = {
   CUBE: "cube",
   CYLINDER: "cylinder",
@@ -362,4 +337,30 @@ const debugPoint = {
   height: 1 * UNIT,
   type: Primitives.CUBE,
   material: materialValues.debug,
+};
+
+const points = {
+  trailerMin: {
+    x: trailerPosition.X - trailerBoxValues.width / 2,
+    y: trailerPosition.Y - trailerBoxValues.height,
+    z: trailerPosition.Z - trailerBoxValues.depth / 2,
+  },
+
+  trailerMax: {
+    x: trailerPosition.X + trailerBoxValues.width / 2,
+    y: trailerPosition.Y + trailerBoxValues.height / 2,
+    z: trailerPosition.Z + trailerBoxValues.depth / 2,
+  },
+
+  truckMin: {
+    x: robotPosition.X - torsoValues.width / 2,
+    y: robotPosition.Y - torsoValues.height * 1.8,
+    z: robotPosition.Z - torsoValues.depth - legValues.width * 3.2,
+  },
+
+  truckMax: {
+    x: robotPosition.X + torsoValues.width / 2,
+    y: robotPosition.Y + torsoValues.height / 2,
+    z: robotPosition.Z + torsoValues.depth / 2,
+  },
 };
