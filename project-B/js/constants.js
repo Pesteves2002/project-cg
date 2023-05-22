@@ -2,6 +2,18 @@ const UNIT = 20;
 
 const backgroundColor = 0xa2bce0;
 
+const fov = 70;
+
+const minViewDistance = 1;
+
+const maxViewDistance = 10000;
+
+const AXIS = {
+  X: "x",
+  Y: "y",
+  Z: "z",
+};
+
 const points = {
   truckMin: {
     x: 0,
@@ -138,7 +150,7 @@ const headValues = {
   depth: 2 * UNIT,
   height: 2 * UNIT,
   relativeX: 0 * UNIT,
-  relativeY: 3 * UNIT,
+  relativeY: 2 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CUBE,
   material: materialValues.robot_blue,

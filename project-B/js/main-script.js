@@ -51,10 +51,10 @@ function createCameras() {
 function createPrespectiveCamera(cameraValue) {
   "use strict";
   camera = new THREE.PerspectiveCamera(
-    70,
+    fov,
     window.innerWidth / window.innerHeight,
-    1,
-    10000
+    minViewDistance,
+    maxViewDistance
   );
   camera.position.x = cameraValue[0];
   camera.position.y = cameraValue[1];
@@ -71,8 +71,8 @@ function createOrtographicCamera(cameraValue) {
     window.innerWidth / 2,
     window.innerHeight / 2,
     -window.innerHeight / 2,
-    1,
-    10000
+    minViewDistance,
+    maxViewDistance
   );
 
   camera.position.x = cameraValue[0];
@@ -129,42 +129,44 @@ function setPosition(obj, objectValues) {
 }
 
 function mirrorObject(obj, axis, mirror = false) {
+  const newObj = obj.clone(true);
   switch (axis) {
-    case "X":
-      obj.position.x = -obj.position.x;
+    case AXIS.X:
+      newObj.position.x = -obj.position.x;
       if (mirror) {
-        obj.scale.x = -obj.scale.x;
+        newObj.scale.x = -obj.scale.x;
       }
       break;
-    case "Y":
-      obj.position.y = -obj.position.y;
+    case AXIS.Y:
+      newObj.position.y = -obj.position.y;
       if (mirror) {
-        obj.scale.y = -obj.scale.y;
+        newObj.scale.y = -obj.scale.y;
       }
       break;
-    case "Z":
-      obj.position.z = -obj.position.z;
+    case AXIS.Z:
+      newObj.position.z = -obj.position.z;
       if (mirror) {
-        obj.scale.z = -obj.scale.z;
+        newObj.scale.z = -obj.scale.z;
       }
       break;
     default:
       console.log("Invalid axis");
       break;
   }
+  return newObj;
 }
 
 function changePivot(obj, group, offset, axis) {
   switch (axis) {
-    case "X":
+    case AXIS.X:
       obj.position.x -= offset;
       group.position.x += offset;
       break;
-    case "Y":
+    case AXIS.Y:
       obj.position.y -= offset;
       group.position.y += offset;
       break;
-    case "Z":
+    case AXIS.Z:
       obj.position.z -= offset;
       group.position.z += offset;
       break;
@@ -213,14 +215,12 @@ function createHead() {
   const eye = createObject3D(eyesValues);
   setPosition(eye, eyesValues);
 
-  const eye2 = eye.clone(true);
-  mirrorObject(eye2, "X", true);
+  const eye2 = mirrorObject(eye, AXIS.X, true);
 
   const horn = createObject3D(hornsValues);
   setPosition(horn, hornsValues);
 
-  const horn2 = horn.clone(true);
-  mirrorObject(horn2, "X", true);
+  const horn2 = mirrorObject(horn, AXIS.X, true);
 
   const headCube = createObject3D(headValues);
 
@@ -229,11 +229,11 @@ function createHead() {
   headCube.add(horn);
   headCube.add(horn2);
 
-  setPosition(headCube, headValues);
-
   head.add(headCube);
 
-  changePivot(headCube, head, headValues.height, "Y");
+  changePivot(headCube, head, headValues.height, AXIS.Y);
+
+  setPosition(headCube, headValues);
 
   return head;
 }
@@ -245,8 +245,7 @@ function createArms() {
 
   leftArm = createArm();
   // recursive cloning and mirroring
-  rightArm = leftArm.clone(true);
-  mirrorObject(rightArm, "X", true);
+  rightArm = mirrorObject(leftArm, AXIS.X, true);
 
   group.add(leftArm);
   group.add(rightArm);
@@ -261,7 +260,8 @@ function createArm() {
 
   const arm = createObject3D(armValues);
 
-  const tube = createTube();
+  const tube = createObject3D(tubeValues);
+  setPosition(tube, tubeValues);
 
   const forearm = createObject3D(forearmValues);
   setPosition(forearm, forearmValues);
@@ -271,19 +271,6 @@ function createArm() {
   group.add(tube);
 
   setPosition(group, armValues);
-
-  return group;
-}
-
-function createTube() {
-  "use strict";
-
-  const group = new THREE.Group();
-
-  const tube = createObject3D(tubeValues);
-  setPosition(tube, tubeValues);
-
-  group.add(tube);
 
   return group;
 }
@@ -321,8 +308,7 @@ function createWaist() {
 
   const wheel = createWaistWheels();
 
-  const wheel2 = wheel.clone(true);
-  mirrorObject(wheel2, "X", true);
+  const wheel2 = mirrorObject(wheel, AXIS.X, true);
 
   const waist = createObject3D(waistValues);
 
@@ -361,8 +347,7 @@ function createThighs() {
   setPosition(leftThigh, thighValues);
 
   // recursive cloning and mirroring
-  const rightThigh = leftThigh.clone(true);
-  mirrorObject(rightThigh, "X", true);
+  const rightThigh = mirrorObject(leftThigh, AXIS.X, true);
 
   const footCube = createFoot();
 
@@ -370,7 +355,7 @@ function createThighs() {
   setPosition(foot, footValues);
   foot.add(footCube);
 
-  changePivot(footCube, foot, -UNIT / 2, "Z");
+  changePivot(footCube, foot, -UNIT / 2, AXIS.Z);
 
   group.add(leftThigh);
   group.add(rightThigh);
@@ -378,7 +363,7 @@ function createThighs() {
 
   thighs.add(group);
 
-  changePivot(group, thighs, -UNIT / 2, "Y");
+  changePivot(group, thighs, -UNIT / 2, AXIS.Y);
 
   return thighs;
 }
@@ -409,6 +394,7 @@ function createLeg() {
 
   group.add(wheels);
   group.add(leg);
+
   setPosition(group, legValues);
 
   return group;
@@ -425,8 +411,7 @@ function createRobotWheels() {
   wheel.rotation.x = Math.PI / 2;
   wheel.rotation.z = Math.PI / 2;
 
-  const wheel2 = wheel.clone(true);
-  mirrorObject(wheel2, "Y");
+  const wheel2 = mirrorObject(wheel, AXIS.Y, true);
 
   group.add(wheel);
   group.add(wheel2);
@@ -459,11 +444,12 @@ function createTrailerBox() {
   const deposit = createTrailerDeposit();
   const pin = createTrailerPin();
   const trailerBox = createObject3D(trailerBoxValues);
-  setPosition(group, trailerBoxValues);
 
   group.add(deposit);
   group.add(pin);
   group.add(trailerBox);
+
+  setPosition(group, trailerBoxValues);
 
   return group;
 }
@@ -481,6 +467,7 @@ function createTrailerDeposit() {
   group.add(deposit);
 
   setPosition(group, trailerDepositValues);
+
   return group;
 }
 
@@ -489,25 +476,19 @@ function createTrailerWheels() {
 
   const group = new THREE.Group();
 
-  const wheels = new THREE.Group();
-
   const wheel = createTrailerWheel();
-  wheels.add(wheel);
 
-  const wheel1 = wheel.clone(true);
-  mirrorObject(wheel1, "X");
-  wheels.add(wheel1);
+  const wheel1 = mirrorObject(wheel, AXIS.X);
 
-  const wheel2 = wheel.clone(true);
-  mirrorObject(wheel2, "Z");
-  wheels.add(wheel2);
+  const wheel2 = mirrorObject(wheel, AXIS.Z);
 
-  const wheel3 = wheel.clone(true);
-  mirrorObject(wheel3, "X");
-  mirrorObject(wheel3, "Z");
-  wheels.add(wheel3);
+  let wheel3 = mirrorObject(wheel, AXIS.X);
+  wheel3 = mirrorObject(wheel3, AXIS.Z);
 
-  group.add(wheels);
+  group.add(wheel);
+  group.add(wheel1);
+  group.add(wheel2);
+  group.add(wheel3);
 
   return group;
 }
@@ -517,9 +498,9 @@ function createTrailerWheel() {
 
   const wheel = createObject3D(trailerWheelsValues);
 
-  setPosition(wheel, trailerWheelsValues);
-
   wheel.rotateZ(Math.PI / 2);
+
+  setPosition(wheel, trailerWheelsValues);
 
   return wheel;
 }
@@ -704,13 +685,13 @@ function rotateObject(object, transformationValues, axis) {
     ) {
       object.userData.value += object.userData.step;
       switch (axis) {
-        case "x":
+        case AXIS.X:
           object.rotation.x += object.userData.step;
           break;
-        case "y":
+        case AXIS.Y:
           object.rotation.y += object.userData.step;
           break;
-        case "z":
+        case AXIS.Z:
           object.rotation.z += object.userData.step;
       }
     }
@@ -730,13 +711,13 @@ function translateObject(object, transformationValues, axis) {
     ) {
       object.userData.value += object.userData.step;
       switch (axis) {
-        case "x":
+        case AXIS.X:
           object.position.x += object.userData.step;
           break;
-        case "y":
+        case AXIS.Y:
           object.position.y += object.userData.step;
           break;
-        case "z":
+        case AXIS.Z:
           object.position.z += object.userData.step;
       }
     }
@@ -745,7 +726,7 @@ function translateObject(object, transformationValues, axis) {
 
 function translateTrailer() {
   trailer.userData.step = trailer.userData.xStep;
-  translateObject(trailer, trailerTranslation, "x");
+  translateObject(trailer, trailerTranslation, AXIS.X);
   points.trailerMin.x += trailer.userData.xStep;
   points.trailerMax.x += trailer.userData.xStep;
 
@@ -762,7 +743,7 @@ function translateTrailer() {
   );
 
   trailer.userData.step = trailer.userData.zStep;
-  translateObject(trailer, trailerTranslation, "z");
+  translateObject(trailer, trailerTranslation, AXIS.Z);
   points.trailerMin.z += trailer.userData.zStep;
   points.trailerMax.z += trailer.userData.zStep;
 
@@ -785,19 +766,23 @@ function animate() {
 
   translateTrailer();
 
-  translateObject(leftArm, leftArmTranslation, "x");
+  translateObject(leftArm, leftArmTranslation, AXIS.X);
 
-  translateObject(rightArm, rightArmTranslation, "x");
+  translateObject(rightArm, rightArmTranslation, AXIS.X);
 
-  rotateObject(head, headRotation, "x");
+  rotateObject(head, headRotation, AXIS.X);
 
-  rotateObject(thighs, thighsRotation, "x");
+  rotateObject(thighs, thighsRotation, AXIS.X);
 
-  rotateObject(foot, footRotation, "x");
+  rotateObject(foot, footRotation, AXIS.X);
 
   render();
 
   requestAnimationFrame(animate);
+}
+
+function greaterThan(a, b) {
+  return parseFloat(a) > parseFloat(b);
 }
 
 function checkIfRobot() {
