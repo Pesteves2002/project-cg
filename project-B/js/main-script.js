@@ -124,27 +124,27 @@ const materialValues = {
   }),
 
   trailer_blue: new THREE.MeshBasicMaterial({
-    color: 0x0047AB,
+    color: 0x0047ab,
     wireframe: true,
   }),
 
   trailer_silver: new THREE.MeshBasicMaterial({
-    color: 0xD3D3D3,
+    color: 0xd3d3d3,
     wireframe: true,
   }),
 
   robot_red: new THREE.MeshBasicMaterial({
-    color: 0xD92121,
+    color: 0xd92121,
     wireframe: true,
   }),
 
   robot_blue: new THREE.MeshBasicMaterial({
-    color: 0x0047AB,
+    color: 0x0047ab,
     wireframe: true,
   }),
 
   robot_silver: new THREE.MeshBasicMaterial({
-    color: 0xD3D3D3,
+    color: 0xd3d3d3,
     wireframe: true,
   }),
 
