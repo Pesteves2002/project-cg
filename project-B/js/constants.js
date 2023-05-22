@@ -58,7 +58,7 @@ const cameraValues = [
 ];
 
 const trailerPosition = {
-  X: 10000,
+  X: 100,
   Y: -UNIT * 2,
   Z: 100,
 };

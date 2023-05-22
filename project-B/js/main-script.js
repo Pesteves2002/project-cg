@@ -8,8 +8,6 @@ let geometry, material, mesh;
 
 let trailer, robot, head, leftArm, rightArm, thighs, foot;
 
-let isTruckMode;
-
 let transformation;
 
 const cameras = [];
@@ -557,9 +555,7 @@ function update() {
 
   // ANIMATE PARA AQUI
 
-  checkIfRobot();
-
-  if (!isTruckMode && checkCollisions() && !transformation) {
+  if (checkIfTruck() && checkCollisions() && !transformation) {
     transformation = true;
     handleCollisions();
   }
@@ -597,8 +593,6 @@ function init() {
   intializeAnimations();
 
   transformation = false;
-
-  isTruckMode = false;
 
   initalizePoints();
 
@@ -803,38 +797,19 @@ function lessOrEqualThan(a, b) {
   return parseFloat(a) <= parseFloat(b);
 }
 
-function checkIfRobot() {
+function equal(a, b) {
+  return parseFloat(a) == parseFloat(b);
+}
+
+function checkIfTruck() {
   "use strict";
 
-  isTruckMode = false;
-
-  if (
-    parseFloat(head.userData.value) >
-    parseFloat(headRotation.min) + Math.PI / 100
-  ) {
-    isTruckMode = true;
-    return;
-  }
-
-  if (parseFloat(leftArm.userData.value) > parseFloat(leftArmTranslation.min)) {
-    isTruckMode = true;
-    return;
-  }
-
-  if (
-    parseFloat(thighs.userData.value) <
-    parseFloat(thighsRotation.max) - Math.PI / 100
-  ) {
-    isTruckMode = true;
-    return;
-  }
-
-  if (
-    parseFloat(foot.userData.value) <
-    parseFloat(footRotation.max) - Math.PI / 100
-  ) {
-    isTruckMode = true;
-  }
+  return (
+    equal(head.userData.value, headRotation.min) &&
+    equal(leftArm.userData.value, leftArmTranslation.min) &&
+    equal(thighs.userData.value, thighsRotation.max) &&
+    equal(foot.userData.value, footRotation.max)
+  );
 }
 ////////////////////////////
 /* RESIZE WINDOW CALLBACK */
