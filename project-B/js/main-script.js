@@ -10,21 +10,17 @@ let trailer, robot, head, leftArm, rightArm, thights, foot;
 
 let isTruckMode;
 
-let robotPiecesMin = [head, leftArm];
-
-let robotPiecesMax = [thights, foot];
-
 let transformation;
 
-let cameras = [];
+const cameras = [];
 
 let currentCamera;
 
-let debugPoints = [];
+const debugPoints = [];
 
-let UNIT = 20;
+const UNIT = 20;
 
-let points = {
+const points = {
   truckMin: {
     x: 0,
     y: 0,
@@ -58,7 +54,7 @@ const Primitives = {
 // Green Y HEIGHT
 // BLUE Z DEPTH
 
-let cameraValues = [
+const cameraValues = [
   [0, 1000, 0],
   [0, 0, 1000],
   [1000, 0, 0],
@@ -66,19 +62,19 @@ let cameraValues = [
   [1000, 1000, 1000],
 ];
 
-let trailerPosition = {
+const trailerPosition = {
   X: 100,
   Y: -UNIT * 2,
   Z: 100,
 };
 
-let robotPosition = {
+const robotPosition = {
   X: 127,
   Y: 0,
   Z: 200,
 };
 
-let headRotation = {
+const headRotation = {
   step: Math.PI / 100,
   min: -Math.PI - Math.PI / 100,
   max: Math.PI / 100,
@@ -90,29 +86,29 @@ const leftArmTranslation = {
   max: 0 * UNIT,
 };
 
-let rightArmTranslation = {
+const rightArmTranslation = {
   step: 0.1 * UNIT,
   min: 0 * UNIT,
   max: 2 * UNIT,
 };
 
-let thightsRotation = {
+const thightsRotation = {
   step: Math.PI / 100,
   min: -Math.PI / 100,
   max: Math.PI / 2 + Math.PI / 100,
 };
 
-let footRotation = {
+const footRotation = {
   step: Math.PI / 100,
   min: -Math.PI / 100,
   max: Math.PI / 2 + Math.PI / 100,
 };
 
-let robotPiecesTransformationsMin = [headRotation, leftArmTranslation];
+const robotPiecesTransformationsMin = [headRotation, leftArmTranslation];
 
-let robotPiecesTransformationsMax = [thightsRotation, footRotation];
+const robotPiecesTransformationsMax = [thightsRotation, footRotation];
 
-let trailerTranslation = {
+const trailerTranslation = {
   stepX: 0.3 * UNIT,
   stepZ: 0.3 * UNIT,
   min: -1000 * UNIT,
@@ -121,7 +117,7 @@ let trailerTranslation = {
 
 const loader = new THREE.TextureLoader();
 
-let materialValues = {
+const materialValues = {
   tires: new THREE.MeshBasicMaterial({
     map: loader.load("imgs/tire.jpg"),
     wireframe: true,
@@ -148,7 +144,7 @@ let materialValues = {
   }),
 };
 
-let headValues = {
+const headValues = {
   width: 2 * UNIT,
   depth: 2 * UNIT,
   height: 2 * UNIT,
@@ -159,7 +155,7 @@ let headValues = {
   material: materialValues.robot,
 };
 
-let eyesValues = {
+const eyesValues = {
   radiusBottom: 0.25 * UNIT,
   radiusTop: 0.25 * UNIT,
   height: 0.5 * UNIT,
@@ -170,7 +166,7 @@ let eyesValues = {
   material: materialValues.robot,
 };
 
-let hornsValues = {
+const hornsValues = {
   radiusBottom: 0.25 * UNIT,
   radiusTop: 0.25 * UNIT,
   height: 4 * UNIT,
@@ -181,7 +177,7 @@ let hornsValues = {
   material: materialValues.robot,
 };
 
-let torsoValues = {
+const torsoValues = {
   width: 8 * UNIT,
   depth: 4 * UNIT,
   height: 4 * UNIT,
@@ -192,7 +188,7 @@ let torsoValues = {
   material: materialValues.robot,
 };
 
-let armValues = {
+const armValues = {
   width: 2 * UNIT,
   depth: 2 * UNIT,
   height: 6 * UNIT,
@@ -203,7 +199,7 @@ let armValues = {
   material: materialValues.robot,
 };
 
-let tubeValues = {
+const tubeValues = {
   radiusTop: 0.5 * UNIT,
   radiusBottom: 0.5 * UNIT,
   height: 6 * UNIT,
@@ -214,7 +210,7 @@ let tubeValues = {
   material: materialValues.robot,
 };
 
-let forearmValues = {
+const forearmValues = {
   width: 2 * UNIT,
   depth: 4 * UNIT,
   height: 2 * UNIT,
@@ -225,7 +221,7 @@ let forearmValues = {
   material: materialValues.robot,
 };
 
-let backValues = {
+const backValues = {
   width: 4 * UNIT,
   depth: 2 * UNIT,
   height: 4 * UNIT,
@@ -236,7 +232,7 @@ let backValues = {
   material: materialValues.robot,
 };
 
-let abdomenValues = {
+const abdomenValues = {
   width: 4 * UNIT,
   depth: 3 * UNIT,
   height: 2 * UNIT,
@@ -247,7 +243,7 @@ let abdomenValues = {
   material: materialValues.robot,
 };
 
-let waistValues = {
+const waistValues = {
   width: 6 * UNIT,
   depth: 2 * UNIT,
   height: 3 * UNIT,
@@ -258,7 +254,7 @@ let waistValues = {
   material: materialValues.robot,
 };
 
-let waistWheelsValues = {
+const waistWheelsValues = {
   radiusTop: 1.5 * UNIT,
   radiusBottom: 1.5 * UNIT,
   height: 1 * UNIT,
@@ -269,7 +265,7 @@ let waistWheelsValues = {
   material: materialValues.tires,
 };
 
-let thightValues = {
+const thightValues = {
   width: 2 * UNIT,
   depth: 2 * UNIT,
   height: 3 * UNIT,
@@ -280,7 +276,7 @@ let thightValues = {
   material: materialValues.robot,
 };
 
-let legValues = {
+const legValues = {
   width: 3 * UNIT,
   depth: 2 * UNIT,
   height: 7 * UNIT,
@@ -291,7 +287,7 @@ let legValues = {
   material: materialValues.robot,
 };
 
-let legWheelsValues = {
+const legWheelsValues = {
   radiusTop: 1.5 * UNIT,
   radiusBottom: 1.5 * UNIT,
   height: 1 * UNIT,
@@ -302,7 +298,7 @@ let legWheelsValues = {
   material: materialValues.tires,
 };
 
-let footValues = {
+const footValues = {
   width: 8 * UNIT,
   depth: 3 * UNIT,
   height: 2 * UNIT,
@@ -313,7 +309,7 @@ let footValues = {
   material: materialValues.robot,
 };
 
-let trailerBoxValues = {
+const trailerBoxValues = {
   width: 9 * UNIT,
   depth: 24 * UNIT,
   height: 6 * UNIT,
@@ -324,7 +320,7 @@ let trailerBoxValues = {
   material: materialValues.trailerBox,
 };
 
-let trailerDepositValues = {
+const trailerDepositValues = {
   width: 6.75 * UNIT,
   depth: 15 * UNIT,
   height: 2 * UNIT,
@@ -335,7 +331,7 @@ let trailerDepositValues = {
   material: materialValues.trailer,
 };
 
-let trailerWheelsValues = {
+const trailerWheelsValues = {
   radiusTop: 1.5 * UNIT,
   radiusBottom: 1.5 * UNIT,
   height: 1 * UNIT,
@@ -346,7 +342,7 @@ let trailerWheelsValues = {
   material: materialValues.tires,
 };
 
-let trailerPinValues = {
+const trailerPinValues = {
   width: 2 * UNIT,
   depth: 1 * UNIT,
   height: 2 * UNIT,
@@ -357,7 +353,7 @@ let trailerPinValues = {
   material: materialValues.trailer,
 };
 
-let debugPoint = {
+const debugPoint = {
   width: 1 * UNIT,
   depth: 1 * UNIT,
   height: 1 * UNIT,
@@ -925,7 +921,6 @@ function update() {
 
   if (!isTruckMode && checkCollisions() && !transformation) {
     transformation = true;
-    console.log("COLLISION");
     handleCollisions();
   }
 }
@@ -1152,8 +1147,6 @@ function checkIfRobot() {
   "use strict";
 
   isTruckMode = false;
-
-  console.log(head.userData.value, headRotation.min);
 
   if (
     parseFloat(head.userData.value) >
