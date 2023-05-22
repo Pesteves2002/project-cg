@@ -6,7 +6,7 @@ let camera, scene, renderer, controls;
 
 let geometry, material, mesh;
 
-let trailer, robot, head, leftArm, rightArm, thights, foot;
+let trailer, robot, head, leftArm, rightArm, thighs, foot;
 
 let isTruckMode;
 
@@ -326,12 +326,12 @@ function createWaist() {
 
   const waist = createObject3D(waistValues);
 
-  const thights = createThights();
+  const thighs = createThighs();
 
   group.add(wheel);
   group.add(wheel2);
   group.add(waist);
-  group.add(thights);
+  group.add(thighs);
 
   setPosition(group, waistValues);
 
@@ -341,32 +341,28 @@ function createWaist() {
 function createWaistWheels() {
   "use strict";
 
-  const group = new THREE.Group();
-
   const wheel = createObject3D(waistWheelsValues);
   setPosition(wheel, waistWheelsValues);
 
   wheel.rotation.x = Math.PI / 2;
   wheel.rotation.z = Math.PI / 2;
 
-  group.add(wheel);
-
-  return group;
+  return wheel;
 }
 
-function createThights() {
+function createThighs() {
   "use strict";
 
-  thights = new THREE.Group();
+  thighs = new THREE.Group();
 
   const group = new THREE.Group();
 
-  const leftThight = createThight();
-  setPosition(leftThight, thightValues);
+  const leftThigh = createThigh();
+  setPosition(leftThigh, thighValues);
 
   // recursive cloning and mirroring
-  const rightThight = leftThight.clone(true);
-  mirrorObject(rightThight, "X", true);
+  const rightThigh = leftThigh.clone(true);
+  mirrorObject(rightThigh, "X", true);
 
   const footCube = createFoot();
 
@@ -376,27 +372,27 @@ function createThights() {
 
   changePivot(footCube, foot, -UNIT / 2, "Z");
 
-  group.add(leftThight);
-  group.add(rightThight);
+  group.add(leftThigh);
+  group.add(rightThigh);
   group.add(foot);
 
-  thights.add(group);
+  thighs.add(group);
 
-  changePivot(group, thights, -UNIT / 2, "Y");
+  changePivot(group, thighs, -UNIT / 2, "Y");
 
-  return thights;
+  return thighs;
 }
 
-function createThight() {
+function createThigh() {
   "use strict";
 
   const group = new THREE.Group();
 
-  const thight = createObject3D(thightValues);
+  const thigh = createObject3D(thighValues);
 
   const leg = createLeg();
 
-  group.add(thight);
+  group.add(thigh);
   group.add(leg);
 
   return group;
@@ -673,7 +669,7 @@ function intializeAnimations() {
   head.userData.value = 0;
   leftArm.userData.value = 0;
   rightArm.userData.value = 0;
-  thights.userData.value = 0;
+  thighs.userData.value = 0;
   foot.userData.value = 0;
   trailer.userData.value = 0;
 
@@ -686,7 +682,7 @@ function resetSteps() {
   head.userData.step = 0;
   leftArm.userData.step = 0;
   rightArm.userData.step = 0;
-  thights.userData.step = 0;
+  thighs.userData.step = 0;
   foot.userData.step = 0;
   trailer.userData.xStep = 0;
   trailer.userData.zStep = 0;
@@ -795,7 +791,7 @@ function animate() {
 
   rotateObject(head, headRotation, "x");
 
-  rotateObject(thights, thightsRotation, "x");
+  rotateObject(thighs, thighsRotation, "x");
 
   rotateObject(foot, footRotation, "x");
 
@@ -825,8 +821,8 @@ function checkIfRobot() {
   }
 
   if (
-    parseFloat(thights.userData.value) <
-    parseFloat(thightsRotation.max) - Math.PI / 100
+    parseFloat(thighs.userData.value) <
+    parseFloat(thighsRotation.max) - Math.PI / 100
   ) {
     isTruckMode = true;
     return;
@@ -919,11 +915,11 @@ function onKeyDown(e) {
       break;
 
     case 87: // w
-      thights.userData.step = thightsRotation.step;
+      thighs.userData.step = thighsRotation.step;
       break;
 
     case 83: // s
-      thights.userData.step = -thightsRotation.step;
+      thighs.userData.step = -thighsRotation.step;
       break;
 
     case 65: //a
@@ -965,7 +961,7 @@ function onKeyUp(e) {
 
     case 87: // w
     case 83: // s
-      thights.userData.step = 0;
+      thighs.userData.step = 0;
       break;
 
     case 65: //a

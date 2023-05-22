@@ -75,7 +75,7 @@ const rightArmTranslation = {
   max: 2 * UNIT,
 };
 
-const thightsRotation = {
+const thighsRotation = {
   step: Math.PI / 100,
   min: -Math.PI / 100,
   max: Math.PI / 2 + Math.PI / 100,
@@ -254,7 +254,7 @@ const waistWheelsValues = {
   material: materialValues.tires,
 };
 
-const thightValues = {
+const thighValues = {
   width: 2 * UNIT,
   depth: 2 * UNIT,
   height: 3 * UNIT,
