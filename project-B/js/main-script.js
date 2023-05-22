@@ -269,6 +269,7 @@ function createArm() {
   group.add(arm);
   group.add(forearm);
   group.add(tube);
+
   setPosition(group, armValues);
 
   return group;
@@ -303,7 +304,7 @@ function createAbdomen() {
 
   const abdomen = createObject3D(abdomenValues);
 
-  const waist = createWaist(waistValues);
+  const waist = createWaist();
 
   group.add(abdomen);
   group.add(waist);
@@ -319,7 +320,6 @@ function createWaist() {
   const group = new THREE.Group();
 
   const wheel = createWaistWheels();
-  setPosition(wheel, waistWheelsValues);
 
   const wheel2 = wheel.clone(true);
   mirrorObject(wheel2, "X", true);
@@ -343,8 +343,8 @@ function createWaistWheels() {
 
   const group = new THREE.Group();
 
-  const wheel = createObject3D(legWheelsValues);
-  setPosition(wheel, legWheelsValues);
+  const wheel = createObject3D(waistWheelsValues);
+  setPosition(wheel, waistWheelsValues);
 
   wheel.rotation.x = Math.PI / 2;
   wheel.rotation.z = Math.PI / 2;

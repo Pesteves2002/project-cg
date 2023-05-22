@@ -233,8 +233,8 @@ const abdomenValues = {
 };
 
 const waistValues = {
-  width: 6 * UNIT,
-  depth: 2 * UNIT,
+  width: 6.5 * UNIT,
+  depth: 3 * UNIT,
   height: 3 * UNIT,
   relativeX: 0 * UNIT,
   relativeY: -2.5 * UNIT,
@@ -247,8 +247,8 @@ const waistWheelsValues = {
   radiusTop: 1.5 * UNIT,
   radiusBottom: 1.5 * UNIT,
   height: 1 * UNIT,
-  relativeX: 2 * UNIT,
-  relativeY: -2.75 * UNIT,
+  relativeX: 4 * UNIT,
+  relativeY: -1 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CYLINDER,
   material: materialValues.tires,
