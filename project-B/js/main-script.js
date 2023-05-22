@@ -8,6 +8,12 @@ let geometry, material, mesh;
 
 let trailer, robot, head, leftArm, rightArm, thights, foot;
 
+let isTruckMode;
+
+let robotPiecesMin = [head, leftArm];
+
+let robotPiecesMax = [thights, foot];
+
 let transformation;
 
 let cameras = [];
@@ -78,6 +84,18 @@ let headRotation = {
   max: Math.PI / 100,
 };
 
+const leftArmTranslation = {
+  step: -0.1 * UNIT,
+  min: -2 * UNIT,
+  max: 0 * UNIT,
+};
+
+let rightArmTranslation = {
+  step: 0.1 * UNIT,
+  min: 0 * UNIT,
+  max: 2 * UNIT,
+};
+
 let thightsRotation = {
   step: Math.PI / 100,
   min: -Math.PI / 100,
@@ -90,23 +108,15 @@ let footRotation = {
   max: Math.PI / 2 + Math.PI / 100,
 };
 
+let robotPiecesTransformationsMin = [headRotation, leftArmTranslation];
+
+let robotPiecesTransformationsMax = [thightsRotation, footRotation];
+
 let trailerTranslation = {
   stepX: 0.3 * UNIT,
   stepZ: 0.3 * UNIT,
   min: -1000 * UNIT,
   max: 1000 * UNIT,
-};
-
-const leftArmTranslation = {
-  step: -0.1 * UNIT,
-  min: -2 * UNIT,
-  max: 0 * UNIT,
-};
-
-let rightArmTranslation = {
-  step: 0.1 * UNIT,
-  min: 0 * UNIT,
-  max: 2 * UNIT,
 };
 
 const loader = new THREE.TextureLoader();
@@ -494,12 +504,10 @@ function changePivot(obj, group, offset, axis) {
       group.position.x += offset;
       break;
     case "Y":
-      y = offset;
       obj.position.y -= offset;
       group.position.y += offset;
       break;
     case "Z":
-      z = offset;
       obj.position.z -= offset;
       group.position.z += offset;
       break;
@@ -913,7 +921,9 @@ function update() {
 
   // ANIMATE PARA AQUI
 
-  if (checkCollisions() && !transformation) {
+  checkIfRobot();
+
+  if (!isTruckMode && checkCollisions() && !transformation) {
     transformation = true;
     console.log("COLLISION");
     handleCollisions();
@@ -952,6 +962,8 @@ function init() {
   intializeAnimations();
 
   transformation = false;
+
+  isTruckMode = false;
 
   initalizePoints();
 
@@ -1129,11 +1141,48 @@ function animate() {
 
   rotateObject(foot, footRotation, "x");
 
+  checkIfRobot();
+
   render();
 
   requestAnimationFrame(animate);
 }
 
+function checkIfRobot() {
+  "use strict";
+
+  isTruckMode = false;
+
+  console.log(head.userData.value, headRotation.min);
+
+  if (
+    parseFloat(head.userData.value) >
+    parseFloat(headRotation.min) + Math.PI / 100
+  ) {
+    isTruckMode = true;
+    return;
+  }
+
+  if (parseFloat(leftArm.userData.value) > parseFloat(leftArmTranslation.min)) {
+    isTruckMode = true;
+    return;
+  }
+
+  if (
+    parseFloat(thights.userData.value) <
+    parseFloat(thightsRotation.max) - Math.PI / 100
+  ) {
+    isTruckMode = true;
+    return;
+  }
+
+  if (
+    parseFloat(foot.userData.value) <
+    parseFloat(footRotation.max) - Math.PI / 100
+  ) {
+    isTruckMode = true;
+  }
+}
 ////////////////////////////
 /* RESIZE WINDOW CALLBACK */
 ////////////////////////////
