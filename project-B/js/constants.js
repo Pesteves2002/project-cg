@@ -1,5 +1,7 @@
 const UNIT = 20;
 
+const backgroundColor = 0xa2bce0;
+
 const points = {
   truckMin: {
     x: 0,

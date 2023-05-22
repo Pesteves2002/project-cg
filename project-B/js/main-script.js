@@ -27,7 +27,7 @@ function createScene() {
   scene = new THREE.Scene();
 
   // set the background color of the scene
-  scene.background = new THREE.Color(0xa2bce0);
+  scene.background = new THREE.Color(backgroundColor);
 
   scene.add(new THREE.AxesHelper(1000));
 }
