@@ -223,12 +223,14 @@ function createHead() {
   mirrorObject(horn2, "X", true);
 
   const headCube = createObject3D(headValues);
+
+  headCube.add(eye);
+  headCube.add(eye2);
+  headCube.add(horn);
+  headCube.add(horn2);
+
   setPosition(headCube, headValues);
 
-  head.add(eye);
-  head.add(eye2);
-  head.add(horn);
-  head.add(horn2);
   head.add(headCube);
 
   changePivot(headCube, head, headValues.height, "Y");
