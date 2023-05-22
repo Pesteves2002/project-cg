@@ -123,18 +123,28 @@ const materialValues = {
     wireframe: true,
   }),
 
-  trailer: new THREE.MeshBasicMaterial({
-    color: 0x0000ff,
+  trailer_blue: new THREE.MeshBasicMaterial({
+    color: 0x0047AB,
     wireframe: true,
   }),
 
-  trailerBox: new THREE.MeshBasicMaterial({
-    map: loader.load("imgs/obama.jpg"),
+  trailer_silver: new THREE.MeshBasicMaterial({
+    color: 0xD3D3D3,
     wireframe: true,
   }),
 
-  robot: new THREE.MeshBasicMaterial({
-    color: 0xffff00,
+  robot_red: new THREE.MeshBasicMaterial({
+    color: 0xD92121,
+    wireframe: true,
+  }),
+
+  robot_blue: new THREE.MeshBasicMaterial({
+    color: 0x0047AB,
+    wireframe: true,
+  }),
+
+  robot_silver: new THREE.MeshBasicMaterial({
+    color: 0xD3D3D3,
     wireframe: true,
   }),
 
@@ -152,7 +162,7 @@ const headValues = {
   relativeY: 3 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.robot,
+  material: materialValues.robot_blue,
 };
 
 const eyesValues = {
@@ -163,7 +173,7 @@ const eyesValues = {
   relativeY: 1.5 * UNIT,
   relativeZ: 1 * UNIT,
   type: Primitives.CYLINDER,
-  material: materialValues.robot,
+  material: materialValues.robot_silver,
 };
 
 const hornsValues = {
@@ -174,7 +184,7 @@ const hornsValues = {
   relativeY: 4 * UNIT,
   relativeZ: -0.75 * UNIT,
   type: Primitives.CYLINDER,
-  material: materialValues.robot,
+  material: materialValues.robot_blue,
 };
 
 const torsoValues = {
@@ -185,7 +195,7 @@ const torsoValues = {
   relativeY: 0 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.robot,
+  material: materialValues.robot_red,
 };
 
 const armValues = {
@@ -196,7 +206,7 @@ const armValues = {
   relativeY: -1 * UNIT,
   relativeZ: -3 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.robot,
+  material: materialValues.robot_red,
 };
 
 const tubeValues = {
@@ -207,7 +217,7 @@ const tubeValues = {
   relativeY: 3 * UNIT,
   relativeZ: -1.5 * UNIT,
   type: Primitives.CYLINDER,
-  material: materialValues.robot,
+  material: materialValues.robot_silver,
 };
 
 const forearmValues = {
@@ -218,7 +228,7 @@ const forearmValues = {
   relativeY: -2 * UNIT,
   relativeZ: 3 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.robot,
+  material: materialValues.robot_red,
 };
 
 const backValues = {
@@ -229,7 +239,7 @@ const backValues = {
   relativeY: 0 * UNIT,
   relativeZ: -3 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.robot,
+  material: materialValues.robot_red,
 };
 
 const abdomenValues = {
@@ -240,7 +250,7 @@ const abdomenValues = {
   relativeY: -3 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.robot,
+  material: materialValues.robot_red,
 };
 
 const waistValues = {
@@ -251,7 +261,7 @@ const waistValues = {
   relativeY: -2.5 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.robot,
+  material: materialValues.robot_silver,
 };
 
 const waistWheelsValues = {
@@ -273,7 +283,7 @@ const thightValues = {
   relativeY: -3 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.robot,
+  material: materialValues.robot_silver,
 };
 
 const legValues = {
@@ -284,7 +294,7 @@ const legValues = {
   relativeY: -5 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.robot,
+  material: materialValues.robot_blue,
 };
 
 const legWheelsValues = {
@@ -306,7 +316,7 @@ const footValues = {
   relativeY: -12.5 * UNIT,
   relativeZ: 0.5 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.robot,
+  material: materialValues.robot_blue,
 };
 
 const trailerBoxValues = {
@@ -317,7 +327,7 @@ const trailerBoxValues = {
   relativeY: 0 * UNIT,
   relativeZ: 0 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.trailerBox,
+  material: materialValues.trailer_silver,
 };
 
 const trailerDepositValues = {
@@ -328,7 +338,7 @@ const trailerDepositValues = {
   relativeY: -4 * UNIT,
   relativeZ: -4.5 * UNIT,
   type: Primitives.CUBE,
-  material: materialValues.trailer,
+  material: materialValues.trailer_blue,
 };
 
 const trailerWheelsValues = {
