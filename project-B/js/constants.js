@@ -363,4 +363,20 @@ const points = {
     y: robotPosition.Y + torsoValues.height / 2,
     z: robotPosition.Z + torsoValues.depth / 2,
   },
+
+  truck: {
+    x: robotPosition.X,
+    y: trailerPosition.Y,
+    z:
+      robotPosition.Z -
+      torsoValues.width / 2 -
+      legValues.width / 2 -
+      legValues.width / 2,
+  },
+};
+
+const trailerTP = {
+  x: trailerPosition.X,
+  y: trailerPosition.Y,
+  z: robotPosition.Z - torsoValues.width - backValues.width - legValues.height,
 };

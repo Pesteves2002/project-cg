@@ -8,7 +8,7 @@ let geometry, material, mesh;
 
 let trailer, robot, head, leftArm, rightArm, thighs, foot;
 
-let transformation;
+let transformation, still;
 
 const cameras = [];
 
@@ -522,14 +522,28 @@ function checkCollisions() {
   const minB = points.trailerMin;
   const maxB = points.trailerMax;
 
-  return (
+  const collision =
     maxA.x >= minB.x &&
     minA.x <= maxB.x &&
     maxA.y >= minB.y &&
     minA.y <= maxB.y &&
     maxA.z >= minB.z &&
-    minA.z <= maxB.z
-  );
+    minA.z <= maxB.z;
+
+  if (collision && still) {
+    console.log("ignoring collision");
+    return false;
+  }
+
+  if (!collision && still) {
+    console.log("saiu");
+    still = false;
+    return false;
+  }
+
+  if (collision) console.log("collision");
+
+  return collision;
 }
 
 ///////////////////////
@@ -538,13 +552,9 @@ function checkCollisions() {
 function handleCollisions() {
   "use strict";
 
-  trailer.position.set(
-    robot.position.x,
-    trailer.position.y,
-    robot.position.z - torsoValues.depth * 4.5
-  );
+  trailer.userData.xStep = (robot.position.x - trailer.position.x) / 100;
 
-  transformation = false;
+  trailer.userData.zStep = (trailerTP.z - trailer.position.z) / 100;
 }
 
 ////////////
@@ -555,9 +565,45 @@ function update() {
 
   // ANIMATE PARA AQUI
 
-  if (checkIfTruck() && checkCollisions() && !transformation) {
-    transformation = true;
+  if (transformation) {
+    performTransformation();
+    return;
+  }
+
+  if (checkIfTruck() && checkCollisions()) {
     handleCollisions();
+    still = true;
+    transformation = true;
+  }
+}
+
+function performTransformation() {
+  "use strict";
+
+  if (trailer.userData.xStep > 0) {
+    if (lessOrEqualThan(robot.position.x, trailer.position.x)) {
+      trailer.userData.xStep = 0;
+    }
+  } else {
+    if (greaterOrEqualThan(robot.position.x, trailer.position.x)) {
+      trailer.userData.xStep = 0;
+    }
+  }
+
+  if (trailer.userData.zStep > 0) {
+    if (lessOrEqualThan(trailerTP.z, trailer.position.z)) {
+      trailer.userData.zStep = 0;
+    }
+  } else {
+    if (greaterOrEqualThan(trailerTP.z, trailer.position.z)) {
+      trailer.userData.zStep = 0;
+    }
+  }
+
+  if (trailer.userData.xStep === 0 && trailer.userData.zStep === 0) {
+    console.log("equal3");
+    transformation = false;
+    return;
   }
 }
 
@@ -593,6 +639,8 @@ function init() {
   intializeAnimations();
 
   transformation = false;
+
+  still = false;
 
   initalizePoints();
 
@@ -794,7 +842,6 @@ function onKeyDown(e) {
   "use strict";
 
   if (transformation) {
-    resetSteps();
     return;
   }
   switch (e.keyCode) {
@@ -885,6 +932,10 @@ function onKeyDown(e) {
 ///////////////////////
 function onKeyUp(e) {
   "use strict";
+
+  if (transformation) {
+    return;
+  }
 
   switch (e.keyCode) {
     case 37: //left
