@@ -531,17 +531,13 @@ function checkCollisions() {
     minA.z <= maxB.z;
 
   if (collision && still) {
-    console.log("ignoring collision");
     return false;
   }
 
   if (!collision && still) {
-    console.log("saiu");
     still = false;
     return false;
   }
-
-  if (collision) console.log("collision");
 
   return collision;
 }
@@ -553,7 +549,6 @@ function handleCollisions() {
   "use strict";
 
   trailer.userData.xStep = (robot.position.x - trailer.position.x) / 100;
-
   trailer.userData.zStep = (trailerTP.z - trailer.position.z) / 100;
 }
 
@@ -601,7 +596,6 @@ function performTransformation() {
   }
 
   if (trailer.userData.xStep === 0 && trailer.userData.zStep === 0) {
-    console.log("equal3");
     transformation = false;
     return;
   }
