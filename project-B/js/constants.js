@@ -33,15 +33,15 @@ const cameraValues = [
 ];
 
 const trailerPosition = {
-  X: 100,
+  X: 50,
   Y: -UNIT * 2,
-  Z: 100,
+  Z: -300,
 };
 
 const robotPosition = {
-  X: 127,
+  X: 300,
   Y: 0,
-  Z: 200,
+  Z: 100,
 };
 
 const rotationUnit = Math.PI / 50;
@@ -321,8 +321,8 @@ const trailerWheelsValues = {
 };
 
 const trailerPinValues = {
-  width: 2 * UNIT,
-  depth: 1 * UNIT,
+  width: 1 * UNIT,
+  depth: 2 * UNIT,
   height: 2 * UNIT,
   relativeX: 0 * UNIT,
   relativeY: -4 * UNIT,
