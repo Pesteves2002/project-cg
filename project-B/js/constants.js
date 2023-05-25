@@ -368,7 +368,7 @@ const points = {
   },
 };
 
-const trailerTP = {
+const trailerDockedValues = {
   x: trailerPosition.X,
   y: trailerPosition.Y,
   z: robotPosition.Z - torsoValues.width - backValues.width - legValues.height,

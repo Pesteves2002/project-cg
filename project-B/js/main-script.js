@@ -8,7 +8,7 @@ let geometry, material, mesh;
 
 let trailer, robot, head, leftArm, rightArm, thighs, foot;
 
-let isInAnimation, still;
+let isInAnimation, isDocked;
 
 const cameras = [];
 
@@ -530,12 +530,12 @@ function checkCollisions() {
     maxA.z >= minB.z &&
     minA.z <= maxB.z;
 
-  if (collision && still) {
+  if (collision && isDocked) {
     return false;
   }
 
-  if (!collision && still) {
-    still = false;
+  if (!collision && isDocked) {
+    isDocked = false;
     return false;
   }
 
@@ -549,7 +549,7 @@ function handleCollisions() {
   "use strict";
 
   trailer.userData.xStep = (robot.position.x - trailer.position.x) / 100;
-  trailer.userData.zStep = (trailerTP.z - trailer.position.z) / 100;
+  trailer.userData.zStep = (trailerDockedValues.z - trailer.position.z) / 100;
 }
 
 ////////////
@@ -567,7 +567,7 @@ function update() {
 
   if (checkIfTruck() && checkCollisions()) {
     handleCollisions();
-    still = true;
+    isDocked = true;
     isInAnimation = true;
   }
 }
@@ -586,11 +586,11 @@ function performTransformation() {
   }
 
   if (trailer.userData.zStep > 0) {
-    if (lessOrEqualThan(trailerTP.z, trailer.position.z)) {
+    if (lessOrEqualThan(trailerDockedValues.z, trailer.position.z)) {
       trailer.userData.zStep = 0;
     }
   } else {
-    if (greaterOrEqualThan(trailerTP.z, trailer.position.z)) {
+    if (greaterOrEqualThan(trailerDockedValues.z, trailer.position.z)) {
       trailer.userData.zStep = 0;
     }
   }
@@ -633,7 +633,7 @@ function init() {
 
   isInAnimation = false;
 
-  still = false;
+  isDocked = false;
 
   initalizePoints();
 
