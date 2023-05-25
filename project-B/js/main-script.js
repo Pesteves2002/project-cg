@@ -8,7 +8,7 @@ let geometry, material, mesh;
 
 let trailer, robot, head, leftArm, rightArm, thighs, foot;
 
-let transformation, still;
+let isInAnimation, still;
 
 const cameras = [];
 
@@ -560,7 +560,7 @@ function update() {
 
   // ANIMATE PARA AQUI
 
-  if (transformation) {
+  if (isInAnimation) {
     performTransformation();
     return;
   }
@@ -568,7 +568,7 @@ function update() {
   if (checkIfTruck() && checkCollisions()) {
     handleCollisions();
     still = true;
-    transformation = true;
+    isInAnimation = true;
   }
 }
 
@@ -596,8 +596,7 @@ function performTransformation() {
   }
 
   if (trailer.userData.xStep === 0 && trailer.userData.zStep === 0) {
-    transformation = false;
-    return;
+    isInAnimation = false;
   }
 }
 
@@ -630,9 +629,9 @@ function init() {
   createRobot();
   createTrailer();
 
-  intializeAnimations();
+  resetSteps();
 
-  transformation = false;
+  isInAnimation = false;
 
   still = false;
 
@@ -662,19 +661,6 @@ function debugPositions(point) {
   scene.add(obj);
 }
 
-function intializeAnimations() {
-  "use strict";
-
-  head.userData.value = 0;
-  leftArm.userData.value = 0;
-  rightArm.userData.value = 0;
-  thighs.userData.value = 0;
-  foot.userData.value = 0;
-  trailer.userData.value = 0;
-
-  resetSteps();
-}
-
 function resetSteps() {
   "use strict";
 
@@ -691,81 +677,79 @@ function resetSteps() {
 /* ANIMATION CYCLE */
 /////////////////////
 function rotateObject(object, rotationValues, axis) {
-  const auxValue = object.userData.value + object.userData.step;
+  "use strict";
 
-  if (!lessOrEqualThan(rotationValues.min, auxValue)) {
-    rotateAxis(object, rotationValues.min - object.userData.value, axis);
-    return;
-  }
-
-  if (!lessOrEqualThan(auxValue, rotationValues.max)) {
-    rotateAxis(object, rotationValues.max - object.userData.value, axis);
-    return;
-  }
-
-  rotateAxis(object, object.userData.step, axis);
-}
-
-function rotateAxis(object, step, axis) {
   switch (axis) {
     case AXIS.X:
-      object.rotation.x += step;
+      object.rotation.x = THREE.Math.clamp(
+        object.userData.step + object.rotation.x,
+        rotationValues.min,
+        rotationValues.max
+      );
       break;
+
     case AXIS.Y:
-      object.rotation.y += step;
+      object.rotation.y += THREE.Math.clamp(
+        object.userData.step + object.rotation.y,
+        rotationValues.min,
+        rotationValues.max
+      );
       break;
+
     case AXIS.Z:
-      object.rotation.z += step;
+      object.rotation.z += THREE.Math.clamp(
+        object.userData.step + object.rotation.z,
+        rotationValues.min,
+        rotationValues.max
+      );
       break;
+
     default:
       console.log("Invalid axis");
   }
-  object.userData.value += step;
 }
 
-function translateAxis(object, step, axis) {
+function translateObject(object, objectValues, offset, axis) {
+  "use strict";
+
   switch (axis) {
     case AXIS.X:
-      object.position.x += step;
+      object.position.x = THREE.Math.clamp(
+        object.userData.step + object.position.x,
+        objectValues.min + offset,
+        objectValues.max + offset
+      );
       break;
     case AXIS.Y:
-      object.position.y += step;
+      object.position.y = THREE.Math.clamp(
+        object.userData.step + object.position.y,
+        objectValues.min + offset,
+        objectValues.max + offset
+      );
       break;
     case AXIS.Z:
-      object.position.z += step;
+      object.position.z = THREE.Math.clamp(
+        object.userData.step + object.position.z,
+        objectValues.min + offset,
+        objectValues.max + offset
+      );
       break;
+
     default:
       console.log("Invalid axis");
   }
-  object.userData.value += step;
-}
-
-function translateObject(object, translationValues, axis) {
-  const auxValue = object.userData.value + object.userData.step;
-
-  if (!lessOrEqualThan(translationValues.min, auxValue)) {
-    translateAxis(object, translationValues.min - object.userData.value, axis);
-    return;
-  }
-
-  if (!lessOrEqualThan(auxValue, translationValues.max)) {
-    translateAxis(object, translationValues.max - object.userData.value, axis);
-    return;
-  }
-
-  translateAxis(object, object.userData.step, axis);
 }
 
 function translateTrailer() {
   trailer.userData.step = trailer.userData.xStep;
-  translateObject(trailer, trailerTranslation, AXIS.X);
+  translateObject(trailer, trailerTranslation, 0, AXIS.X);
   points.trailerMin.x += trailer.userData.xStep;
   points.trailerMax.x += trailer.userData.xStep;
   debugPoints[0].position.x += trailer.userData.xStep;
   debugPoints[1].position.x += trailer.userData.xStep;
 
   trailer.userData.step = trailer.userData.zStep;
-  translateObject(trailer, trailerTranslation, AXIS.Z);
+  translateObject(trailer, trailerTranslation, 0, AXIS.Z);
   points.trailerMin.z += trailer.userData.zStep;
   points.trailerMax.z += trailer.userData.zStep;
   debugPoints[0].position.z += trailer.userData.zStep;
@@ -778,9 +762,9 @@ function animate() {
 
   translateTrailer();
 
-  translateObject(leftArm, leftArmTranslation, AXIS.X);
+  translateObject(leftArm, leftArmTranslation, armValues.relativeX, AXIS.X);
 
-  translateObject(rightArm, rightArmTranslation, AXIS.X);
+  translateObject(rightArm, rightArmTranslation, -armValues.relativeX, AXIS.X);
 
   rotateObject(head, headRotation, AXIS.X);
 
@@ -809,10 +793,10 @@ function checkIfTruck() {
   "use strict";
 
   return (
-    equal(head.userData.value, headRotation.min) &&
-    equal(leftArm.userData.value, leftArmTranslation.min) &&
-    equal(thighs.userData.value, thighsRotation.max) &&
-    equal(foot.userData.value, footRotation.max)
+    equal(head.rotation.x, headRotation.min) &&
+    equal(leftArm.position.x, leftArmTranslation.min + armValues.relativeX) &&
+    equal(thighs.rotation.x, thighsRotation.max) &&
+    equal(foot.rotation.x, footRotation.max)
   );
 }
 ////////////////////////////
@@ -835,7 +819,7 @@ function onResize() {
 function onKeyDown(e) {
   "use strict";
 
-  if (transformation) {
+  if (isInAnimation) {
     return;
   }
   switch (e.keyCode) {
@@ -927,7 +911,7 @@ function onKeyDown(e) {
 function onKeyUp(e) {
   "use strict";
 
-  if (transformation) {
+  if (isInAnimation) {
     return;
   }
 
