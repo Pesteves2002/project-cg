@@ -1,3 +1,5 @@
+// Tempo dispendido por cada elemento: 14h
+
 //////////////////////
 /* GLOBAL VARIABLES */
 //////////////////////
@@ -6,7 +8,7 @@ let camera, scene, renderer, controls;
 
 let geometry, material, mesh;
 
-let trailer, robot, head, leftArm, rightArm, thighs, foot;
+let trailer, robot, head, leftArm, rightArm, thighs, foot, delta;
 
 let isInAnimation, isDocked;
 
@@ -224,6 +226,9 @@ function init() {
 
 function animate() {
   "use strict";
+
+  delta = CLOCK.getDelta() * DELTA_MULT;
+
   update();
 
   render();

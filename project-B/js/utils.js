@@ -137,7 +137,7 @@ function rotateObject(object, rotationValues, axis) {
   switch (axis) {
     case AXIS.X:
       object.rotation.x = THREE.Math.clamp(
-        object.userData.step + object.rotation.x,
+        object.userData.step * delta + object.rotation.x,
         rotationValues.min,
         rotationValues.max
       );
@@ -145,7 +145,7 @@ function rotateObject(object, rotationValues, axis) {
 
     case AXIS.Y:
       object.rotation.y += THREE.Math.clamp(
-        object.userData.step + object.rotation.y,
+        object.userData.step * delta + object.rotation.y,
         rotationValues.min,
         rotationValues.max
       );
@@ -153,7 +153,7 @@ function rotateObject(object, rotationValues, axis) {
 
     case AXIS.Z:
       object.rotation.z += THREE.Math.clamp(
-        object.userData.step + object.rotation.z,
+        object.userData.step * delta + object.rotation.z,
         rotationValues.min,
         rotationValues.max
       );
@@ -172,7 +172,7 @@ function translateObject(object, objectValues, offset, axis) {
       object.position.copy(
         new THREE.Vector3(
           THREE.Math.clamp(
-            object.userData.step + object.position.x,
+            object.userData.step * delta + object.position.x,
             objectValues.min + offset,
             objectValues.max + offset
           ),
@@ -188,7 +188,7 @@ function translateObject(object, objectValues, offset, axis) {
           object.position.x,
           THREE.Math.clamp(
             THREE.Math.clamp(
-              object.userData.step + object.position.y,
+              object.userData.step * delta + object.position.y,
               objectValues.min + offset,
               objectValues.max + offset
             ),
@@ -203,7 +203,7 @@ function translateObject(object, objectValues, offset, axis) {
           object.position.x,
           object.position.y,
           THREE.Math.clamp(
-            object.userData.step + object.position.z,
+            object.userData.step * delta + object.position.z,
             objectValues.min + offset,
             objectValues.max + offset
           )
