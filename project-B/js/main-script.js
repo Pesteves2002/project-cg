@@ -151,25 +151,23 @@ function update() {
 function performTransformation() {
   "use strict";
 
-  if (trailer.userData.xStep > 0) {
-    if (lessOrEqualThan(robot.position.x, trailer.position.x)) {
-      trailer.userData.xStep = 0;
-    }
-  } else {
-    if (greaterOrEqualThan(robot.position.x, trailer.position.x)) {
-      trailer.userData.xStep = 0;
-    }
-  }
+  if (
+    outOfBounds(
+      trailerDockedValues.x,
+      trailer.position.x,
+      trailer.userData.xStep
+    )
+  )
+    trailer.userData.xStep = 0;
 
-  if (trailer.userData.zStep > 0) {
-    if (lessOrEqualThan(trailerDockedValues.z, trailer.position.z)) {
-      trailer.userData.zStep = 0;
-    }
-  } else {
-    if (greaterOrEqualThan(trailerDockedValues.z, trailer.position.z)) {
-      trailer.userData.zStep = 0;
-    }
-  }
+  if (
+    outOfBounds(
+      trailerDockedValues.z,
+      trailer.position.z,
+      trailer.userData.zStep
+    )
+  )
+    trailer.userData.zStep = 0;
 
   if (equal(trailer.userData.xStep, 0) && equal(trailer.userData.zStep, 0)) {
     isInAnimation = false;

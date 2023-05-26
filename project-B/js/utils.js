@@ -240,6 +240,10 @@ function equal(a, b) {
   return parseFloat(a) - parseFloat(b) < 0.01;
 }
 
+function outOfBounds(a, b, step) {
+  return step > 0 ? lessOrEqualThan(a, b) : greaterOrEqualThan(a, b);
+}
+
 function checkIfTruck() {
   "use strict";
 

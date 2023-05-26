@@ -369,7 +369,7 @@ const points = {
 };
 
 const trailerDockedValues = {
-  x: trailerPosition.X,
+  x: robotPosition.X,
   y: trailerPosition.Y,
   z: robotPosition.Z - torsoValues.width - backValues.width - legValues.height,
 };
