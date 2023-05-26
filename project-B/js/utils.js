@@ -237,7 +237,7 @@ function lessOrEqualThan(a, b) {
 }
 
 function equal(a, b) {
-  return parseFloat(a) == parseFloat(b);
+  return parseFloat(a) - parseFloat(b) < 0.01;
 }
 
 function checkIfTruck() {

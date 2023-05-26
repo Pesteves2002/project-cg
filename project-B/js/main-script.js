@@ -124,9 +124,19 @@ function handleCollisions() {
 function update() {
   "use strict";
 
-  // ANIMATE PARA AQUI
+  translateTrailer();
 
+  translateObject(leftArm, leftArmTranslation, armValues.relativeX, AXIS.X);
+
+  translateObject(rightArm, rightArmTranslation, -armValues.relativeX, AXIS.X);
+
+  rotateObject(head, headRotation, AXIS.X);
+
+  rotateObject(thighs, thighsRotation, AXIS.X);
+
+  rotateObject(foot, footRotation, AXIS.X);
   if (isInAnimation) {
+    console.log("animaation");
     performTransformation();
     return;
   }
@@ -161,7 +171,8 @@ function performTransformation() {
     }
   }
 
-  if (trailer.userData.xStep === 0 && trailer.userData.zStep === 0) {
+  console.log(trailer.userData.xStep, trailer.userData.zStep);
+  if (equal(trailer.userData.xStep, 0) && equal(trailer.userData.zStep, 0)) {
     isInAnimation = false;
   }
 }
@@ -215,18 +226,6 @@ function init() {
 function animate() {
   "use strict";
   update();
-
-  translateTrailer();
-
-  translateObject(leftArm, leftArmTranslation, armValues.relativeX, AXIS.X);
-
-  translateObject(rightArm, rightArmTranslation, -armValues.relativeX, AXIS.X);
-
-  rotateObject(head, headRotation, AXIS.X);
-
-  rotateObject(thighs, thighsRotation, AXIS.X);
-
-  rotateObject(foot, footRotation, AXIS.X);
 
   render();
 
