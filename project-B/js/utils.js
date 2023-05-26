@@ -237,7 +237,7 @@ function lessOrEqualThan(a, b) {
 }
 
 function equal(a, b) {
-  return parseFloat(a) - parseFloat(b) < 0.01;
+  return Math.abs(parseFloat(a) - parseFloat(b)) < 0.0001;
 }
 
 function outOfBounds(a, b, step) {
@@ -258,11 +258,11 @@ function checkIfTruck() {
 function translateTrailer() {
   trailer.userData.step = trailer.userData.xStep;
   translateObject(trailer, trailerTranslation, 0, AXIS.X);
-  points.trailerMin.x += trailer.userData.xStep;
-  points.trailerMax.x += trailer.userData.xStep;
+  points.trailerMin.x += trailer.userData.xStep * delta;
+  points.trailerMax.x += trailer.userData.xStep * delta;
 
   trailer.userData.step = trailer.userData.zStep;
   translateObject(trailer, trailerTranslation, 0, AXIS.Z);
-  points.trailerMin.z += trailer.userData.zStep;
-  points.trailerMax.z += trailer.userData.zStep;
+  points.trailerMin.z += trailer.userData.zStep * delta;
+  points.trailerMax.z += trailer.userData.zStep * delta;
 }

@@ -116,7 +116,7 @@ function checkCollisions() {
 function handleCollisions() {
   "use strict";
 
-  trailer.userData.xStep = (robot.position.x - trailer.position.x) / 100;
+  trailer.userData.xStep = (trailerDockedValues.x - trailer.position.x) / 100;
   trailer.userData.zStep = (trailerDockedValues.z - trailer.position.z) / 100;
 }
 
@@ -135,6 +135,7 @@ function update() {
     handleCollisions();
     isDocked = true;
     isInAnimation = true;
+    return;
   }
 
   translateTrailer();
@@ -173,6 +174,7 @@ function performTransformation() {
 
   if (equal(trailer.userData.xStep, 0) && equal(trailer.userData.zStep, 0)) {
     isInAnimation = false;
+    return;
   }
 
   translateTrailer();
