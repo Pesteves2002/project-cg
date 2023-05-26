@@ -124,6 +124,17 @@ function handleCollisions() {
 function update() {
   "use strict";
 
+  if (isInAnimation) {
+    performTransformation();
+    return;
+  }
+
+  if (checkIfTruck() && checkCollisions()) {
+    handleCollisions();
+    isDocked = true;
+    isInAnimation = true;
+  }
+
   translateTrailer();
 
   translateObject(leftArm, leftArmTranslation, armValues.relativeX, AXIS.X);
@@ -135,17 +146,6 @@ function update() {
   rotateObject(thighs, thighsRotation, AXIS.X);
 
   rotateObject(foot, footRotation, AXIS.X);
-  if (isInAnimation) {
-    console.log("animaation");
-    performTransformation();
-    return;
-  }
-
-  if (checkIfTruck() && checkCollisions()) {
-    handleCollisions();
-    isDocked = true;
-    isInAnimation = true;
-  }
 }
 
 function performTransformation() {
@@ -171,10 +171,11 @@ function performTransformation() {
     }
   }
 
-  console.log(trailer.userData.xStep, trailer.userData.zStep);
   if (equal(trailer.userData.xStep, 0) && equal(trailer.userData.zStep, 0)) {
     isInAnimation = false;
   }
+
+  translateTrailer();
 }
 
 /////////////
