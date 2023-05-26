@@ -229,8 +229,6 @@ function animate() {
 
   delta = CLOCK.getDelta() * DELTA_MULT;
 
-  console.log(delta);
-
   update();
 
   render();
