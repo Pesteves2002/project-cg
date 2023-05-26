@@ -212,18 +212,6 @@ function init() {
 /* ANIMATION CYCLE */
 /////////////////////
 
-function translateTrailer() {
-  trailer.userData.step = trailer.userData.xStep;
-  translateObject(trailer, trailerTranslation, 0, AXIS.X);
-  points.trailerMin.x += trailer.userData.xStep;
-  points.trailerMax.x += trailer.userData.xStep;
-
-  trailer.userData.step = trailer.userData.zStep;
-  translateObject(trailer, trailerTranslation, 0, AXIS.Z);
-  points.trailerMin.z += trailer.userData.zStep;
-  points.trailerMax.z += trailer.userData.zStep;
-}
-
 function animate() {
   "use strict";
   update();

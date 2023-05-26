@@ -32,10 +32,12 @@ function createObject3D(objectValues) {
 }
 
 function setPosition(obj, objectValues) {
-  obj.position.set(
-    objectValues.relativeX,
-    objectValues.relativeY,
-    objectValues.relativeZ
+  obj.position.copy(
+    new THREE.Vector3(
+      objectValues.relativeX,
+      objectValues.relativeY,
+      objectValues.relativeZ
+    )
   );
 }
 
@@ -43,19 +45,25 @@ function mirrorObject(obj, axis, mirror = false) {
   const newObj = obj.clone(true);
   switch (axis) {
     case AXIS.X:
-      newObj.position.x = -obj.position.x;
+      newObj.position.copy(
+        new THREE.Vector3(-obj.position.x, obj.position.y, obj.position.z)
+      );
       if (mirror) {
         newObj.scale.x = -obj.scale.x;
       }
       break;
     case AXIS.Y:
-      newObj.position.y = -obj.position.y;
+      newObj.position.copy(
+        new THREE.Vector3(obj.position.x, -obj.position.y, obj.position.z)
+      );
       if (mirror) {
         newObj.scale.y = -obj.scale.y;
       }
       break;
     case AXIS.Z:
-      newObj.position.z = -obj.position.z;
+      newObj.position.copy(
+        new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z)
+      );
       if (mirror) {
         newObj.scale.z = -obj.scale.z;
       }
@@ -70,16 +78,52 @@ function mirrorObject(obj, axis, mirror = false) {
 function changePivot(obj, group, offset, axis) {
   switch (axis) {
     case AXIS.X:
-      obj.position.x -= offset;
-      group.position.x += offset;
+      obj.position.copy(
+        new THREE.Vector3(
+          obj.position.x - offset,
+          obj.position.y,
+          obj.position.z
+        )
+      );
+      group.position.copy(
+        new THREE.Vector3(
+          group.position.x + offset,
+          group.position.y,
+          group.position.z
+        )
+      );
       break;
     case AXIS.Y:
-      obj.position.y -= offset;
-      group.position.y += offset;
+      obj.position.copy(
+        new THREE.Vector3(
+          obj.position.x,
+          obj.position.y - offset,
+          obj.position.z
+        )
+      );
+      group.position.copy(
+        new THREE.Vector3(
+          group.position.x,
+          group.position.y + offset,
+          group.position.z
+        )
+      );
       break;
     case AXIS.Z:
-      obj.position.z -= offset;
-      group.position.z += offset;
+      obj.position.copy(
+        new THREE.Vector3(
+          obj.position.x,
+          obj.position.y,
+          obj.position.z - offset
+        )
+      );
+      group.position.copy(
+        new THREE.Vector3(
+          group.position.x,
+          group.position.y,
+          group.position.z + offset
+        )
+      );
       break;
     default:
       console.log("Invalid axis");
@@ -125,24 +169,45 @@ function translateObject(object, objectValues, offset, axis) {
 
   switch (axis) {
     case AXIS.X:
-      object.position.x = THREE.Math.clamp(
-        object.userData.step + object.position.x,
-        objectValues.min + offset,
-        objectValues.max + offset
+      object.position.copy(
+        new THREE.Vector3(
+          THREE.Math.clamp(
+            object.userData.step + object.position.x,
+            objectValues.min + offset,
+            objectValues.max + offset
+          ),
+          object.position.y,
+          object.position.z
+        )
       );
+
       break;
     case AXIS.Y:
-      object.position.y = THREE.Math.clamp(
-        object.userData.step + object.position.y,
-        objectValues.min + offset,
-        objectValues.max + offset
+      object.position.copy(
+        new THREE.Vector3(
+          object.position.x,
+          THREE.Math.clamp(
+            THREE.Math.clamp(
+              object.userData.step + object.position.y,
+              objectValues.min + offset,
+              objectValues.max + offset
+            ),
+            object.position.z
+          )
+        )
       );
       break;
     case AXIS.Z:
-      object.position.z = THREE.Math.clamp(
-        object.userData.step + object.position.z,
-        objectValues.min + offset,
-        objectValues.max + offset
+      object.position.copy(
+        new THREE.Vector3(
+          object.position.x,
+          object.position.y,
+          THREE.Math.clamp(
+            object.userData.step + object.position.z,
+            objectValues.min + offset,
+            objectValues.max + offset
+          )
+        )
       );
       break;
 
@@ -184,4 +249,16 @@ function checkIfTruck() {
     equal(thighs.rotation.x, thighsRotation.max) &&
     equal(foot.rotation.x, footRotation.max)
   );
+}
+
+function translateTrailer() {
+  trailer.userData.step = trailer.userData.xStep;
+  translateObject(trailer, trailerTranslation, 0, AXIS.X);
+  points.trailerMin.x += trailer.userData.xStep;
+  points.trailerMax.x += trailer.userData.xStep;
+
+  trailer.userData.step = trailer.userData.zStep;
+  translateObject(trailer, trailerTranslation, 0, AXIS.Z);
+  points.trailerMin.z += trailer.userData.zStep;
+  points.trailerMax.z += trailer.userData.zStep;
 }
