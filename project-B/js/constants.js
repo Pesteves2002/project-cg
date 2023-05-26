@@ -1,5 +1,9 @@
 const UNIT = 20;
 
+const CLOCK = new THREE.Clock();
+
+const DELTA_MULT = 100;
+
 const backgroundColor = 0xa2bce0;
 
 const fov = 70;
