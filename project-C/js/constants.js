@@ -25,4 +25,4 @@ const PRIMITIVES = {
 // Green Y HEIGHT
 // BLUE Z DEPTH
 
-const CAMERAVALUES = [[0, 0, 1000]];
+const CAMERAVALUES = [[1000, 1000, 1000]];

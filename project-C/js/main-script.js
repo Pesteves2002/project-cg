@@ -91,6 +91,9 @@ function init() {
 
   render();
 
+  document.body.appendChild(VRButton.createButton(renderer));
+  renderer.xr.enabled = true;
+
   window.addEventListener("keydown", onKeyDown);
   window.addEventListener("keyup", onKeyUp);
   window.addEventListener("resize", onResize);
@@ -130,6 +133,12 @@ function onResize() {
 ///////////////////////
 function onKeyDown(e) {
   "use strict";
+
+  switch (e.keyCode) {
+    case 49: //1
+      currentCamera = cameras[0];
+      break;
+  }
 }
 
 ///////////////////////
