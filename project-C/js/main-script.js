@@ -95,6 +95,8 @@ function init() {
 
   createOvni();
 
+  createTree();
+
   render();
 
   document.body.appendChild(VRButton.createButton(renderer));

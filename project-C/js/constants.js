@@ -36,6 +36,12 @@ const MATERIALVALUES = {
   light: new THREE.MeshBasicMaterial({
     color: 0xffff00,
   }),
+  trunk: new THREE.MeshBasicMaterial({
+    color: 0x964b00,
+  }),
+  leaf: new THREE.MeshBasicMaterial({
+    color: 0x00ff00,
+  }),
 };
 
 const CAMERAVALUES = [[1000, 1000, 1000]];
@@ -70,4 +76,38 @@ const OVNILIGHTS = {
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.light,
   step: Math.PI / 4,
+};
+
+const TRUNKVALUES = {
+  pos: new THREE.Vector3(0, 0, 0),
+  radiusTop: 1.5 * UNIT,
+  radiusBottom: 1.5 * UNIT,
+  height: 10 * UNIT,
+  type: PRIMITIVES.CYLINDER,
+  material: MATERIALVALUES.trunk,
+};
+
+const TRUNKVALUES2 = {
+  pos: new THREE.Vector3(3 * UNIT, 0, 0),
+  radiusTop: 1 * UNIT,
+  radiusBottom: 1 * UNIT,
+  height: 5 * UNIT,
+  type: PRIMITIVES.CYLINDER,
+  material: MATERIALVALUES.trunk,
+};
+
+const LEAFVALUES = {
+  pos: new THREE.Vector3(0, 8 * UNIT, 0),
+  radius: 5 * UNIT,
+  scale: new THREE.Vector3(2, 1, 2),
+  type: PRIMITIVES.SPHERE,
+  material: MATERIALVALUES.leaf,
+};
+
+const LEAFVALUES2 = {
+  pos: new THREE.Vector3(3 * UNIT, 3 * UNIT, 0),
+  radius: 3 * UNIT,
+  scale: new THREE.Vector3(2, 1, 2),
+  type: PRIMITIVES.SPHERE,
+  material: MATERIALVALUES.leaf,
 };
