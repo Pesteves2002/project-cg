@@ -146,6 +146,13 @@ const CHIMNEYVALUES = {
   material: MATERIALVALUES.house,
 };
 
+const MOONVALUES = {
+  pos: new THREE.Vector3(0, 200 * UNIT, 0),
+  radius: 20 * UNIT,
+  type: PRIMITIVES.SPHERE,
+  material: MATERIALVALUES.light,
+};
+
 const OVNITRANSLATIONVALUES = {
   stepX: 1 * UNIT,
   stepZ: 1 * UNIT,
