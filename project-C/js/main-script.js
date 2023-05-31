@@ -67,6 +67,8 @@ function update() {
   "use strict";
 
   translateOvni();
+
+  ovni.rotation.y += (Math.PI / 180) * delta;
 }
 
 /////////////
