@@ -8,7 +8,7 @@ const FOV = 70;
 
 const MINVIEWDISTANCE = 1;
 
-const MAXVIEWDISTANCE = 10000;
+const MAXVIEWDISTANCE = 1000000;
 
 const AXIS = {
   X: "x",
@@ -27,25 +27,25 @@ const PRIMITIVES = {
 // BLUE Z DEPTH
 
 const MATERIALVALUES = {
-  ovni: new THREE.MeshBasicMaterial({
+  ovni: new THREE.MeshLambertMaterial({
     color: 0x120345,
   }),
-  glass: new THREE.MeshBasicMaterial({
+  glass: new THREE.MeshLambertMaterial({
     color: 0x001223,
   }),
-  light: new THREE.MeshBasicMaterial({
+  light: new THREE.MeshLambertMaterial({
     color: 0xffff00,
   }),
-  trunk: new THREE.MeshBasicMaterial({
+  trunk: new THREE.MeshLambertMaterial({
     color: 0x964b00,
   }),
-  leaf: new THREE.MeshBasicMaterial({
+  leaf: new THREE.MeshLambertMaterial({
     color: 0x00ff00,
   }),
-  house: new THREE.MeshBasicMaterial({
+  house: new THREE.MeshLambertMaterial({
     color: 0xffffff,
   }),
-  roof: new THREE.MeshBasicMaterial({
+  roof: new THREE.MeshLambertMaterial({
     color: 0x964b00,
   }),
 };
