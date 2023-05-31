@@ -4,6 +4,8 @@
 
 let camera, scene, renderer, controls, delta;
 
+let ovni;
+
 const cameras = [];
 
 let currentCamera;
@@ -17,6 +19,8 @@ function createScene() {
   scene = new THREE.Scene();
 
   scene.add(new THREE.AxesHelper(1000));
+
+  scene.background = new THREE.Color(0xa2bce0);
 }
 
 //////////////////////
@@ -88,6 +92,8 @@ function init() {
   createCameras();
 
   currentCamera = cameras[1];
+
+  createOvni();
 
   render();
 
