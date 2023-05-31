@@ -204,7 +204,7 @@ function onKeyDown(e) {
 
     case 69: //e
       VALUES.forEach((value) => {
-        changeMaterial(value.mesh, MATERIALS.PHONG);
+        changeMaterial(value.mesh, MATERIALS.TOON);
       });
   }
 }
