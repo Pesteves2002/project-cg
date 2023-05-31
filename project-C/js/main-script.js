@@ -20,7 +20,7 @@ function createScene() {
 
   scene.add(new THREE.AxesHelper(1000));
 
-  scene.background = new THREE.Color(0xa2bce0);
+  scene.background = new THREE.Color(0x000000);
 }
 
 //////////////////////
@@ -59,7 +59,7 @@ function createPrespectiveCamera(cameraValue) {
 function createAmbientLight() {
   "use strict";
 
-  const light = new THREE.AmbientLight(0xff0000, 0.2);
+  const light = new THREE.AmbientLight(0xff0000, 0.5);
   scene.add(light);
 }
 

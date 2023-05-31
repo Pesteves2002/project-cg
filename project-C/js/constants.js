@@ -27,25 +27,25 @@ const PRIMITIVES = {
 // BLUE Z DEPTH
 
 const MATERIALVALUES = {
-  ovni: new THREE.MeshLambertMaterial({
+  ovni: new THREE.MeshBasicMaterial({
     color: 0x120345,
   }),
-  glass: new THREE.MeshLambertMaterial({
+  glass: new THREE.MeshBasicMaterial({
     color: 0x001223,
   }),
-  light: new THREE.MeshLambertMaterial({
+  light: new THREE.MeshBasicMaterial({
     color: 0xffff00,
   }),
-  trunk: new THREE.MeshLambertMaterial({
+  trunk: new THREE.MeshBasicMaterial({
     color: 0x964b00,
   }),
-  leaf: new THREE.MeshLambertMaterial({
+  leaf: new THREE.MeshBasicMaterial({
     color: 0x00ff00,
   }),
-  house: new THREE.MeshLambertMaterial({
+  house: new THREE.MeshBasicMaterial({
     color: 0xffffff,
   }),
-  roof: new THREE.MeshLambertMaterial({
+  roof: new THREE.MeshBasicMaterial({
     color: 0x964b00,
   }),
 };
