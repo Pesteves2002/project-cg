@@ -33,6 +33,9 @@ const MATERIALVALUES = {
   glass: new THREE.MeshBasicMaterial({
     color: 0x001223,
   }),
+  light: new THREE.MeshBasicMaterial({
+    color: 0xffff00,
+  }),
 };
 
 const CAMERAVALUES = [[1000, 1000, 1000]];
@@ -59,4 +62,12 @@ const BASEVALUES = {
   height: 2 * UNIT,
   type: PRIMITIVES.CYLINDER,
   material: MATERIALVALUES.ovni,
+};
+
+const OVNILIGHTS = {
+  pos: new THREE.Vector3(11 * UNIT, -4 * UNIT, 0),
+  radius: 2 * UNIT,
+  type: PRIMITIVES.SPHERE,
+  material: MATERIALVALUES.light,
+  step: Math.PI / 4,
 };
