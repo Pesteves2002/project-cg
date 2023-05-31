@@ -34,13 +34,9 @@ function createObject3D(objectValues) {
     mesh.scale.copy(objectValues.scale);
   }
 
-  if (!objectValues.mesh) {
-    objectValues.mesh = mesh;
-    console.log("a");
-  }
+  objectValues.mesh.push(mesh);
 
-  object.add(objectValues.mesh);
-
+  object.add(mesh);
   return object;
 }
 
@@ -264,4 +260,38 @@ function translateOvni() {
 
   ovni.userData.step = ovni.userData.zStep;
   translateObject(ovni, OVNITRANSLATIONVALUES, 0, AXIS.Z);
+}
+
+function changeMaterial(meshes, material) {
+  "use strict";
+
+  let newMaterial;
+  let newColor = meshes[0].material.color;
+  console.log(newColor);
+
+  switch (material) {
+    case MATERIALS.LAMBERT:
+      newMaterial = new THREE.MeshLambertMaterial({
+        color: newColor,
+      });
+      break;
+    case MATERIALS.PHONG:
+      newMaterial = new THREE.MeshPhongMaterial({
+        color: newColor,
+      });
+      break;
+
+    case MATERIALS.TOON:
+      newMaterial = new THREE.MeshToonMaterial({
+        color: newColor,
+      });
+      break;
+
+    default:
+      console.log("Invalid material");
+      return;
+  }
+  meshes.forEach((mesh) => {
+    mesh.material = newMaterial;
+  });
 }

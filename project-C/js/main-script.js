@@ -192,25 +192,19 @@ function onKeyDown(e) {
 
     case 81: //q
       VALUES.forEach((value) => {
-        value.mesh.material = new THREE.MeshBasicMaterial({
-          color: value.material.color,
-        });
+        changeMaterial(value.mesh, MATERIALS.LAMBERT);
       });
       break;
 
     case 87: // w
       VALUES.forEach((value) => {
-        value.mesh.material = new THREE.MeshPhongMaterial({
-          color: value.material.color,
-        });
+        changeMaterial(value.mesh, MATERIALS.PHONG);
       });
       break;
 
     case 69: //e
       VALUES.forEach((value) => {
-        value.mesh.material = new THREE.MeshToonMaterial({
-          color: value.material.color,
-        });
+        changeMaterial(value.mesh, MATERIALS.PHONG);
       });
   }
 }
