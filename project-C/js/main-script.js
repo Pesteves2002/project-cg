@@ -65,6 +65,8 @@ function createPrespectiveCamera(cameraValue) {
 ////////////
 function update() {
   "use strict";
+
+  translateOvni();
 }
 
 /////////////
@@ -98,6 +100,8 @@ function init() {
   createTree();
 
   createHouse();
+
+  resetSteps();
 
   render();
 
@@ -145,6 +149,22 @@ function onKeyDown(e) {
   "use strict";
 
   switch (e.keyCode) {
+    case 37: //left
+      ovni.userData.zStep = OVNITRANSLATIONVALUES.stepZ;
+      break;
+
+    case 38: //up
+      ovni.userData.xStep = -OVNITRANSLATIONVALUES.stepX;
+      break;
+
+    case 39: //right
+      ovni.userData.zStep = -OVNITRANSLATIONVALUES.stepZ;
+      break;
+
+    case 40: //down
+      ovni.userData.xStep = OVNITRANSLATIONVALUES.stepX;
+      break;
+
     case 49: //1
       currentCamera = cameras[0];
       break;
@@ -156,4 +176,16 @@ function onKeyDown(e) {
 ///////////////////////
 function onKeyUp(e) {
   "use strict";
+
+  switch (e.keyCode) {
+    case 37: //left
+    case 39: //right
+      ovni.userData.zStep = 0;
+      break;
+
+    case 38: //up
+    case 40: //down
+      ovni.userData.xStep = 0;
+      break;
+  }
 }
