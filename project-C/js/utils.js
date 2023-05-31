@@ -221,13 +221,9 @@ function translateObject(object, objectValues, offset, axis) {
 function resetSteps() {
   "use strict";
 
-  head.userData.step = 0;
-  leftArm.userData.step = 0;
-  rightArm.userData.step = 0;
-  thighs.userData.step = 0;
-  foot.userData.step = 0;
-  trailer.userData.xStep = 0;
-  trailer.userData.zStep = 0;
+  ovni.userData.Step = 0;
+  ovni.userData.xStep = 0;
+  ovni.userData.zStep = 0;
 }
 
 function greaterOrEqualThan(a, b) {
@@ -257,14 +253,10 @@ function checkIfTruck() {
   );
 }
 
-function translateTrailer() {
-  trailer.userData.step = trailer.userData.xStep;
-  translateObject(trailer, trailerTranslation, 0, AXIS.X);
-  points.trailerMin.x += trailer.userData.xStep * delta;
-  points.trailerMax.x += trailer.userData.xStep * delta;
+function translateOvni() {
+  ovni.userData.step = ovni.userData.xStep;
+  translateObject(ovni, OVNITRANSLATIONVALUES, 0, AXIS.X);
 
-  trailer.userData.step = trailer.userData.zStep;
-  translateObject(trailer, trailerTranslation, 0, AXIS.Z);
-  points.trailerMin.z += trailer.userData.zStep * delta;
-  points.trailerMax.z += trailer.userData.zStep * delta;
+  ovni.userData.step = ovni.userData.zStep;
+  translateObject(ovni, OVNITRANSLATIONVALUES, 0, AXIS.Z);
 }

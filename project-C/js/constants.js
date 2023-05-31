@@ -53,7 +53,7 @@ const MATERIALVALUES = {
 const CAMERAVALUES = [[1000, 1000, 1000]];
 
 const OVNIVALUES = {
-  pos: new THREE.Vector3(-200 * UNIT, -200 * UNIT, -300 * UNIT),
+  pos: new THREE.Vector3(100 * UNIT, -10 * UNIT, 100 * UNIT),
   radius: 7 * UNIT,
   scale: new THREE.Vector3(2, 1, 2),
   type: PRIMITIVES.SPHERE,
@@ -144,4 +144,11 @@ const CHIMNEYVALUES = {
   depth: 2 * UNIT,
   type: PRIMITIVES.CUBE,
   material: MATERIALVALUES.house,
+};
+
+const OVNITRANSLATIONVALUES = {
+  stepX: 1 * UNIT,
+  stepZ: 1 * UNIT,
+  min: -1000 * UNIT,
+  max: 1000 * UNIT,
 };
