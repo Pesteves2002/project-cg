@@ -267,7 +267,6 @@ function changeMaterial(meshes, material) {
 
   let newMaterial;
   let newColor = meshes[0].material.color;
-  console.log(newColor);
 
   switch (material) {
     case MATERIALS.LAMBERT:
