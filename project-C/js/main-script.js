@@ -12,6 +12,8 @@ const cameras = [];
 
 let currentCamera;
 
+let globalLight;
+
 /////////////////////
 /* CREATE SCENE(S) */
 /////////////////////
@@ -81,6 +83,31 @@ function turnOnOvniLights() {
   });
 }
 
+function craeteGlobalIllunimation() {
+  "use strict";
+
+  globalLight = new THREE.HemisphereLight(0x00ffbb, 1);
+
+  globalLight.position(new THREE.Vector3(50 * UNIT, 0, 50 * UNIT));
+
+  const helper = new THREE.HemisphereLightHelper(globalLight, 5);
+  scene.add(helper);
+
+  scene.add(globalLight);
+}
+
+function turnOnGlobalIllunimation() {
+  "use strict";
+
+  globalLight.intensity = 1;
+}
+
+function turnOffGlobalIllunimation() {
+  "use strict";
+
+  globalLight.intensity = 0;
+}
+
 ////////////////////////
 /* CREATE OBJECT3D(S) */
 ////////////////////////
@@ -91,8 +118,12 @@ function createMoon() {
   const moon = new createObject3D(MOONVALUES);
   setPosition(moon, MOONVALUES);
 
+  MOONVALUES.material.emissive = new THREE.Color(0xff00ff);
+  MOONVALUES.material.emissiveIntensity = 1;
+
   scene.add(moon);
 }
+
 ////////////
 /* UPDATE */
 ////////////
