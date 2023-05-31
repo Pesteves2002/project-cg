@@ -4,7 +4,7 @@
 
 let camera, scene, renderer, controls, delta;
 
-let ovni;
+let ovni, ovniLigths;
 
 const cameras = [];
 

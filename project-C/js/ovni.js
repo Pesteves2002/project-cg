@@ -55,6 +55,9 @@ function createLight(rotationStep) {
   const pivot = new THREE.Group();
 
   const light = createObject3D(OVNILIGHTS);
+  const lightSource = new THREE.PointLight(0xffff00, 1 * UNIT, 100 * UNIT);
+
+  light.add(lightSource);
   setPosition(light, OVNILIGHTS);
 
   pivot.add(light);

@@ -69,7 +69,7 @@ const SHININESS = {
 const CAMERAVALUES = [[1000, 1000, 1000]];
 
 const OVNIVALUES = {
-  pos: new THREE.Vector3(100 * UNIT, -10 * UNIT, 100 * UNIT),
+  pos: new THREE.Vector3(0 * UNIT, 40 * UNIT, 0 * UNIT),
   radius: 7 * UNIT,
   scale: new THREE.Vector3(2, 1, 2),
   type: PRIMITIVES.SPHERE,
@@ -105,7 +105,7 @@ const OVNILIGHTS = {
 };
 
 const TRUNKVALUES = {
-  pos: new THREE.Vector3(-150 * UNIT, -200 * UNIT, -300 * UNIT),
+  pos: new THREE.Vector3(50 * UNIT, 0 * UNIT, 0 * UNIT),
   radiusTop: 1.5 * UNIT,
   radiusBottom: 1.5 * UNIT,
   height: 10 * UNIT,
@@ -143,7 +143,7 @@ const LEAFVALUES2 = {
 };
 
 const HOUSEVALUES = {
-  pos: new THREE.Vector3(-50 * UNIT, -100 * UNIT, 20),
+  pos: new THREE.Vector3(0 * UNIT, 0 * UNIT, 50 * UNIT),
   width: 17 * UNIT,
   height: 9 * UNIT,
   depth: 12 * UNIT,
