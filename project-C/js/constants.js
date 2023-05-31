@@ -27,25 +27,25 @@ const PRIMITIVES = {
 // BLUE Z DEPTH
 
 const MATERIALVALUES = {
-  ovni: new THREE.MeshBasicMaterial({
+  ovni: new THREE.MeshLambertMaterial({
     color: 0x120345,
   }),
-  glass: new THREE.MeshBasicMaterial({
+  glass: new THREE.MeshLambertMaterial({
     color: 0x001223,
   }),
-  light: new THREE.MeshBasicMaterial({
+  light: new THREE.MeshLambertMaterial({
     color: 0xffff00,
   }),
-  trunk: new THREE.MeshBasicMaterial({
+  trunk: new THREE.MeshLambertMaterial({
     color: 0x964b00,
   }),
-  leaf: new THREE.MeshBasicMaterial({
+  leaf: new THREE.MeshLambertMaterial({
     color: 0x00ff00,
   }),
-  house: new THREE.MeshBasicMaterial({
+  house: new THREE.MeshLambertMaterial({
     color: 0xffffff,
   }),
-  roof: new THREE.MeshBasicMaterial({
+  roof: new THREE.MeshLambertMaterial({
     color: 0x964b00,
   }),
 };
@@ -58,6 +58,7 @@ const OVNIVALUES = {
   scale: new THREE.Vector3(2, 1, 2),
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.ovni,
+  mesh: null,
 };
 
 const COCKPITVALUES = {
@@ -65,6 +66,7 @@ const COCKPITVALUES = {
   radius: 5 * UNIT,
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.glass,
+  mesh: null,
 };
 
 const BASEVALUES = {
@@ -74,6 +76,7 @@ const BASEVALUES = {
   height: 2 * UNIT,
   type: PRIMITIVES.CYLINDER,
   material: MATERIALVALUES.ovni,
+  mesh: null,
 };
 
 const OVNILIGHTS = {
@@ -82,6 +85,7 @@ const OVNILIGHTS = {
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.light,
   step: Math.PI / 4,
+  mesh: null,
 };
 
 const TRUNKVALUES = {
@@ -91,6 +95,7 @@ const TRUNKVALUES = {
   height: 10 * UNIT,
   type: PRIMITIVES.CYLINDER,
   material: MATERIALVALUES.trunk,
+  mesh: null,
 };
 
 const TRUNKVALUES2 = {
@@ -100,6 +105,7 @@ const TRUNKVALUES2 = {
   height: 5 * UNIT,
   type: PRIMITIVES.CYLINDER,
   material: MATERIALVALUES.trunk,
+  mesh: null,
 };
 
 const LEAFVALUES = {
@@ -108,6 +114,7 @@ const LEAFVALUES = {
   scale: new THREE.Vector3(2, 1, 2),
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.leaf,
+  mesh: null,
 };
 
 const LEAFVALUES2 = {
@@ -116,6 +123,7 @@ const LEAFVALUES2 = {
   scale: new THREE.Vector3(2, 1, 2),
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.leaf,
+  mesh: null,
 };
 
 const HOUSEVALUES = {
@@ -125,6 +133,7 @@ const HOUSEVALUES = {
   depth: 12 * UNIT,
   type: PRIMITIVES.CUBE,
   material: MATERIALVALUES.house,
+  mesh: null,
 };
 
 // WIDHT_roof^2 + DEPTH_roof^2 = DEPTH_HOUSE^2
@@ -135,6 +144,7 @@ const ROOFVALUES = {
   depth: Math.sqrt(72) * UNIT,
   type: PRIMITIVES.CUBE,
   material: MATERIALVALUES.roof,
+  mesh: null,
 };
 
 const CHIMNEYVALUES = {
@@ -144,6 +154,7 @@ const CHIMNEYVALUES = {
   depth: 2 * UNIT,
   type: PRIMITIVES.CUBE,
   material: MATERIALVALUES.house,
+  mesh: null,
 };
 
 const MOONVALUES = {
@@ -151,6 +162,7 @@ const MOONVALUES = {
   radius: 20 * UNIT,
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.light,
+  mesh: null,
 };
 
 const OVNITRANSLATIONVALUES = {
@@ -159,3 +171,17 @@ const OVNITRANSLATIONVALUES = {
   min: -1000 * UNIT,
   max: 1000 * UNIT,
 };
+
+const VALUES = [
+  OVNIVALUES,
+  COCKPITVALUES,
+  BASEVALUES,
+  OVNILIGHTS,
+  TRUNKVALUES,
+  TRUNKVALUES2,
+  LEAFVALUES,
+  LEAFVALUES2,
+  HOUSEVALUES,
+  ROOFVALUES,
+  CHIMNEYVALUES,
+];
