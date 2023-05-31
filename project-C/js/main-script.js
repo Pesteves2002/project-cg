@@ -4,7 +4,9 @@
 
 let camera, scene, renderer, controls, delta;
 
-let ovni, ovniLigths;
+let ovni;
+
+let ovniLigths = [];
 
 const cameras = [];
 
@@ -61,6 +63,22 @@ function createAmbientLight() {
 
   const light = new THREE.AmbientLight(0xff0000, 0.5);
   scene.add(light);
+}
+
+function turnOffOvniLights() {
+  "use strict";
+
+  ovniLigths.forEach((light) => {
+    light.intensity = 0;
+  });
+}
+
+function turnOnOvniLights() {
+  "use strict";
+
+  ovniLigths.forEach((light) => {
+    light.intensity = 1;
+  });
 }
 
 ////////////////////////
@@ -206,6 +224,14 @@ function onKeyDown(e) {
       VALUES.forEach((value) => {
         changeMaterial(value.mesh, MATERIALS.TOON);
       });
+      break;
+
+    case 80: // p
+      turnOnOvniLights();
+      break;
+
+    case 83:
+      turnOffOvniLights();
   }
 }
 ///////////////////////
