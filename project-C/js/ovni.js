@@ -33,7 +33,14 @@ function createCockpit() {
 
 function createBase() {
   const base = createObject3D(BASEVALUES);
+  const spotLight = new THREE.SpotLight(0x00ff00);
+  base.add(spotLight);
+
   setPosition(base, BASEVALUES);
+
+  const helper = new THREE.SpotLightHelper(spotLight);
+  scene.add(helper);
+
   return base;
 }
 
@@ -59,6 +66,9 @@ function createLight(rotationStep) {
 
   light.add(lightSource);
   setPosition(light, OVNILIGHTS);
+
+  const helper = new THREE.PointLightHelper(lightSource, 5 * UNIT);
+  scene.add(helper);
 
   pivot.add(light);
   pivot.rotation.y = rotationStep * OVNILIGHTS.step;
