@@ -42,6 +42,12 @@ const MATERIALVALUES = {
   leaf: new THREE.MeshBasicMaterial({
     color: 0x00ff00,
   }),
+  house: new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+  }),
+  roof: new THREE.MeshBasicMaterial({
+    color: 0x964b00,
+  }),
 };
 
 const CAMERAVALUES = [[1000, 1000, 1000]];
@@ -110,4 +116,32 @@ const LEAFVALUES2 = {
   scale: new THREE.Vector3(2, 1, 2),
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.leaf,
+};
+
+const HOUSEVALUES = {
+  pos: new THREE.Vector3(0, 0, 0),
+  width: 17 * UNIT,
+  height: 9 * UNIT,
+  depth: 12 * UNIT,
+  type: PRIMITIVES.CUBE,
+  material: MATERIALVALUES.house,
+};
+
+// WIDHT_roof^2 + DEPTH_roof^2 = DEPTH_HOUSE^2
+const ROOFVALUES = {
+  pos: new THREE.Vector3(0, 4.5 * UNIT, 0),
+  width: Math.sqrt(72) * UNIT,
+  height: 16.9 * UNIT,
+  depth: Math.sqrt(72) * UNIT,
+  type: PRIMITIVES.CUBE,
+  material: MATERIALVALUES.roof,
+};
+
+const CHIMNEYVALUES = {
+  pos: new THREE.Vector3(5 * UNIT, 4 * UNIT, 3 * UNIT),
+  width: 2 * UNIT,
+  height: 5 * UNIT,
+  depth: 2 * UNIT,
+  type: PRIMITIVES.CUBE,
+  material: MATERIALVALUES.house,
 };
