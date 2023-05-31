@@ -34,7 +34,12 @@ function createObject3D(objectValues) {
     mesh.scale.copy(objectValues.scale);
   }
 
-  object.add(mesh);
+  if (!objectValues.mesh) {
+    objectValues.mesh = mesh;
+    console.log("a");
+  }
+
+  object.add(objectValues.mesh);
 
   return object;
 }

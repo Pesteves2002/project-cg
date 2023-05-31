@@ -191,25 +191,25 @@ function onKeyDown(e) {
       break;
 
     case 81: //q
-      Object.keys(MATERIALVALUES).forEach((key) => {
-        MATERIALVALUES[key] = new THREE.MeshLambertMaterial({
-          color: MATERIALVALUES[key].color,
+      VALUES.forEach((value) => {
+        value.mesh.material = new THREE.MeshBasicMaterial({
+          color: value.material.color,
         });
       });
       break;
 
     case 87: // w
-      Object.keys(MATERIALVALUES).forEach((key) => {
-        MATERIALVALUES[key] = new THREE.MeshPhongMaterial({
-          color: MATERIALVALUES[key].color,
+      VALUES.forEach((value) => {
+        value.mesh.material = new THREE.MeshPhongMaterial({
+          color: value.material.color,
         });
       });
       break;
 
     case 69: //e
-      Object.keys(MATERIALVALUES).forEach((key) => {
-        MATERIALVALUES[key] = new THREE.MeshBasicMaterial({
-          color: MATERIALVALUES[key].color,
+      VALUES.forEach((value) => {
+        value.mesh.material = new THREE.MeshToonMaterial({
+          color: value.material.color,
         });
       });
   }
