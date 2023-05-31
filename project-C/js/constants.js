@@ -79,7 +79,7 @@ const OVNILIGHTS = {
 };
 
 const TRUNKVALUES = {
-  pos: new THREE.Vector3(0, 0, 0),
+  pos: new THREE.Vector3(-150 * UNIT, -200 * UNIT, -300 * UNIT),
   radiusTop: 1.5 * UNIT,
   radiusBottom: 1.5 * UNIT,
   height: 10 * UNIT,
