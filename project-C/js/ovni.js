@@ -14,9 +14,11 @@ function createOvniBody() {
 
   const body = createObject3D(OVNIVALUES);
   const cockpit = createCockpit();
+  const base = createBase();
 
   group.add(body);
   group.add(cockpit);
+  group.add(base);
 
   return group;
 }
@@ -25,4 +27,10 @@ function createCockpit() {
   const cockpit = createObject3D(COCKPITVALUES);
   setPosition(cockpit, COCKPITVALUES);
   return cockpit;
+}
+
+function createBase() {
+  const base = createObject3D(BASEVALUES);
+  setPosition(base, BASEVALUES);
+  return base;
 }

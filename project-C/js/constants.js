@@ -51,3 +51,12 @@ const COCKPITVALUES = {
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.glass,
 };
+
+const BASEVALUES = {
+  pos: new THREE.Vector3(0, -7 * UNIT, 0),
+  radiusTop: 5 * UNIT,
+  radiusBottom: 5 * UNIT,
+  height: 2 * UNIT,
+  type: PRIMITIVES.CYLINDER,
+  material: MATERIALVALUES.ovni,
+};
