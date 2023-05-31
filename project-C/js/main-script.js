@@ -170,9 +170,31 @@ function onKeyDown(e) {
     case 49: //1
       currentCamera = cameras[0];
       break;
+
+    case 81: //q
+      Object.keys(MATERIALVALUES).forEach((key) => {
+        MATERIALVALUES[key] = new THREE.MeshLambertMaterial({
+          color: MATERIALVALUES[key].color,
+        });
+      });
+      break;
+
+    case 87: // w
+      Object.keys(MATERIALVALUES).forEach((key) => {
+        MATERIALVALUES[key] = new THREE.MeshPhongMaterial({
+          color: MATERIALVALUES[key].color,
+        });
+      });
+      break;
+
+    case 69: //e
+      Object.keys(MATERIALVALUES).forEach((key) => {
+        MATERIALVALUES[key] = new THREE.MeshBasicMaterial({
+          color: MATERIALVALUES[key].color,
+        });
+      });
   }
 }
-
 ///////////////////////
 /* KEY UP CALLBACK */
 ///////////////////////
