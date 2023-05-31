@@ -56,10 +56,25 @@ function createPrespectiveCamera(cameraValue) {
 /* CREATE LIGHT(S) */
 /////////////////////
 
+function createAmbientLight() {
+  "use strict";
+
+  const light = new THREE.AmbientLight(0xff0000, 0.2);
+  scene.add(light);
+}
+
 ////////////////////////
 /* CREATE OBJECT3D(S) */
 ////////////////////////
 
+function createMoon() {
+  "use strict";
+
+  const moon = new createObject3D(MOONVALUES);
+  setPosition(moon, MOONVALUES);
+
+  scene.add(moon);
+}
 ////////////
 /* UPDATE */
 ////////////
@@ -93,6 +108,8 @@ function init() {
 
   createScene();
 
+  createAmbientLight();
+
   createCameras();
 
   currentCamera = cameras[1];
@@ -102,6 +119,8 @@ function init() {
   createTree();
 
   createHouse();
+
+  createMoon();
 
   resetSteps();
 
