@@ -97,6 +97,8 @@ function init() {
 
   createTree();
 
+  createHouse();
+
   render();
 
   document.body.appendChild(VRButton.createButton(renderer));
