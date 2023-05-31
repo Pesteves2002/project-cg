@@ -60,7 +60,5 @@ function createLight(rotationStep) {
   pivot.add(light);
   pivot.rotation.y = rotationStep * OVNILIGHTS.step;
 
-  console.log(rotationStep * OVNILIGHTS.step);
-
   return pivot;
 }
