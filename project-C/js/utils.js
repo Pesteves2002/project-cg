@@ -40,13 +40,7 @@ function createObject3D(objectValues) {
 }
 
 function setPosition(obj, objectValues) {
-  obj.position.copy(
-    new THREE.Vector3(
-      objectValues.relativeX,
-      objectValues.relativeY,
-      objectValues.relativeZ
-    )
-  );
+  obj.position.copy(objectValues.pos);
 }
 
 function mirrorObject(obj, axis, mirror = false) {
