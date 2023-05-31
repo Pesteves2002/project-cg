@@ -41,7 +41,7 @@ const MATERIALVALUES = {
 const CAMERAVALUES = [[1000, 1000, 1000]];
 
 const OVNIVALUES = {
-  pos: new THREE.Vector3(0, 0, 0),
+  pos: new THREE.Vector3(-200 * UNIT, -200 * UNIT, -300 * UNIT),
   radius: 7 * UNIT,
   scale: new THREE.Vector3(2, 1, 2),
   type: PRIMITIVES.SPHERE,
