@@ -119,12 +119,12 @@ function createPlane() {
   const displacementMap = loader.load("./imgs/heightmap.png");
 
   const material = new THREE.MeshStandardMaterial({
-    color: 0xff000b,
+    color: 0x000ffb,
     displacementMap: displacementMap,
     displacementScale: 1000 * UNIT,
   });
 
-  const geometry = new THREE.PlaneGeometry(1000 * UNIT, 1000 * UNIT, 100, 100);
+  const geometry = new THREE.PlaneGeometry(1000 * UNIT, 1000 * UNIT, 30, 30);
 
   const plane = new THREE.Mesh(geometry, material);
 
