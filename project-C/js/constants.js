@@ -59,16 +59,6 @@ const MATERIALS = {
   TOON: "Toon",
 };
 
-const EMISSIVE = {
-  PHONG: 0x000000,
-  TOON: 0x000000,
-};
-
-const SHININESS = {
-  PHONG: 30,
-  TOON: 0,
-};
-
 const CAMERAVALUES = [[1000, 1000, 1000]];
 
 const OVNIVALUES = {
@@ -184,6 +174,7 @@ const MOONVALUES = {
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.lightMoon,
   mesh: [],
+  color: 0xffa500,
 };
 
 const OVNITRANSLATIONVALUES = {
