@@ -300,6 +300,12 @@ function onKeyDown(e) {
       });
       break;
 
+    case 82: //r
+      VALUES.forEach((value) => {
+        changeMaterial(value.mesh, MATERIALS.BASIC);
+      });
+      break;
+
     case 80: // p
       turnOnOvniLights();
       break;
