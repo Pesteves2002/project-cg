@@ -140,7 +140,7 @@ function createMoon() {
   const moon = new createObject3D(MOONVALUES);
   setPosition(moon, MOONVALUES);
 
-  MOONVALUES.material.emissive = new THREE.Color(MOONVALUES.material.color);
+  MOONVALUES.material.emissive = new THREE.Color(MOONVALUES.color);
 
   scene.add(moon);
 }
