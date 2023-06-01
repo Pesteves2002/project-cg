@@ -220,6 +220,8 @@ function init() {
 
   craeteGlobalIllunimation();
 
+  createSky();
+
   resetSteps();
 
   render();
