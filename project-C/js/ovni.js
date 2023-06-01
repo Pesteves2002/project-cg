@@ -34,7 +34,14 @@ function createCockpit() {
 function createBase() {
   const base = createObject3D(BASEVALUES);
   const spotLight = new THREE.SpotLight(OVNIVALUES.color);
+
+  const target = new THREE.Object3D();
+  target.position.set(0, -500 * UNIT, 0);
+
   base.add(spotLight);
+  base.add(target);
+
+  spotLight.target = target;
 
   ovniLigths.push(spotLight);
 
