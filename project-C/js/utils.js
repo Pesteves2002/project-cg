@@ -286,6 +286,12 @@ function changeMaterial(meshes, material) {
       });
       break;
 
+    case MATERIALS.BASIC:
+      newMaterial = new THREE.MeshBasicMaterial({
+        color: newColor,
+      });
+      break;
+
     default:
       console.log("Invalid material");
       return;
