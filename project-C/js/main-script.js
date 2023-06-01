@@ -112,6 +112,29 @@ function turnOffGlobalIllunimation() {
 /* CREATE OBJECT3D(S) */
 ////////////////////////
 
+function createPlane() {
+  "use strict";
+
+  const loader = new THREE.TextureLoader();
+  const displacementMap = loader.load("./imgs/heightmap.png");
+
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xff000b,
+    displacementMap: displacementMap,
+    displacementScale: 1000 * UNIT,
+  });
+
+  const geometry = new THREE.PlaneGeometry(1000 * UNIT, 1000 * UNIT, 100, 100);
+
+  const plane = new THREE.Mesh(geometry, material);
+
+  plane.rotation.x = -Math.PI / 2;
+
+  plane.position.y = -105 * UNIT;
+
+  scene.add(plane);
+}
+
 function createMoon() {
   "use strict";
 
@@ -170,6 +193,8 @@ function init() {
   createHouse();
 
   createMoon();
+
+  createPlane();
 
   resetSteps();
 
