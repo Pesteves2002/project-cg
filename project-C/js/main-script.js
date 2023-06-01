@@ -147,6 +147,21 @@ function createMoon() {
   scene.add(moon);
 }
 
+function createSkyBox() {
+  "use strict";
+
+  const sphere = new THREE.SphereGeometry(1000 * UNIT, 100, 100);
+
+  const material = new THREE.MeshBasicMaterial({
+    color: 0x0000ff,
+    side: THREE.BackSide,
+  });
+
+  const mesh = new THREE.Mesh(sphere, material);
+
+  scene.add(mesh);
+}
+
 ////////////
 /* UPDATE */
 ////////////
@@ -187,6 +202,8 @@ function init() {
   currentCamera = cameras[1];
 
   createOvni();
+
+  createSkyBox();
 
   createTree();
 
