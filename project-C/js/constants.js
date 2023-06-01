@@ -53,6 +53,11 @@ const MATERIALVALUES = {
   }),
 };
 
+const LIGHTCOLORS = {
+  global: 0xffffff,
+  ambient: 0x964b00,
+};
+
 const MATERIALS = {
   LAMBERT: "Lambert",
   PHONG: "Phong",

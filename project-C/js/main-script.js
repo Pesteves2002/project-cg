@@ -63,7 +63,7 @@ function createPrespectiveCamera(cameraValue) {
 function createAmbientLight() {
   "use strict";
 
-  const light = new THREE.AmbientLight(0xff0000, 0.5);
+  const light = new THREE.AmbientLight(LIGHTCOLORS.ambient, 0.2);
   scene.add(light);
 }
 
@@ -86,11 +86,8 @@ function turnOnOvniLights() {
 function craeteGlobalIllunimation() {
   "use strict";
 
-  globalLight = new THREE.HemisphereLight(0xff00ff, 1);
+  globalLight = new THREE.DirectionalLight(LIGHTCOLORS.global, 5);
   globalLight.target = ovni;
-
-  const helper = new THREE.HemisphereLightHelper(globalLight, UNIT * 50);
-  scene.add(helper);
 
   scene.add(globalLight);
 }
@@ -105,6 +102,16 @@ function turnOffGlobalIllunimation() {
   "use strict";
 
   globalLight.intensity = 0;
+}
+
+function toggleGlobalIllunimation() {
+  "use strict";
+
+  if (globalLight.intensity === 0) {
+    turnOnGlobalIllunimation();
+  } else {
+    turnOffGlobalIllunimation();
+  }
 }
 
 ////////////////////////
@@ -201,7 +208,7 @@ function init() {
 
   createOvni();
 
-  createSkyBox();
+  // createSkyBox();
 
   createTree();
 
@@ -309,8 +316,12 @@ function onKeyDown(e) {
       turnOnOvniLights();
       break;
 
-    case 83:
+    case 83: // s
       turnOffOvniLights();
+      break;
+
+    case 68: // d
+      toggleGlobalIllunimation();
   }
 }
 ///////////////////////
