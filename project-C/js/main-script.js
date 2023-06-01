@@ -86,11 +86,10 @@ function turnOnOvniLights() {
 function craeteGlobalIllunimation() {
   "use strict";
 
-  globalLight = new THREE.HemisphereLight(0x00ffbb, 1);
+  globalLight = new THREE.HemisphereLight(0xff00ff, 1);
+  globalLight.target = ovni;
 
-  globalLight.position(new THREE.Vector3(50 * UNIT, 0, 50 * UNIT));
-
-  const helper = new THREE.HemisphereLightHelper(globalLight, 5);
+  const helper = new THREE.HemisphereLightHelper(globalLight, UNIT * 50);
   scene.add(helper);
 
   scene.add(globalLight);
@@ -212,6 +211,8 @@ function init() {
   createMoon();
 
   createPlane();
+
+  craeteGlobalIllunimation();
 
   resetSteps();
 
