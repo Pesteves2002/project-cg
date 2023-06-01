@@ -33,7 +33,7 @@ const MATERIALVALUES = {
   glass: new THREE.MeshStandardMaterial({
     color: 0x001223,
   }),
-  light: new THREE.MeshStandardMaterial({
+  lightOvni: new THREE.MeshStandardMaterial({
     color: 0xffff00,
   }),
   trunk: new THREE.MeshStandardMaterial({
@@ -47,6 +47,9 @@ const MATERIALVALUES = {
   }),
   roof: new THREE.MeshStandardMaterial({
     color: 0x964b00,
+  }),
+  lightMoon: new THREE.MeshStandardMaterial({
+    color: 0xffff00,
   }),
 };
 
@@ -93,15 +96,17 @@ const BASEVALUES = {
   type: PRIMITIVES.CYLINDER,
   material: MATERIALVALUES.ovni,
   mesh: [],
+  color: 0x234f1e,
 };
 
 const OVNILIGHTS = {
   pos: new THREE.Vector3(11 * UNIT, -4 * UNIT, 0),
   radius: 2 * UNIT,
   type: PRIMITIVES.SPHERE,
-  material: MATERIALVALUES.light,
+  material: MATERIALVALUES.lightOvni,
   step: Math.PI / 4,
   mesh: [],
+  color: 0x234f1e,
 };
 
 const TRUNKVALUES = {
@@ -177,7 +182,7 @@ const MOONVALUES = {
   pos: new THREE.Vector3(0, 200 * UNIT, 0),
   radius: 20 * UNIT,
   type: PRIMITIVES.SPHERE,
-  material: MATERIALVALUES.light,
+  material: MATERIALVALUES.lightMoon,
   mesh: [],
 };
 
