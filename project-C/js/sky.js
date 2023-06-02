@@ -4,7 +4,7 @@ let skyTexture;
 
 let skyCamera;
 
-const SKYBOX = 100;
+const SKYBOX = 256;
 
 let stars = new THREE.Group();
 
@@ -77,7 +77,7 @@ function createPoints() {
   skyScene.remove(stars);
   stars = new THREE.Group();
 
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < SKYBOX * 10; i++) {
     const sphere = new THREE.SphereGeometry(0.1);
 
     const material = new THREE.MeshBasicMaterial({
