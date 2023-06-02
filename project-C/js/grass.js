@@ -1,24 +1,24 @@
-let grassScene = new THREE.Scene();
-
 let grassTexture;
 
 let grassCamera;
 
-const GRASSBOX = 256;
-
 let flowers = new THREE.Group();
 
 function createGrass() {
-  const geometry = new THREE.BoxGeometry(GRASSBOX, 0, GRASSBOX);
+  const geometry = new THREE.BoxGeometry(
+    GROUNDVALUES.size,
+    0,
+    GROUNDVALUES.size
+  );
 
   const grass = new THREE.Mesh(geometry, MATERIALVALUES.grass);
-  grass.position.set(GRASSBOX / 2, 0, GRASSBOX / 2);
+  grass.position.set(GROUNDVALUES.size / 2, 0, GROUNDVALUES.size / 2);
 
-  grassScene.add(grass);
+  skyScene.add(grass);
 
-  grassScene.add(new THREE.AxesHelper(5 * UNIT));
+  skyScene.add(new THREE.AxesHelper(5 * UNIT));
 
-  grassCamera = createOrtographicCamera();
+  grassCamera = createOrtographicCamera(CAMERAVALUES.ground);
 
   createFlowers();
 
@@ -35,21 +35,30 @@ function createGrass() {
 function createFlowers() {
   "use strict";
 
-  grassScene.remove(flowers);
+  skyScene.remove(flowers);
   flowers = new THREE.Group();
 
-  for (let i = 0; i < GRASSBOX * 10; i++) {
-    const sphere = new THREE.SphereGeometry(0.1);
+  for (let i = 0; i < GROUNDVALUES.size * 10; i++) {
+    const geometry = new THREE.SphereGeometry(GROUNDVALUES.flowerSize);
 
     const material = new THREE.MeshBasicMaterial({
-      color: FLOWERCOLORS[Math.floor(Math.random() * FLOWERCOLORS.length)],
+      color:
+        GROUNDVALUES.colors[
+          Math.floor(Math.random() * GROUNDVALUES.colors.length)
+        ],
     });
 
-    const mesh = new THREE.Mesh(sphere, material);
-    mesh.position.set(Math.random() * GRASSBOX, 1, Math.random() * GRASSBOX);
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(
+      Math.random() * GROUNDVALUES.size,
+      1,
+      Math.random() * GROUNDVALUES.size
+    );
 
     flowers.add(mesh);
   }
 
-  grassScene.add(flowers);
+  skyScene.add(flowers);
 }
+
+function createValidPosition(mesh) {}

@@ -300,3 +300,17 @@ function changeMaterial(meshes, material) {
     mesh.material = newMaterial;
   });
 }
+
+function createOrtographicCamera(cameraValues) {
+  "use strict";
+  camera = new THREE.OrthographicCamera(
+    cameraValues.left,
+    cameraValues.right,
+    cameraValues.top,
+    cameraValues.bottom,
+    cameraValues.near,
+    cameraValues.far
+  );
+
+  return camera;
+}
