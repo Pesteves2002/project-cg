@@ -23,8 +23,6 @@ function createScene() {
   scene = new THREE.Scene();
 
   scene.add(new THREE.AxesHelper(1000));
-
-  scene.background = new THREE.Color(0x000000);
 }
 
 //////////////////////
@@ -131,6 +129,7 @@ function createPlane() {
     map: grassTexture.texture,
     displacementMap: displacementMap,
     displacementScale: 1000 * UNIT,
+    side: THREE.DoubleSide,
   });
 
   const geometry = new THREE.PlaneGeometry(1000 * UNIT, 1000 * UNIT, 30, 30);
@@ -158,7 +157,7 @@ function createMoon() {
 function createSkyBox() {
   "use strict";
 
-  const sphere = new THREE.SphereGeometry(800 * UNIT, 90, 90);
+  const sphere = new THREE.SphereGeometry(800 * UNIT);
 
   const material = new THREE.MeshBasicMaterial({
     map: skyTexture.texture,
@@ -291,7 +290,7 @@ function onKeyDown(e) {
       break;
 
     case 50: // 2
-      createPoints();
+      createStars();
       break;
 
     case 37: //left
