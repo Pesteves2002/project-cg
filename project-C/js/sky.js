@@ -1,9 +1,15 @@
+let skyScene = new THREE.Scene();
+
+let skyTexture;
+
+let skyCamera;
+
+const SKYBOX = 100;
+
 function createSky() {
   const geometry = new THREE.BufferGeometry();
 
-  const positions = [0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0].map(
-    (n) => n * UNIT * 1000
-  );
+  const positions = [0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0].map((n) => n * SKYBOX);
 
   const indices = [0, 1, 2, 2, 3, 0];
 
@@ -14,7 +20,6 @@ function createSky() {
     color.g,
     color.b,
   ]);
-  console.log(colors);
 
   geometry.setIndex(indices);
   geometry.setAttribute(
@@ -29,7 +34,33 @@ function createSky() {
   });
 
   const sky = new THREE.Mesh(geometry, material);
-  sky.position.set(0, 100 * UNIT, 0);
+  sky.position.set(0, 0, 0);
 
-  scene.add(sky);
+  skyScene.add(sky);
+
+  skyTexture = new THREE.WebGLRenderTarget(
+    window.innerWidth,
+    window.innerHeight,
+    { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter }
+  );
+
+  createOrtographicCamera();
+
+  renderer.render(skyScene, skyCamera, skyTexture);
+}
+
+function createOrtographicCamera() {
+  "use strict";
+  skyCamera = new THREE.OrthographicCamera(
+    -SKYBOX / 2,
+    SKYBOX / 2,
+    SKYBOX / 2,
+    -SKYBOX / 2,
+    1,
+    10000
+  );
+
+  skyCamera.position.set(SKYBOX / 2, SKYBOX, SKYBOX / 2);
+  skyCamera.lookAt(SKYBOX / 2, 0, SKYBOX / 2);
+  skyCamera.updateProjectionMatrix();
 }
