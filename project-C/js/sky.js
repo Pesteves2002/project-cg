@@ -40,6 +40,8 @@ function createSky() {
 
   createOrtographicCamera();
 
+  createPoints();
+
   skyTexture = new THREE.WebGLRenderTarget(
     window.innerWidth,
     window.innerHeight,
@@ -65,4 +67,21 @@ function createOrtographicCamera() {
   skyCamera.lookAt(SKYBOX / 2, 0, SKYBOX / 2);
   skyCamera.zoom = 14;
   skyCamera.updateProjectionMatrix();
+}
+
+function createPoints() {
+  "use strict";
+
+  for (let i = 0; i < 1000; i++) {
+    const sphere = new THREE.SphereGeometry(0.1);
+
+    const material = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+    });
+
+    const mesh = new THREE.Mesh(sphere, material);
+    mesh.position.set(Math.random() * SKYBOX, 1, Math.random() * SKYBOX);
+
+    skyScene.add(mesh);
+  }
 }
