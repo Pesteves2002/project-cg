@@ -6,6 +6,8 @@ let skyCamera;
 
 const SKYBOX = 100;
 
+let stars = new THREE.Group();
+
 function createSky() {
   const geometry = new THREE.BufferGeometry();
 
@@ -72,6 +74,9 @@ function createOrtographicCamera() {
 function createPoints() {
   "use strict";
 
+  skyScene.remove(stars);
+  stars = new THREE.Group();
+
   for (let i = 0; i < 1000; i++) {
     const sphere = new THREE.SphereGeometry(0.1);
 
@@ -82,6 +87,8 @@ function createPoints() {
     const mesh = new THREE.Mesh(sphere, material);
     mesh.position.set(Math.random() * SKYBOX, 1, Math.random() * SKYBOX);
 
-    skyScene.add(mesh);
+    stars.add(mesh);
   }
+
+  skyScene.add(stars);
 }
