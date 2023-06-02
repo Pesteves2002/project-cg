@@ -124,8 +124,11 @@ function createPlane() {
   const loader = new THREE.TextureLoader();
   const displacementMap = loader.load("./imgs/heightmap.png");
 
+  grassTexture.texture.wrapS = THREE.RepeatWrapping;
+  grassTexture.texture.wrapT = THREE.RepeatWrapping;
+
   const material = new THREE.MeshStandardMaterial({
-    color: 0x000ffb,
+    map: grassTexture.texture,
     displacementMap: displacementMap,
     displacementScale: 1000 * UNIT,
   });
@@ -187,8 +190,13 @@ function render() {
   renderer.clear();
   renderer.render(skyScene, skyCamera);
 
+  renderer.setRenderTarget(grassTexture);
+  renderer.clear();
+  renderer.render(grassScene, grassCamera);
+
   renderer.setRenderTarget(null);
   renderer.clear();
+  renderer.render(grassScene, grassCamera);
   renderer.render(scene, currentCamera);
 }
 
@@ -219,6 +227,8 @@ function init() {
   createHouse();
 
   createMoon();
+
+  createGrass();
 
   createPlane();
 

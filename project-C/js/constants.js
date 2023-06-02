@@ -51,6 +51,9 @@ const MATERIALVALUES = {
   lightMoon: new THREE.MeshStandardMaterial({
     color: 0xffff00,
   }),
+  grass: new THREE.MeshBasicMaterial({
+    color: 0x00ff00,
+  }),
 };
 
 const LIGHTCOLORS = {
@@ -201,4 +204,8 @@ const VALUES = [
   HOUSEVALUES,
   ROOFVALUES,
   CHIMNEYVALUES,
+];
+
+const FLOWERCOLORS = [
+  0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffffff,
 ];
