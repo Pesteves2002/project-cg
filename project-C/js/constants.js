@@ -51,8 +51,8 @@ const MATERIALVALUES = {
   lightMoon: new THREE.MeshStandardMaterial({
     color: 0xffff00,
   }),
-  grass: new THREE.MeshStandardMaterial({
-    color: 0x00ff00,
+  grass: new THREE.MeshBasicMaterial({
+    color: 0x013020,
   }),
 };
 
@@ -220,10 +220,9 @@ const SKYVALUES = {
 };
 
 const GROUNDVALUES = {
-  size: 2,
-  green: new THREE.Color(0x013220),
-  flowers: 10,
-  flowerSize: 0.1,
+  size: 16,
+  flowers: 1000,
+  flowerSize: 0.02,
   colors: [
     0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffffff,
   ].map((color) => new THREE.Color(color)),
