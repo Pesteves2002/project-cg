@@ -40,7 +40,7 @@ const MATERIALVALUES = {
     color: 0x964b00,
   }),
   leaf: new THREE.MeshStandardMaterial({
-    color: 0x00ff00,
+    color: 0x234f1e,
   }),
   house: new THREE.MeshStandardMaterial({
     color: 0xffffff,
