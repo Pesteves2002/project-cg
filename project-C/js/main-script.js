@@ -61,7 +61,7 @@ function createPrespectiveCamera(cameraValue) {
 function createAmbientLight() {
   "use strict";
 
-  const light = new THREE.AmbientLight(LIGHTCOLORS.ambient, 0.2);
+  const light = new THREE.AmbientLight(LIGHTCOLORS.ambient, 0.25);
   scene.add(light);
 }
 
