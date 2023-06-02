@@ -262,7 +262,7 @@ function animate() {
 
   render();
 
-  requestAnimationFrame(animate);
+  renderer.setAnimationLoop(animate);
 }
 
 ////////////////////////////
