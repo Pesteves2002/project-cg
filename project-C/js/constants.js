@@ -52,7 +52,7 @@ const MATERIALVALUES = {
     color: 0xffff00,
   }),
   grass: new THREE.MeshBasicMaterial({
-    color: 0x013020,
+    color: 0x00ff00,
   }),
 };
 
