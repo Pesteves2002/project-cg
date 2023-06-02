@@ -286,6 +286,10 @@ function onKeyDown(e) {
   "use strict";
 
   switch (e.keyCode) {
+    case 49: //1
+      createFlowers();
+      break;
+
     case 50: // 2
       createPoints();
       break;
@@ -304,10 +308,6 @@ function onKeyDown(e) {
 
     case 40: //down
       ovni.userData.xStep = OVNITRANSLATIONVALUES.stepX;
-      break;
-
-    case 49: //1
-      currentCamera = cameras[0];
       break;
 
     case 81: //q
