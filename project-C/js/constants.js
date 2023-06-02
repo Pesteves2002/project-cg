@@ -235,7 +235,7 @@ const CAMERAVALUES = {
     top: SKYVALUES.size / 2,
     bottom: -SKYVALUES.size / 2,
     min: 1,
-    max: 100,
+    max: 10,
   },
   ground: {
     left: -GROUNDVALUES.size / 2,
@@ -243,7 +243,7 @@ const CAMERAVALUES = {
     top: GROUNDVALUES.size / 2,
     bottom: -GROUNDVALUES.size / 2,
     min: 1,
-    max: 100,
+    max: 10,
   },
   main: [1000, 1000, 1000],
 };
