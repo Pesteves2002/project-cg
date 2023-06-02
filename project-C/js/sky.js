@@ -69,7 +69,7 @@ function createStars() {
     } else celestialBody = createStar();
     celestialBody.position.set(
       Math.random() * SKYVALUES.size,
-      1,
+      2,
       (Math.random() * SKYVALUES.size * 3) / 5 // in order to have more bodies at the visible part of the sky
     );
 
@@ -79,13 +79,15 @@ function createStars() {
 }
 
 function createStar() {
-  const geometry = new THREE.SphereGeometry(SKYVALUES.starSize);
+  const geometry = new THREE.CircleGeometry(SKYVALUES.starSize);
+  geometry.rotateX(-Math.PI / 2);
 
   return new THREE.Mesh(geometry, SKYVALUES.star);
 }
 
 function createPlanet() {
-  const geometry = new THREE.SphereGeometry(SKYVALUES.planetSize);
+  const geometry = new THREE.CircleGeometry(SKYVALUES.planetSize);
+  geometry.rotateX(-Math.PI / 2);
 
   return new THREE.Mesh(geometry, SKYVALUES.planet);
 }

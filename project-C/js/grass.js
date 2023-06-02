@@ -40,7 +40,9 @@ function createFlowers() {
   flowers = new THREE.Group();
 
   for (let i = 0; i < GROUNDVALUES.flowers; i++) {
-    const geometry = new THREE.SphereGeometry(GROUNDVALUES.flowerSize);
+    const geometry = new THREE.CircleGeometry(GROUNDVALUES.flowerSize);
+
+    geometry.rotateX(-Math.PI / 2);
 
     const material = new THREE.MeshBasicMaterial({
       color:
@@ -75,5 +77,5 @@ function createValidPosition(mesh) {
     z <= GROUNDVALUES.flowerSize
   );
 
-  mesh.position.set(x, 1, z);
+  mesh.position.set(x, 0.2, z);
 }
