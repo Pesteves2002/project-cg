@@ -276,6 +276,10 @@ function onKeyDown(e) {
   "use strict";
 
   switch (e.keyCode) {
+    case 50: // 2
+      createPoints();
+      break;
+
     case 37: //left
       ovni.userData.zStep = OVNITRANSLATIONVALUES.stepZ;
       break;
