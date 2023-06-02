@@ -67,8 +67,6 @@ const MATERIALS = {
   TOON: "Toon",
 };
 
-const CAMERAVALUES = [[1000, 1000, 1000]];
-
 const OVNIVALUES = {
   pos: new THREE.Vector3(0 * UNIT, 40 * UNIT, 0 * UNIT),
   radius: 7 * UNIT,
@@ -206,10 +204,6 @@ const VALUES = [
   CHIMNEYVALUES,
 ];
 
-const FLOWERCOLORS = [
-  0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffffff,
-];
-
 const SKYVALUES = {
   size: 128,
   blue: new THREE.Color(0x0000ff),
@@ -223,4 +217,34 @@ const SKYVALUES = {
     color: 0xffa500,
   }),
   planetSize: 0.2,
+};
+
+const GROUNDVALUES = {
+  size: 2,
+  green: new THREE.Color(0x013220),
+  flowers: 10,
+  flowerSize: 0.1,
+  colors: [
+    0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffffff,
+  ].map((color) => new THREE.Color(color)),
+};
+
+const CAMERAVALUES = {
+  sky: {
+    left: -SKYVALUES.size / 2,
+    right: SKYVALUES.size / 2,
+    top: SKYVALUES.size / 2,
+    bottom: -SKYVALUES.size / 2,
+    min: 1,
+    max: 100,
+  },
+  ground: {
+    left: -GROUNDVALUES.size / 2,
+    right: GROUNDVALUES.size / 2,
+    top: GROUNDVALUES.size / 2,
+    bottom: -GROUNDVALUES.size / 2,
+    min: 1,
+    max: 100,
+  },
+  main: [1000, 1000, 1000],
 };

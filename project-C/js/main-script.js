@@ -31,8 +31,8 @@ function createScene() {
 
 function createCameras() {
   "use strict";
-  createPrespectiveCamera(CAMERAVALUES[0]);
-  createPrespectiveCamera(CAMERAVALUES[0]);
+  createPrespectiveCamera(CAMERAVALUES.main);
+  createPrespectiveCamera(CAMERAVALUES.main);
   controls = new THREE.OrbitControls(cameras[1], renderer.domElement);
 
   controls.update();
@@ -191,11 +191,11 @@ function render() {
 
   renderer.setRenderTarget(grassTexture);
   renderer.clear();
-  renderer.render(grassScene, grassCamera);
+  renderer.render(skyScene, grassCamera);
 
   renderer.setRenderTarget(null);
   renderer.clear();
-  renderer.render(grassScene, grassCamera);
+  renderer.render(skyScene, grassCamera);
   renderer.render(scene, currentCamera);
 }
 

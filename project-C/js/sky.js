@@ -36,7 +36,11 @@ function createSky() {
   const sky = new THREE.Mesh(geometry, material);
   skyScene.add(sky);
 
-  skyCamera = createOrtographicCamera();
+  skyCamera = createOrtographicCamera(CAMERAVALUES.sky);
+
+  skyCamera.position.set(SKYVALUES.size / 2, 10, SKYVALUES.size / 2);
+  skyCamera.lookAt(SKYVALUES.size / 2, 0, SKYVALUES.size / 2);
+  skyCamera.updateProjectionMatrix();
 
   createStars();
 
@@ -49,24 +53,6 @@ function createSky() {
       magFilter: THREE.NearestFilter,
     }
   );
-}
-
-function createOrtographicCamera() {
-  "use strict";
-  camera = new THREE.OrthographicCamera(
-    -SKYVALUES.size / 2,
-    SKYVALUES.size / 2,
-    SKYVALUES.size / 2,
-    -SKYVALUES.size / 2,
-    1,
-    100
-  );
-
-  camera.position.set(SKYVALUES.size / 2, 10, SKYVALUES.size / 2);
-  camera.lookAt(SKYVALUES.size / 2, 0, SKYVALUES.size / 2);
-  camera.updateProjectionMatrix();
-
-  return camera;
 }
 
 function createStars() {
