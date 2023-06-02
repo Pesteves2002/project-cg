@@ -64,7 +64,7 @@ function createStars() {
   for (let i = 0; i < SKYVALUES.stars; i++) {
     let celestialBody;
     if (i % 20 === 0) {
-      console.log("planet");
+      ("planet");
       celestialBody = createPlanet();
     } else celestialBody = createStar();
     celestialBody.position.set(

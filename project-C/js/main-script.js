@@ -122,9 +122,6 @@ function createPlane() {
   const loader = new THREE.TextureLoader();
   const displacementMap = loader.load("./imgs/heightmap.png");
 
-  grassTexture.texture.wrapS = THREE.RepeatWrapping;
-  grassTexture.texture.wrapT = THREE.RepeatWrapping;
-
   const material = new THREE.MeshStandardMaterial({
     map: grassTexture.texture,
     displacementMap: displacementMap,
@@ -132,7 +129,11 @@ function createPlane() {
     side: THREE.DoubleSide,
   });
 
-  const geometry = new THREE.PlaneGeometry(1000 * UNIT, 1000 * UNIT, 30, 30);
+  material.displacementMap.wrapS = THREE.RepeatWrapping;
+  material.displacementMap.wrapT = THREE.RepeatWrapping;
+  material.displacementMap.repeat.set(150, 150);
+
+  const geometry = new THREE.PlaneGeometry(1000 * UNIT, 1000 * UNIT, 150, 150);
 
   const plane = new THREE.Mesh(geometry, material);
 
