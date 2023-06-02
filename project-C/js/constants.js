@@ -58,7 +58,7 @@ const MATERIALVALUES = {
 
 const LIGHTCOLORS = {
   global: 0xffffff,
-  ambient: 0x964b00,
+  ambient: 0xffa500,
 };
 
 const MATERIALS = {
