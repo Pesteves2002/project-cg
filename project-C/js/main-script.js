@@ -155,7 +155,7 @@ function createMoon() {
 function createSkyBox() {
   "use strict";
 
-  const sphere = new THREE.SphereGeometry(1000 * UNIT, 90, 90);
+  const sphere = new THREE.SphereGeometry(800 * UNIT, 90, 90);
 
   const material = new THREE.MeshBasicMaterial({
     map: skyTexture.texture,
