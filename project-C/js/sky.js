@@ -4,31 +4,29 @@ let skyTexture;
 
 let skyCamera;
 
-const SKYBOX = 256;
-
 let stars = new THREE.Group();
 
 function createSky() {
   const geometry = new THREE.BufferGeometry();
 
-  const positions = [0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0].map((n) => n * SKYBOX);
+  const positions = [0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0].map(
+    (n) => n * SKYVALUES.size
+  );
 
   const indices = [0, 1, 2, 2, 3, 0];
 
-  const blue = new THREE.Color(0x0000ff);
-  const purple = new THREE.Color(0xa32cc4);
-  const colors = [purple, blue, blue, purple].flatMap((color) => [
-    color.r,
-    color.g,
-    color.b,
-  ]);
+  const colors = [
+    SKYVALUES.purple,
+    SKYVALUES.blue,
+    SKYVALUES.blue,
+    SKYVALUES.purple,
+  ].flatMap((color) => [color.r, color.g, color.b]);
 
   geometry.setIndex(indices);
   geometry.setAttribute(
     "position",
     new THREE.Float32BufferAttribute(positions, 3)
   );
-  geometry.computeVertexNormals();
   geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
 
   const material = new THREE.MeshBasicMaterial({
@@ -36,17 +34,16 @@ function createSky() {
   });
 
   const sky = new THREE.Mesh(geometry, material);
-  sky.position.set(0, 0, 0);
-
   skyScene.add(sky);
 
   skyCamera = createOrtographicCamera();
 
-  createPoints();
+  createStars();
 
   skyTexture = new THREE.WebGLRenderTarget(
-    window.innerWidth,
-    window.innerHeight,
+    // set resolution
+    window.innerWidth * 4,
+    window.innerHeight * 4,
     {
       minFilter: THREE.LinearFilter,
       magFilter: THREE.NearestFilter,
@@ -57,40 +54,52 @@ function createSky() {
 function createOrtographicCamera() {
   "use strict";
   camera = new THREE.OrthographicCamera(
-    -window.innerWidth / 2,
-    window.innerWidth / 2,
-    window.innerHeight / 2,
-    -window.innerHeight / 2,
+    -SKYVALUES.size / 2,
+    SKYVALUES.size / 2,
+    SKYVALUES.size / 2,
+    -SKYVALUES.size / 2,
     1,
-    10000
+    100
   );
 
-  camera.position.set(SKYBOX / 2, SKYBOX, SKYBOX / 2);
-  camera.lookAt(SKYBOX / 2, 0, SKYBOX / 2);
-  camera.zoom = 14;
+  camera.position.set(SKYVALUES.size / 2, 10, SKYVALUES.size / 2);
+  camera.lookAt(SKYVALUES.size / 2, 0, SKYVALUES.size / 2);
   camera.updateProjectionMatrix();
 
   return camera;
 }
 
-function createPoints() {
+function createStars() {
   "use strict";
 
   skyScene.remove(stars);
   stars = new THREE.Group();
 
-  for (let i = 0; i < SKYBOX * 10; i++) {
-    const sphere = new THREE.SphereGeometry(0.1);
+  for (let i = 0; i < SKYVALUES.stars; i++) {
+    let celestialBody;
+    if (i % 20 === 0) {
+      console.log("planet");
+      celestialBody = createPlanet();
+    } else celestialBody = createStar();
+    celestialBody.position.set(
+      Math.random() * SKYVALUES.size,
+      1,
+      (Math.random() * SKYVALUES.size * 3) / 5 // in order to have more bodies at the visible part of the sky
+    );
 
-    const material = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-    });
-
-    const mesh = new THREE.Mesh(sphere, material);
-    mesh.position.set(Math.random() * SKYBOX, 1, Math.random() * SKYBOX);
-
-    stars.add(mesh);
+    stars.add(celestialBody);
   }
-
   skyScene.add(stars);
+}
+
+function createStar() {
+  const geometry = new THREE.SphereGeometry(SKYVALUES.starSize);
+
+  return new THREE.Mesh(geometry, SKYVALUES.star);
+}
+
+function createPlanet() {
+  const geometry = new THREE.SphereGeometry(SKYVALUES.planetSize);
+
+  return new THREE.Mesh(geometry, SKYVALUES.planet);
 }

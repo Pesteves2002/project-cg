@@ -38,7 +38,7 @@ function createFlowers() {
   grassScene.remove(flowers);
   flowers = new THREE.Group();
 
-  for (let i = 0; i < SKYBOX * 10; i++) {
+  for (let i = 0; i < GRASSBOX * 10; i++) {
     const sphere = new THREE.SphereGeometry(0.1);
 
     const material = new THREE.MeshBasicMaterial({
@@ -46,7 +46,7 @@ function createFlowers() {
     });
 
     const mesh = new THREE.Mesh(sphere, material);
-    mesh.position.set(Math.random() * SKYBOX, 1, Math.random() * SKYBOX);
+    mesh.position.set(Math.random() * GRASSBOX, 1, Math.random() * GRASSBOX);
 
     flowers.add(mesh);
   }
