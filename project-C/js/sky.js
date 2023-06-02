@@ -40,7 +40,7 @@ function createSky() {
 
   skyScene.add(sky);
 
-  createOrtographicCamera();
+  skyCamera = createOrtographicCamera();
 
   createPoints();
 
@@ -56,7 +56,7 @@ function createSky() {
 
 function createOrtographicCamera() {
   "use strict";
-  skyCamera = new THREE.OrthographicCamera(
+  camera = new THREE.OrthographicCamera(
     -window.innerWidth / 2,
     window.innerWidth / 2,
     window.innerHeight / 2,
@@ -65,10 +65,12 @@ function createOrtographicCamera() {
     10000
   );
 
-  skyCamera.position.set(SKYBOX / 2, SKYBOX, SKYBOX / 2);
-  skyCamera.lookAt(SKYBOX / 2, 0, SKYBOX / 2);
-  skyCamera.zoom = 14;
-  skyCamera.updateProjectionMatrix();
+  camera.position.set(SKYBOX / 2, SKYBOX, SKYBOX / 2);
+  camera.lookAt(SKYBOX / 2, 0, SKYBOX / 2);
+  camera.zoom = 14;
+  camera.updateProjectionMatrix();
+
+  return camera;
 }
 
 function createPoints() {
