@@ -38,29 +38,31 @@ function createSky() {
 
   skyScene.add(sky);
 
+  createOrtographicCamera();
+
   skyTexture = new THREE.WebGLRenderTarget(
     window.innerWidth,
     window.innerHeight,
-    { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter }
+    {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.NearestFilter,
+    }
   );
-
-  createOrtographicCamera();
-
-  renderer.render(skyScene, skyCamera, skyTexture);
 }
 
 function createOrtographicCamera() {
   "use strict";
   skyCamera = new THREE.OrthographicCamera(
-    -SKYBOX / 2,
-    SKYBOX / 2,
-    SKYBOX / 2,
-    -SKYBOX / 2,
+    -window.innerWidth / 2,
+    window.innerWidth / 2,
+    window.innerHeight / 2,
+    -window.innerHeight / 2,
     1,
     10000
   );
 
   skyCamera.position.set(SKYBOX / 2, SKYBOX, SKYBOX / 2);
   skyCamera.lookAt(SKYBOX / 2, 0, SKYBOX / 2);
+  skyCamera.zoom = 14;
   skyCamera.updateProjectionMatrix();
 }
