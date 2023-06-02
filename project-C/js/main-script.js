@@ -158,7 +158,7 @@ function createSkyBox() {
   const sphere = new THREE.SphereGeometry(1000 * UNIT, 100, 100);
 
   const material = new THREE.MeshBasicMaterial({
-    color: 0x0000ff,
+    map: skyTexture.texture,
     side: THREE.BackSide,
   });
 
@@ -183,6 +183,12 @@ function update() {
 /////////////
 function render() {
   "use strict";
+  renderer.setRenderTarget(skyTexture);
+  renderer.clear();
+  renderer.render(skyScene, skyCamera);
+
+  renderer.setRenderTarget(null);
+  renderer.clear();
   renderer.render(scene, currentCamera);
 }
 
@@ -208,8 +214,6 @@ function init() {
 
   createOvni();
 
-  // createSkyBox();
-
   createTree();
 
   createHouse();
@@ -221,6 +225,8 @@ function init() {
   craeteGlobalIllunimation();
 
   createSky();
+
+  createSkyBox();
 
   resetSteps();
 
