@@ -243,17 +243,6 @@ function outOfBounds(a, b, step) {
   return step > 0 ? lessOrEqualThan(a, b) : greaterOrEqualThan(a, b);
 }
 
-function checkIfTruck() {
-  "use strict";
-
-  return (
-    equal(head.rotation.x, headRotation.min) &&
-    equal(leftArm.position.x, leftArmTranslation.min + armValues.relativeX) &&
-    equal(thighs.rotation.x, thighsRotation.max) &&
-    equal(foot.rotation.x, footRotation.max)
-  );
-}
-
 function translateOvni() {
   ovni.userData.step = ovni.userData.xStep;
   translateObject(ovni, OVNITRANSLATIONVALUES, 0, AXIS.X);
