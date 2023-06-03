@@ -50,6 +50,10 @@ const MATERIALVALUES = {
     color: 0x964b00,
     side: THREE.DoubleSide,
   }),
+  chimney: new THREE.MeshStandardMaterial({
+    color: 0xaa4a44,
+    side: THREE.DoubleSide,
+  }),
   lightMoon: new THREE.MeshStandardMaterial({
     color: 0xffff00,
   }),
@@ -146,7 +150,7 @@ const LEAFVALUES2 = {
 };
 
 const MOONVALUES = {
-  pos: new THREE.Vector3(0, 200 * UNIT, 0),
+  pos: new THREE.Vector3(0 * UNIT, 40 * UNIT, -200 * UNIT),
   radius: 20 * UNIT,
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.lightMoon,
@@ -161,6 +165,11 @@ const HOUSEVALUES = {
 
 const ROOFVALUES = {
   material: MATERIALVALUES.roof,
+  mesh: [],
+};
+
+const CHIMNEYVALUES = {
+  material: MATERIALVALUES.chimney,
   mesh: [],
 };
 
@@ -182,6 +191,7 @@ const VALUES = [
   LEAFVALUES2,
   HOUSEVALUES,
   ROOFVALUES,
+  CHIMNEYVALUES,
 ];
 
 const SKYVALUES = {
