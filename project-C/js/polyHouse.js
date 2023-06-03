@@ -124,31 +124,111 @@ function createPolyHouse() {
     14, 15, 18, 19, 20, 16, 18, 20, 20, 21, 22, 20, 22, 23,
   ];
 
+  const roofVertices = new Float32Array(
+    [
+      0,
+      0,
+      0, // 0
+      12,
+      0,
+      0, // 1
+      6,
+      6,
+      0, // 2
+      0,
+      0,
+      19, // 3
+      12,
+      0,
+      19, // 4
+      6,
+      6,
+      19, // 5
+    ].map((n) => n * UNIT)
+  );
+
+  const roofIndexes = [0, 1, 2, 0, 2, 5, 0, 3, 5, 1, 2, 4, 2, 4, 5, 3, 4, 5];
+
+  const chimneyVertices = new Float32Array(
+    [
+      0,
+      0,
+      0, // 0
+      0,
+      5,
+      0, // 1
+      -3,
+      5,
+      0, // 2
+      -3,
+      3,
+      0, // 3
+      0,
+      0,
+      4, // 4
+      0,
+      5,
+      4, // 5
+      -3,
+      5,
+      4, // 6
+      -3,
+      3,
+      4, // 7
+    ].map((n) => n * UNIT)
+  );
+
+  const chimneyIndexes = [
+    0, 1, 2, 0, 2, 3, 0, 1, 4, 1, 4, 5, 2, 3, 6, 3, 6, 7, 4, 5, 6, 5, 6, 7,
+  ];
+
   const polyHouse = new THREE.Group();
 
-  buffer.setIndex(entranceIndexes);
-  buffer.setAttribute(
-    "position",
-    new THREE.BufferAttribute(entranceVertices, 3)
+  const entrance = createBufferGeometry(
+    entranceVertices,
+    entranceIndexes,
+    MATERIALVALUES.house
   );
-  const material = new THREE.MeshBasicMaterial({
-    color: 0xff0000,
-    side: THREE.DoubleSide,
-  });
 
-  const entrance = new THREE.Mesh(buffer, material);
   polyHouse.add(entrance);
 
-  buffer = new THREE.BufferGeometry();
-
-  buffer.setIndex(windowIndexes);
-  buffer.setAttribute("position", new THREE.BufferAttribute(windowVertices, 3));
-
-  const window = new THREE.Mesh(buffer, material);
+  const window = createBufferGeometry(
+    windowVertices,
+    windowIndexes,
+    MATERIALVALUES.house
+  );
+  window.position.set(12 * UNIT, 0, -19 * UNIT);
 
   polyHouse.add(window);
+
+  const roof = createBufferGeometry(
+    roofVertices,
+    roofIndexes,
+    MATERIALVALUES.roof
+  );
+  roof.position.set(0, 9 * UNIT, -19 * UNIT);
+
+  polyHouse.add(roof);
+
+  const chimney = createBufferGeometry(
+    chimneyVertices,
+    chimneyIndexes,
+    MATERIALVALUES.roof
+  );
+  chimney.position.set(11 * UNIT, 9 * UNIT, -9 * UNIT);
+
+  polyHouse.add(chimney);
 
   polyHouse.position.set(0, 0, 0);
 
   scene.add(polyHouse);
+}
+
+function createBufferGeometry(vertices, indexes, material) {
+  const buffer = new THREE.BufferGeometry();
+
+  buffer.setIndex(indexes);
+  buffer.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+
+  return new THREE.Mesh(buffer, material);
 }
