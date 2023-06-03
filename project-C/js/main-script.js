@@ -226,6 +226,8 @@ function init() {
 
   createHouse();
 
+  createPolyHouse();
+
   createMoon();
 
   createGrass();
