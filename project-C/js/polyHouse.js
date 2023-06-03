@@ -215,7 +215,18 @@ function createPolyHouse() {
 
   polyHouse.add(chimney);
 
-  polyHouse.position.set(0, 0, 20 * UNIT);
+  const windowPlane = createPlaneHouse(17 * UNIT, 7 * UNIT, WINDOWVALUES);
+  windowPlane.rotation.y = Math.PI / 2;
+  windowPlane.position.set(11 * UNIT, 5 * UNIT, -10 * UNIT);
+
+  polyHouse.add(windowPlane);
+
+  const doorPlane = createPlaneHouse(4 * UNIT, 7 * UNIT, DOORVALUES);
+  doorPlane.position.set(6 * UNIT, 4 * UNIT, -0 * UNIT);
+
+  polyHouse.add(doorPlane);
+
+  polyHouse.position.set(0, 0, 50 * UNIT);
 
   scene.add(polyHouse);
 }
@@ -231,5 +242,12 @@ function createBufferGeometry(vertices, indexes, values) {
 
   values.mesh.push(mesh);
 
+  return mesh;
+}
+
+function createPlaneHouse(width, height, value) {
+  const geometry = new THREE.PlaneGeometry(width, height);
+  const mesh = new THREE.Mesh(geometry, value.material);
+  value.mesh.push(mesh);
   return mesh;
 }

@@ -30,9 +30,6 @@ const MATERIALVALUES = {
   ovni: new THREE.MeshStandardMaterial({
     color: 0x120345,
   }),
-  glass: new THREE.MeshStandardMaterial({
-    color: 0x001223,
-  }),
   lightOvni: new THREE.MeshStandardMaterial({
     color: 0xffff00,
   }),
@@ -52,6 +49,10 @@ const MATERIALVALUES = {
   }),
   chimney: new THREE.MeshStandardMaterial({
     color: 0xaa4a44,
+    side: THREE.DoubleSide,
+  }),
+  glass: new THREE.MeshStandardMaterial({
+    color: 0xadd8e6,
     side: THREE.DoubleSide,
   }),
   lightMoon: new THREE.MeshStandardMaterial({
@@ -173,6 +174,16 @@ const CHIMNEYVALUES = {
   mesh: [],
 };
 
+const WINDOWVALUES = {
+  material: MATERIALVALUES.glass,
+  mesh: [],
+};
+
+const DOORVALUES = {
+  material: MATERIALVALUES.roof,
+  mesh: [],
+};
+
 const OVNITRANSLATIONVALUES = {
   stepX: 1 * UNIT,
   stepZ: 1 * UNIT,
@@ -192,6 +203,7 @@ const VALUES = [
   HOUSEVALUES,
   ROOFVALUES,
   CHIMNEYVALUES,
+  WINDOWVALUES,
 ];
 
 const SKYVALUES = {
