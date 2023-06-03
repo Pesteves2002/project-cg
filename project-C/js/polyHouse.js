@@ -187,7 +187,7 @@ function createPolyHouse() {
   const entrance = createBufferGeometry(
     entranceVertices,
     entranceIndexes,
-    MATERIALVALUES.house
+    HOUSEVALUES
   );
 
   polyHouse.add(entrance);
@@ -195,17 +195,13 @@ function createPolyHouse() {
   const window = createBufferGeometry(
     windowVertices,
     windowIndexes,
-    MATERIALVALUES.house
+    HOUSEVALUES
   );
   window.position.set(12 * UNIT, 0, -19 * UNIT);
 
   polyHouse.add(window);
 
-  const roof = createBufferGeometry(
-    roofVertices,
-    roofIndexes,
-    MATERIALVALUES.roof
-  );
+  const roof = createBufferGeometry(roofVertices, roofIndexes, ROOFVALUES);
   roof.position.set(0, 9 * UNIT, -19 * UNIT);
 
   polyHouse.add(roof);
@@ -213,7 +209,7 @@ function createPolyHouse() {
   const chimney = createBufferGeometry(
     chimneyVertices,
     chimneyIndexes,
-    MATERIALVALUES.roof
+    ROOFVALUES
   );
   chimney.position.set(11 * UNIT, 9 * UNIT, -9 * UNIT);
 
@@ -224,11 +220,16 @@ function createPolyHouse() {
   scene.add(polyHouse);
 }
 
-function createBufferGeometry(vertices, indexes, material) {
+function createBufferGeometry(vertices, indexes, values) {
   const buffer = new THREE.BufferGeometry();
 
   buffer.setIndex(indexes);
   buffer.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+  buffer.computeVertexNormals();
 
-  return new THREE.Mesh(buffer, material);
+  const mesh = new THREE.Mesh(buffer, values.material);
+
+  values.mesh.push(mesh);
+
+  return mesh;
 }

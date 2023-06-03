@@ -286,6 +286,9 @@ function changeMaterial(meshes, material) {
       return;
   }
   meshes.forEach((mesh) => {
+    if (mesh.material.side == THREE.DoubleSide) {
+      newMaterial.side = THREE.DoubleSide;
+    }
     mesh.material = newMaterial;
   });
 }
