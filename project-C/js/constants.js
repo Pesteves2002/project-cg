@@ -145,37 +145,6 @@ const LEAFVALUES2 = {
   mesh: [],
 };
 
-const HOUSEVALUES = {
-  pos: new THREE.Vector3(0 * UNIT, 0 * UNIT, 50 * UNIT),
-  width: 17 * UNIT,
-  height: 9 * UNIT,
-  depth: 12 * UNIT,
-  type: PRIMITIVES.CUBE,
-  material: MATERIALVALUES.house,
-  mesh: [],
-};
-
-// WIDHT_roof^2 + DEPTH_roof^2 = DEPTH_HOUSE^2
-const ROOFVALUES = {
-  pos: new THREE.Vector3(0, 4.5 * UNIT, 0),
-  width: Math.sqrt(72) * UNIT,
-  height: 16.9 * UNIT,
-  depth: Math.sqrt(72) * UNIT,
-  type: PRIMITIVES.CUBE,
-  material: MATERIALVALUES.roof,
-  mesh: [],
-};
-
-const CHIMNEYVALUES = {
-  pos: new THREE.Vector3(5 * UNIT, 4 * UNIT, 3 * UNIT),
-  width: 2 * UNIT,
-  height: 5 * UNIT,
-  depth: 2 * UNIT,
-  type: PRIMITIVES.CUBE,
-  material: MATERIALVALUES.house,
-  mesh: [],
-};
-
 const MOONVALUES = {
   pos: new THREE.Vector3(0, 200 * UNIT, 0),
   radius: 20 * UNIT,
@@ -201,9 +170,6 @@ const VALUES = [
   TRUNKVALUES2,
   LEAFVALUES,
   LEAFVALUES2,
-  HOUSEVALUES,
-  ROOFVALUES,
-  CHIMNEYVALUES,
 ];
 
 const SKYVALUES = {

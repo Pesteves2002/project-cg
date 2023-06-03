@@ -219,7 +219,7 @@ function createPolyHouse() {
 
   polyHouse.add(chimney);
 
-  polyHouse.position.set(0, 0, 0);
+  polyHouse.position.set(0, 0, 20 * UNIT);
 
   scene.add(polyHouse);
 }
