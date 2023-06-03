@@ -154,6 +154,16 @@ const MOONVALUES = {
   color: 0xffa500,
 };
 
+const HOUSEVALUES = {
+  material: MATERIALVALUES.house,
+  mesh: [],
+};
+
+const ROOFVALUES = {
+  material: MATERIALVALUES.roof,
+  mesh: [],
+};
+
 const OVNITRANSLATIONVALUES = {
   stepX: 1 * UNIT,
   stepZ: 1 * UNIT,
@@ -170,6 +180,8 @@ const VALUES = [
   TRUNKVALUES2,
   LEAFVALUES,
   LEAFVALUES2,
+  HOUSEVALUES,
+  ROOFVALUES,
 ];
 
 const SKYVALUES = {
