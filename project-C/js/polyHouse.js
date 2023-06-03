@@ -209,7 +209,7 @@ function createPolyHouse() {
   const chimney = createBufferGeometry(
     chimneyVertices,
     chimneyIndexes,
-    ROOFVALUES
+    CHIMNEYVALUES
   );
   chimney.position.set(11 * UNIT, 9 * UNIT, -9 * UNIT);
 
