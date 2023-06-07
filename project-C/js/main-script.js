@@ -94,7 +94,7 @@ function createMoon() {
   const moon = new createObject3D(MOONVALUES);
   setPosition(moon, MOONVALUES);
 
-  MOONVALUES.material.emissive = new THREE.Color(MOONVALUES.emissive);
+  MOONVALUES.material.emissive = MOONVALUES.emissive;
 
   scene.add(moon);
 }
@@ -239,18 +239,22 @@ function onKeyDown(e) {
       VALUES.forEach((value) => {
         changeMaterial(value.mesh, MATERIALS.LAMBERT);
       });
+      VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
       break;
 
     case 87: // w
       VALUES.forEach((value) => {
         changeMaterial(value.mesh, MATERIALS.PHONG);
       });
+      VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
       break;
 
     case 69: //e
+      VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
       VALUES.forEach((value) => {
         changeMaterial(value.mesh, MATERIALS.TOON);
       });
+      VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
       break;
 
     case 82: //r

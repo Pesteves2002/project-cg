@@ -285,6 +285,7 @@ function changeMaterial(meshes, material) {
       console.log("Invalid material");
       return;
   }
+
   meshes.forEach((mesh) => {
     if (mesh.material.side == THREE.DoubleSide) {
       newMaterial.side = THREE.DoubleSide;

@@ -149,7 +149,7 @@ const MOONVALUES = {
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.lightMoon,
   mesh: [],
-  emissive: 0xffa500,
+  emissive: new THREE.Color(0xffa500),
 };
 
 const HOUSEVALUES = {
@@ -185,6 +185,7 @@ const OVNITRANSLATIONVALUES = {
 };
 
 const VALUES = [
+  MOONVALUES,
   OVNIVALUES,
   COCKPITVALUES,
   BASEVALUES,
@@ -197,7 +198,6 @@ const VALUES = [
   ROOFVALUES,
   CHIMNEYVALUES,
   WINDOWVALUES,
-  MOONVALUES,
 ];
 
 const LIGHTVALUES = {
