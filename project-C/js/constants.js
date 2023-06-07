@@ -201,7 +201,7 @@ const VALUES = [
 ];
 
 const LIGHTVALUES = {
-  global: 0xfc6a03,
+  global: 0xffffff,
   globalIntensity: 1,
   ambient: 0xffa500,
   ambientIntensity: 0.25,
