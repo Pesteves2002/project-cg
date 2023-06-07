@@ -4,6 +4,30 @@ let grassCamera;
 
 let flowers = new THREE.Group();
 
+function createPlane() {
+  "use strict";
+
+  const displacementMap = new THREE.TextureLoader().load(
+    "./imgs/heightmap.png"
+  );
+
+  const material = new THREE.MeshPhongMaterial({
+    map: grassTexture.texture,
+    displacementMap: displacementMap,
+    displacementScale: 1000 * UNIT,
+  });
+
+  const geometry = new THREE.PlaneGeometry(1000 * UNIT, 1000 * UNIT, 150, 150);
+
+  const plane = new THREE.Mesh(geometry, material);
+
+  plane.rotation.x = -Math.PI / 2;
+
+  plane.position.y = -105 * UNIT;
+
+  scene.add(plane);
+}
+
 function createGrass() {
   const geometry = new THREE.PlaneGeometry(
     GROUNDVALUES.size,
@@ -18,8 +42,6 @@ function createGrass() {
 
   grassCamera = createOrtographicCamera(CAMERAVALUES.ground);
   grassCamera.updateProjectionMatrix();
-
-  createFlowers();
 
   grassTexture = new THREE.WebGLRenderTarget(
     window.innerWidth * 4,

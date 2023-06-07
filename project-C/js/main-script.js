@@ -88,30 +88,6 @@ function toggleGlobalIllunimation() {
 /* CREATE OBJECT3D(S) */
 ////////////////////////
 
-function createPlane() {
-  "use strict";
-
-  const displacementMap = new THREE.TextureLoader().load(
-    "./imgs/heightmap.png"
-  );
-
-  const material = new THREE.MeshPhongMaterial({
-    map: grassTexture.texture,
-    displacementMap: displacementMap,
-    displacementScale: 1000 * UNIT,
-  });
-
-  const geometry = new THREE.PlaneGeometry(1000 * UNIT, 1000 * UNIT, 150, 150);
-
-  const plane = new THREE.Mesh(geometry, material);
-
-  plane.rotation.x = -Math.PI / 2;
-
-  plane.position.y = -105 * UNIT;
-
-  scene.add(plane);
-}
-
 function createMoon() {
   "use strict";
 
@@ -121,31 +97,6 @@ function createMoon() {
   MOONVALUES.material.emissive = new THREE.Color(MOONVALUES.emissive);
 
   scene.add(moon);
-}
-
-function createSkyBox() {
-  "use strict";
-
-  // create semi-sphere
-  const sphere = new THREE.SphereGeometry(
-    800 * UNIT,
-    32,
-    32,
-    0,
-    Math.PI * 2,
-    0,
-    Math.PI / 2
-  );
-
-  const material = new THREE.MeshPhongMaterial({
-    map: skyTexture.texture,
-    side: THREE.BackSide,
-  });
-
-  const mesh = new THREE.Mesh(sphere, material);
-  mesh.position.y = -270 * UNIT;
-
-  scene.add(mesh);
 }
 
 ////////////

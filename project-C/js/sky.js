@@ -4,6 +4,31 @@ let skyCamera;
 
 let stars = new THREE.Group();
 
+function createSkyBox() {
+  "use strict";
+
+  // create semi-sphere
+  const sphere = new THREE.SphereGeometry(
+    800 * UNIT,
+    32,
+    32,
+    0,
+    Math.PI * 2,
+    0,
+    Math.PI / 2
+  );
+
+  const material = new THREE.MeshPhongMaterial({
+    map: skyTexture.texture,
+    side: THREE.BackSide,
+  });
+
+  const mesh = new THREE.Mesh(sphere, material);
+  mesh.position.y = -270 * UNIT;
+
+  scene.add(mesh);
+}
+
 function createSky() {
   const geometry = new THREE.BufferGeometry();
 
@@ -36,8 +61,6 @@ function createSky() {
 
   skyCamera = createOrtographicCamera(CAMERAVALUES.sky);
   skyCamera.updateProjectionMatrix();
-
-  createStars();
 
   skyTexture = new THREE.WebGLRenderTarget(
     // set resolution
