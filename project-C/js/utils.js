@@ -318,6 +318,7 @@ function createOrtographicCamera(cameraValues) {
     cameraValues.far
   );
   camera.position.copy(cameraValues.position);
+  camera.lookAt(cameraValues.lookAt);
 
   return camera;
 }

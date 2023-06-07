@@ -35,7 +35,6 @@ function createSky() {
   secondaryScene.add(sky);
 
   skyCamera = createOrtographicCamera(CAMERAVALUES.sky);
-  skyCamera.lookAt(SKYVALUES.size / 2, 0, SKYVALUES.size / 2);
   skyCamera.updateProjectionMatrix();
 
   createStars();

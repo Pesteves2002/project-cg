@@ -240,6 +240,7 @@ const CAMERAVALUES = {
     near: 1,
     far: 11,
     position: new THREE.Vector3(SKYVALUES.size / 2, 10, SKYVALUES.size / 2),
+    lookAt: new THREE.Vector3(SKYVALUES.size / 2, 0, SKYVALUES.size / 2),
   },
   ground: {
     left: -GROUNDVALUES.size / 2,
@@ -253,6 +254,7 @@ const CAMERAVALUES = {
       10,
       GROUNDVALUES.size / 2
     ),
+    lookAt: new THREE.Vector3(-GROUNDVALUES.size / 2, 0, GROUNDVALUES.size / 2),
   },
   main: {
     fov: 70,
