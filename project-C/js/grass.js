@@ -14,10 +14,9 @@ function createGrass() {
   const grass = new THREE.Mesh(geometry, MATERIALVALUES.grass);
   grass.position.set(-GROUNDVALUES.size / 2, 0, GROUNDVALUES.size / 2);
 
-  skyScene.add(grass);
+  secondaryScene.add(grass);
 
   grassCamera = createOrtographicCamera(CAMERAVALUES.ground);
-  grassCamera.position.set(-GROUNDVALUES.size / 2, 10, GROUNDVALUES.size / 2);
   grassCamera.lookAt(-GROUNDVALUES.size / 2, 0, GROUNDVALUES.size / 2);
   grassCamera.updateProjectionMatrix();
 
@@ -36,7 +35,7 @@ function createGrass() {
 function createFlowers() {
   "use strict";
 
-  skyScene.remove(flowers);
+  secondaryScene.remove(flowers);
   flowers = new THREE.Group();
 
   for (let i = 0; i < GROUNDVALUES.flowers; i++) {
@@ -57,7 +56,7 @@ function createFlowers() {
     flowers.add(mesh);
   }
 
-  skyScene.add(flowers);
+  secondaryScene.add(flowers);
 }
 
 function createValidPosition(mesh) {

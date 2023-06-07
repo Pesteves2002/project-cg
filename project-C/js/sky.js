@@ -1,5 +1,3 @@
-let skyScene = new THREE.Scene();
-
 let skyTexture;
 
 let skyCamera;
@@ -34,11 +32,9 @@ function createSky() {
   });
 
   const sky = new THREE.Mesh(geometry, material);
-  skyScene.add(sky);
+  secondaryScene.add(sky);
 
   skyCamera = createOrtographicCamera(CAMERAVALUES.sky);
-
-  skyCamera.position.set(SKYVALUES.size / 2, 10, SKYVALUES.size / 2);
   skyCamera.lookAt(SKYVALUES.size / 2, 0, SKYVALUES.size / 2);
   skyCamera.updateProjectionMatrix();
 
@@ -58,24 +54,25 @@ function createSky() {
 function createStars() {
   "use strict";
 
-  skyScene.remove(stars);
+  secondaryScene.remove(stars);
   stars = new THREE.Group();
 
   for (let i = 0; i < SKYVALUES.stars; i++) {
     let celestialBody;
-    if (i % 20 === 0) {
-      ("planet");
-      celestialBody = createPlanet();
-    } else celestialBody = createStar();
+    //if (i % 20 === 0) {
+    //  "planet"
+    //  celestialBody = createPlanet();
+    //} else
+    celestialBody = createStar();
     celestialBody.position.set(
       Math.random() * SKYVALUES.size,
       2,
-      (Math.random() * SKYVALUES.size * 3) / 5 // in order to have more bodies at the visible part of the sky
+      (Math.random() * SKYVALUES.size * 5) / 6 // in order to have more bodies at the visible part of the sky
     );
 
     stars.add(celestialBody);
   }
-  skyScene.add(stars);
+  secondaryScene.add(stars);
 }
 
 function createStar() {
@@ -85,9 +82,9 @@ function createStar() {
   return new THREE.Mesh(geometry, SKYVALUES.star);
 }
 
-function createPlanet() {
-  const geometry = new THREE.CircleGeometry(SKYVALUES.planetSize);
-  geometry.rotateX(-Math.PI / 2);
-
-  return new THREE.Mesh(geometry, SKYVALUES.planet);
-}
+// function createPlanet() {
+//   const geometry = new THREE.CircleGeometry(SKYVALUES.planetSize);
+//   geometry.rotateX(-Math.PI / 2);
+//
+//   return new THREE.Mesh(geometry, SKYVALUES.planet);
+// }
