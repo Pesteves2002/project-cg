@@ -4,8 +4,6 @@ const CLOCK = new THREE.Clock();
 
 const DELTA_MULT = 100;
 
-const FOV = 70;
-
 const MINVIEWDISTANCE = 1;
 
 const MAXVIEWDISTANCE = 1000000;
@@ -61,11 +59,6 @@ const MATERIALVALUES = {
   grass: new THREE.MeshBasicMaterial({
     color: 0x00ff00,
   }),
-};
-
-const LIGHTCOLORS = {
-  global: 0xffffff,
-  ambient: 0xffa500,
 };
 
 const MATERIALS = {
@@ -156,7 +149,7 @@ const MOONVALUES = {
   type: PRIMITIVES.SPHERE,
   material: MATERIALVALUES.lightMoon,
   mesh: [],
-  color: 0xffa500,
+  emissive: 0xffa500,
 };
 
 const HOUSEVALUES = {
@@ -204,7 +197,15 @@ const VALUES = [
   ROOFVALUES,
   CHIMNEYVALUES,
   WINDOWVALUES,
+  MOONVALUES,
 ];
+
+const LIGHTVALUES = {
+  global: 0xffffff,
+  globalIntensity: 5,
+  ambient: 0xffa500,
+  ambientIntensity: 0.25,
+};
 
 const SKYVALUES = {
   size: 128,
@@ -236,16 +237,28 @@ const CAMERAVALUES = {
     right: SKYVALUES.size / 2,
     top: SKYVALUES.size / 2,
     bottom: -SKYVALUES.size / 2,
-    min: 1,
-    max: 10,
+    near: 1,
+    far: 11,
+    position: new THREE.Vector3(SKYVALUES.size / 2, 10, SKYVALUES.size / 2),
   },
   ground: {
     left: -GROUNDVALUES.size / 2,
     right: GROUNDVALUES.size / 2,
     top: GROUNDVALUES.size / 2,
     bottom: -GROUNDVALUES.size / 2,
-    min: 1,
-    max: 10,
+    near: 1,
+    far: 11,
+    position: new THREE.Vector3(
+      -GROUNDVALUES.size / 2,
+      10,
+      GROUNDVALUES.size / 2
+    ),
   },
-  main: [1000, 1000, 1000],
+  main: {
+    fov: 70,
+    aspect: window.innerWidth / window.innerHeight,
+    near: 1,
+    far: 1000000,
+    position: new THREE.Vector3(1000, 1000, 1000),
+  },
 };

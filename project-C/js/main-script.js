@@ -2,13 +2,11 @@
 /* GLOBAL VARIABLES */
 //////////////////////
 
-let camera, scene, renderer, controls, delta;
+let mainCamera, scene, secondaryScene, renderer, controls, delta;
 
 let ovni;
 
 let ovniLigths = [];
-
-const cameras = [];
 
 let currentCamera;
 
@@ -21,8 +19,7 @@ function createScene() {
   "use strict";
 
   scene = new THREE.Scene();
-
-  scene.add(new THREE.AxesHelper(1000));
+  secondaryScene = new THREE.Scene();
 }
 
 //////////////////////
@@ -31,27 +28,11 @@ function createScene() {
 
 function createCameras() {
   "use strict";
-  createPrespectiveCamera(CAMERAVALUES.main);
-  createPrespectiveCamera(CAMERAVALUES.main);
-  controls = new THREE.OrbitControls(cameras[1], renderer.domElement);
 
+  mainCamera = createPrespectiveCamera(CAMERAVALUES.main);
+
+  controls = new THREE.OrbitControls(mainCamera, renderer.domElement);
   controls.update();
-}
-
-function createPrespectiveCamera(cameraValue) {
-  "use strict";
-  camera = new THREE.PerspectiveCamera(
-    FOV,
-    window.innerWidth / window.innerHeight,
-    MINVIEWDISTANCE,
-    MAXVIEWDISTANCE
-  );
-  camera.position.x = cameraValue[0];
-  camera.position.y = cameraValue[1];
-  camera.position.z = cameraValue[2];
-  camera.lookAt(scene.position);
-
-  cameras.push(camera);
 }
 
 /////////////////////
@@ -61,7 +42,10 @@ function createPrespectiveCamera(cameraValue) {
 function createAmbientLight() {
   "use strict";
 
-  const light = new THREE.AmbientLight(LIGHTCOLORS.ambient, 0.25);
+  const light = new THREE.AmbientLight(
+    LIGHTVALUES.ambient,
+    LIGHTVALUES.ambientIntensity
+  );
   scene.add(light);
 }
 
@@ -84,32 +68,20 @@ function turnOnOvniLights() {
 function craeteGlobalIllunimation() {
   "use strict";
 
-  globalLight = new THREE.DirectionalLight(LIGHTCOLORS.global, 5);
+  globalLight = new THREE.DirectionalLight(
+    LIGHTVALUES.global,
+    LIGHTVALUES.globalIntensity
+  );
   globalLight.target = ovni;
 
   scene.add(globalLight);
 }
 
-function turnOnGlobalIllunimation() {
-  "use strict";
-
-  globalLight.intensity = 1;
-}
-
-function turnOffGlobalIllunimation() {
-  "use strict";
-
-  globalLight.intensity = 0;
-}
-
 function toggleGlobalIllunimation() {
   "use strict";
 
-  if (globalLight.intensity === 0) {
-    turnOnGlobalIllunimation();
-  } else {
-    turnOffGlobalIllunimation();
-  }
+  globalLight.intensity =
+    globalLight.intensity == 0 ? LIGHTVALUES.globalIntensity : 0;
 }
 
 ////////////////////////
@@ -119,19 +91,15 @@ function toggleGlobalIllunimation() {
 function createPlane() {
   "use strict";
 
-  const loader = new THREE.TextureLoader();
-  const displacementMap = loader.load("./imgs/heightmap.png");
+  const displacementMap = new THREE.TextureLoader().load(
+    "./imgs/heightmap.png"
+  );
 
-  const material = new THREE.MeshStandardMaterial({
+  const material = new THREE.MeshPhongMaterial({
     map: grassTexture.texture,
     displacementMap: displacementMap,
     displacementScale: 1000 * UNIT,
-    side: THREE.DoubleSide,
   });
-
-  material.displacementMap.wrapS = THREE.RepeatWrapping;
-  material.displacementMap.wrapT = THREE.RepeatWrapping;
-  material.displacementMap.repeat.set(150, 150);
 
   const geometry = new THREE.PlaneGeometry(1000 * UNIT, 1000 * UNIT, 150, 150);
 
@@ -150,7 +118,7 @@ function createMoon() {
   const moon = new createObject3D(MOONVALUES);
   setPosition(moon, MOONVALUES);
 
-  MOONVALUES.material.emissive = new THREE.Color(MOONVALUES.color);
+  MOONVALUES.material.emissive = new THREE.Color(MOONVALUES.emissive);
 
   scene.add(moon);
 }
@@ -158,14 +126,24 @@ function createMoon() {
 function createSkyBox() {
   "use strict";
 
-  const sphere = new THREE.SphereGeometry(800 * UNIT);
+  // create semi-sphere
+  const sphere = new THREE.SphereGeometry(
+    800 * UNIT,
+    32,
+    32,
+    0,
+    Math.PI * 2,
+    0,
+    Math.PI / 2
+  );
 
-  const material = new THREE.MeshBasicMaterial({
+  const material = new THREE.MeshPhongMaterial({
     map: skyTexture.texture,
     side: THREE.BackSide,
   });
 
   const mesh = new THREE.Mesh(sphere, material);
+  mesh.position.y = -270 * UNIT;
 
   scene.add(mesh);
 }
@@ -187,16 +165,12 @@ function update() {
 function render() {
   "use strict";
   renderer.setRenderTarget(skyTexture);
-  renderer.clear();
-  renderer.render(skyScene, skyCamera);
+  renderer.render(secondaryScene, skyCamera);
 
   renderer.setRenderTarget(grassTexture);
-  renderer.clear();
-  renderer.render(skyScene, grassCamera);
+  renderer.render(secondaryScene, grassCamera);
 
   renderer.setRenderTarget(null);
-  renderer.clear();
-  renderer.render(skyScene, grassCamera);
   renderer.render(scene, currentCamera);
 }
 
@@ -214,11 +188,11 @@ function init() {
 
   createScene();
 
-  createAmbientLight();
-
   createCameras();
 
-  currentCamera = cameras[1];
+  currentCamera = mainCamera;
+
+  createAmbientLight();
 
   createOvni();
 

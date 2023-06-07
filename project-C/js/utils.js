@@ -293,9 +293,23 @@ function changeMaterial(meshes, material) {
   });
 }
 
+function createPrespectiveCamera(cameraValues) {
+  "use strict";
+  const camera = new THREE.PerspectiveCamera(
+    cameraValues.fov,
+    cameraValues.aspect,
+    cameraValues.near,
+    cameraValues.far
+  );
+  camera.position.copy(cameraValues.position);
+  camera.lookAt(scene.position);
+
+  return camera;
+}
+
 function createOrtographicCamera(cameraValues) {
   "use strict";
-  camera = new THREE.OrthographicCamera(
+  const camera = new THREE.OrthographicCamera(
     cameraValues.left,
     cameraValues.right,
     cameraValues.top,
@@ -303,6 +317,7 @@ function createOrtographicCamera(cameraValues) {
     cameraValues.near,
     cameraValues.far
   );
+  camera.position.copy(cameraValues.position);
 
   return camera;
 }
