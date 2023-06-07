@@ -17,7 +17,6 @@ function createGrass() {
   secondaryScene.add(grass);
 
   grassCamera = createOrtographicCamera(CAMERAVALUES.ground);
-  grassCamera.lookAt(-GROUNDVALUES.size / 2, 0, GROUNDVALUES.size / 2);
   grassCamera.updateProjectionMatrix();
 
   createFlowers();
