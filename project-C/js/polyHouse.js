@@ -345,7 +345,7 @@ function createPolyHouse() {
 
   polyHouse.add(door);
 
-  polyHouse.position.set(-20 * UNIT, 0, 30 * UNIT);
+  polyHouse.position.set(-10 * UNIT, -6 * UNIT, -20 * UNIT);
 
   scene.add(polyHouse);
 }
