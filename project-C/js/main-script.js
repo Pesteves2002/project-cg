@@ -20,6 +20,9 @@ let changeGlobalLight = false;
 let changeOvniLightOff = false;
 let changeOvniLightOn = false;
 
+let changeMaterialSky = false;
+let changeMaterialGrass = false;
+
 /////////////////////
 /* CREATE SCENE(S) */
 /////////////////////
@@ -145,6 +148,16 @@ function update() {
     changeOvniLightOn = false;
   }
 
+  if (changeMaterialSky) {
+    createStars();
+    changeMaterialSky = false;
+  }
+
+  if (changeMaterialGrass) {
+    createFlowers();
+    changeMaterialGrass = false;
+  }
+
   ovni.rotation.y += (Math.PI / 180) * delta;
 }
 
@@ -248,11 +261,11 @@ function onKeyDown(e) {
 
   switch (e.keyCode) {
     case 49: //1
-      createFlowers();
+      changeMaterialGrass = true;
       break;
 
     case 50: // 2
-      createStars();
+      changeMaterialSky = true;
       break;
 
     case 37: //left
