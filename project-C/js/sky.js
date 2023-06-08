@@ -9,7 +9,7 @@ function createSkyBox() {
 
   // create semi-sphere
   const sphere = new THREE.SphereGeometry(
-    800 * UNIT,
+    700 * UNIT,
     32,
     32,
     0,
@@ -24,7 +24,7 @@ function createSkyBox() {
   });
 
   const mesh = new THREE.Mesh(sphere, material);
-  mesh.position.y = -270 * UNIT;
+  mesh.position.y = -350 * UNIT;
 
   scene.add(mesh);
 }
@@ -81,6 +81,7 @@ function createStars() {
 
   const grid = SKYVALUES.size / Math.sqrt(SKYVALUES.stars);
 
+  // generate non overlapping stars
   for (let i = SKYVALUES.starSize + 1; i < SKYVALUES.size - 1; i += grid) {
     for (let j = SKYVALUES.starSize + 1; j < SKYVALUES.size - 1; j += grid) {
       let celestialBody = createStar();
