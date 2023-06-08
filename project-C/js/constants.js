@@ -39,7 +39,6 @@ const MATERIALVALUES = {
   }),
   house: new THREE.MeshStandardMaterial({
     color: 0xffffff,
-    side: THREE.DoubleSide,
   }),
   roof: new THREE.MeshStandardMaterial({
     color: 0x964b00,
@@ -246,7 +245,6 @@ const VALUES = [
   HOUSEVALUES,
   ROOFVALUES,
   CHIMNEYVALUES,
-  WINDOWVALUES,
 ];
 
 const LIGHTVALUES = {
