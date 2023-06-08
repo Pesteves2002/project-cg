@@ -1,10 +1,22 @@
+function createTrees() {
+  "use strict";
+
+  for (let i = 0; i < TREEPOSITIONS.length; i++) {
+    const tree = createTree();
+    tree.position.copy(TREEPOSITIONS[i]);
+    tree.scale.copy(TREESCALES[i]);
+    tree.rotation.y += TREEROTATIONS[i];
+    scene.add(tree);
+  }
+}
+
 function createTree() {
   "use strict";
 
   const trunk = createTrunk();
   setPosition(trunk, TRUNKVALUES);
 
-  scene.add(trunk);
+  return trunk;
 }
 
 function createTrunk() {

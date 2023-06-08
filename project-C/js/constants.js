@@ -106,6 +106,54 @@ const OVNILIGHTS = {
   color: 0x234f1e,
 };
 
+const TREEPOSITIONS = [
+  new THREE.Vector3(-50 * UNIT, 0 * UNIT, 40 * UNIT),
+  new THREE.Vector3(-50 * UNIT, 0 * UNIT, -40 * UNIT),
+  new THREE.Vector3(50 * UNIT, 0 * UNIT, -40 * UNIT),
+  new THREE.Vector3(-50 * UNIT, 0 * UNIT, 0 * UNIT),
+  new THREE.Vector3(-180 * UNIT, 0 * UNIT, 0 * UNIT),
+  new THREE.Vector3(-100 * UNIT, 0 * UNIT, -60 * UNIT),
+  new THREE.Vector3(-130 * UNIT, 0 * UNIT, -60 * UNIT),
+  new THREE.Vector3(-145 * UNIT, 0 * UNIT, -80 * UNIT),
+  new THREE.Vector3(-187 * UNIT, 0 * UNIT, -90 * UNIT),
+  new THREE.Vector3(0 * UNIT, 0 * UNIT, -200 * UNIT),
+  new THREE.Vector3(-60 * UNIT, 0 * UNIT, -150 * UNIT),
+  new THREE.Vector3(-30 * UNIT, 0 * UNIT, -300 * UNIT),
+  new THREE.Vector3(-45 * UNIT, 0 * UNIT, -60 * UNIT),
+];
+
+const TREESCALES = [
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(2, 2, 2),
+  new THREE.Vector3(2, 2, 2),
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(2, 2, 2),
+  new THREE.Vector3(2, 2, 2),
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(2, 2, 2),
+];
+
+const TREEROTATIONS = [
+  (7 * Math.PI) / 2,
+  (6 * Math.PI) / 4,
+  (1 * Math.PI) / 5,
+  (4 * Math.PI) / 2,
+  (4 * Math.PI) / 4,
+  (3 * Math.PI) / 4,
+  Math.PI / 7,
+  Math.PI / 2,
+  Math.PI / 8,
+  Math.PI / 2,
+  Math.PI / 1,
+  Math.PI / 2,
+  Math.PI / 4,
+];
+
 const TRUNKVALUES = {
   pos: new THREE.Vector3(50 * UNIT, 0 * UNIT, 0 * UNIT),
   radiusTop: 1.5 * UNIT,
