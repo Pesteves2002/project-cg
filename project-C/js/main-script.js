@@ -207,7 +207,7 @@ function init() {
 
   createOvni();
 
-  createTree();
+  createTrees();
 
   createPolyHouse();
 
