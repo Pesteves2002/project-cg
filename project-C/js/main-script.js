@@ -15,6 +15,11 @@ let currentMaterial = MATERIALS.STANDART;
 
 let newMaterialType = null;
 
+let changeGlobalLight = false;
+
+let changeOvniLightOff = false;
+let changeOvniLightOn = false;
+
 /////////////////////
 /* CREATE SCENE(S) */
 /////////////////////
@@ -123,6 +128,21 @@ function update() {
     if (newMaterialType != MATERIALS.BASIC)
       VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
     currentMaterial = newMaterialType;
+  }
+
+  if (changeGlobalLight) {
+    toggleGlobalIllunimation();
+    changeGlobalLight = false;
+  }
+
+  if (changeOvniLightOff) {
+    turnOffOvniLights();
+    changeOvniLightOff = false;
+  }
+
+  if (changeOvniLightOn) {
+    turnOnOvniLights();
+    changeOvniLightOn = false;
   }
 
   ovni.rotation.y += (Math.PI / 180) * delta;
@@ -272,15 +292,15 @@ function onKeyDown(e) {
       break;
 
     case 80: // p
-      turnOnOvniLights();
+      changeOvniLightOn = true;
       break;
 
     case 83: // s
-      turnOffOvniLights();
+      changeOvniLightOff = true;
       break;
 
     case 68: // d
-      toggleGlobalIllunimation();
+      changeGlobalLight = true;
   }
 }
 ///////////////////////
