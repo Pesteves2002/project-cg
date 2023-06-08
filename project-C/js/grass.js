@@ -61,6 +61,7 @@ function createFlowers() {
 
   const grid = GROUNDVALUES.size / Math.sqrt(GROUNDVALUES.flowers);
 
+  // generate non-overlapping flowers
   for (
     let i = GROUNDVALUES.flowerSize + 1;
     i < GROUNDVALUES.size - 1;
