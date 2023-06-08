@@ -42,7 +42,6 @@ const MATERIALVALUES = {
   }),
   roof: new THREE.MeshStandardMaterial({
     color: 0x964b00,
-    side: THREE.DoubleSide,
   }),
   chimney: new THREE.MeshStandardMaterial({
     color: 0xaa4a44,
@@ -50,7 +49,6 @@ const MATERIALVALUES = {
   }),
   glass: new THREE.MeshStandardMaterial({
     color: 0xadd8e6,
-    side: THREE.DoubleSide,
   }),
   lightMoon: new THREE.MeshStandardMaterial({
     color: 0xffff00,
