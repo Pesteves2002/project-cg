@@ -244,10 +244,14 @@ function outOfBounds(a, b, step) {
 }
 
 function translateOvni() {
-  ovni.userData.step = ovni.userData.xStep;
+  const normalize = Math.sqrt(
+    ovni.userData.xStep ** 2 + ovni.userData.zStep ** 2
+  );
+
+  ovni.userData.step = (ovni.userData.xStep / normalize) * 10;
   translateObject(ovni, OVNITRANSLATIONVALUES, 0, AXIS.X);
 
-  ovni.userData.step = ovni.userData.zStep;
+  ovni.userData.step = (ovni.userData.zStep / normalize) * 10;
   translateObject(ovni, OVNITRANSLATIONVALUES, 0, AXIS.Z);
 }
 

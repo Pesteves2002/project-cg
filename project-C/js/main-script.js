@@ -8,9 +8,12 @@ let ovni;
 
 let ovniLigths = [];
 
-let currentCamera;
-
 let globalLight;
+
+let ovniMovement = false;
+let currentMaterial = MATERIALS.STANDART;
+
+let newMaterialType = null;
 
 /////////////////////
 /* CREATE SCENE(S) */
@@ -105,7 +108,13 @@ function createMoon() {
 function update() {
   "use strict";
 
-  translateOvni();
+  if (ovniMovement) {
+    if (ovni.userData.xStep == 0 && ovni.userData.zStep == 0) {
+      ovniMovement = false;
+      return;
+    }
+    translateOvni();
+  }
 
   ovni.rotation.y += (Math.PI / 180) * delta;
 }
@@ -122,7 +131,7 @@ function render() {
   renderer.render(secondaryScene, grassCamera);
 
   renderer.setRenderTarget(null);
-  renderer.render(scene, currentCamera);
+  renderer.render(scene, mainCamera);
 }
 
 ////////////////////////////////
@@ -140,8 +149,6 @@ function init() {
   createScene();
 
   createCameras();
-
-  currentCamera = mainCamera;
 
   createAmbientLight();
 
@@ -199,8 +206,8 @@ function onResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   if (window.innerHeight > 0 && window.innerWidth > 0) {
-    currentCamera.aspect = window.innerWidth / window.innerHeight;
-    currentCamera.updateProjectionMatrix();
+    mainCamera.aspect = window.innerWidth / window.innerHeight;
+    mainCamera.updateProjectionMatrix();
   }
 }
 
@@ -221,18 +228,22 @@ function onKeyDown(e) {
 
     case 37: //left
       ovni.userData.zStep = OVNITRANSLATIONVALUES.stepZ;
+      ovniMovement = true;
       break;
 
     case 38: //up
       ovni.userData.xStep = -OVNITRANSLATIONVALUES.stepX;
+      ovniMovement = true;
       break;
 
     case 39: //right
       ovni.userData.zStep = -OVNITRANSLATIONVALUES.stepZ;
+      ovniMovement = true;
       break;
 
     case 40: //down
       ovni.userData.xStep = OVNITRANSLATIONVALUES.stepX;
+      ovniMovement = true;
       break;
 
     case 81: //q
