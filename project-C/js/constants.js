@@ -4,10 +4,6 @@ const CLOCK = new THREE.Clock();
 
 const DELTA_MULT = 100;
 
-const MINVIEWDISTANCE = 1;
-
-const MAXVIEWDISTANCE = 1000000;
-
 const AXIS = {
   X: "x",
   Y: "y",
