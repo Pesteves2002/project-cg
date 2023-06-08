@@ -3,7 +3,7 @@ function createPolyHouse() {
 
   let buffer = new THREE.BufferGeometry();
 
-  const windowVertices = new Float32Array(
+  const wallVertices = new Float32Array(
     [
       0,
       0,
@@ -113,7 +113,7 @@ function createPolyHouse() {
     ].map((n) => n * UNIT)
   );
 
-  const windowIndexes = [
+  const wallIndexes = [
     0,
     25,
     19,
@@ -240,19 +240,52 @@ function createPolyHouse() {
     0, 1, 2, 0, 2, 3, 0, 1, 4, 1, 4, 5, 2, 3, 6, 3, 6, 7, 4, 5, 6, 5, 6, 7,
   ];
 
+  const windowVertices = new Float32Array(
+    [
+      0,
+      3,
+      2, // 2
+      0,
+      7,
+      2, // 3
+      0,
+      7,
+      17, // 16
+      0,
+      3,
+      17, // 17
+    ].map((n) => n * UNIT)
+  );
+
+  const doorVertices = new Float32Array(
+    [
+      -8,
+      0,
+      19, // 30
+      -8,
+      7,
+      19, // 31
+      -4,
+      7,
+      19, // 32
+      -4,
+      0,
+      19, // 33
+    ].map((n) => n * UNIT)
+  );
+
+  const doorIndexes = [0, 1, 2, 0, 2, 3];
+
+  const windowIndexes = [0, 1, 2, 0, 2, 3];
+
   const polyHouse = new THREE.Group();
 
-  const window = createBufferGeometry(
-    windowVertices,
-    windowIndexes,
-    HOUSEVALUES
-  );
-  window.position.set(12 * UNIT, 0, -19 * UNIT);
+  const wall = createBufferGeometry(wallVertices, wallIndexes, HOUSEVALUES);
 
-  polyHouse.add(window);
+  polyHouse.add(wall);
 
   const roof = createBufferGeometry(roofVertices, roofIndexes, ROOFVALUES);
-  roof.position.set(0, 9 * UNIT, -19 * UNIT);
+  roof.position.set(-12 * UNIT, 9 * UNIT, 0);
 
   polyHouse.add(roof);
 
@@ -261,9 +294,22 @@ function createPolyHouse() {
     chimneyIndexes,
     CHIMNEYVALUES
   );
-  chimney.position.set(11 * UNIT, 9 * UNIT, -9 * UNIT);
+  chimney.position.set(-4 * UNIT, 11 * UNIT, 3 * UNIT);
 
   polyHouse.add(chimney);
+
+  const window = createBufferGeometry(
+    windowVertices,
+    windowIndexes,
+    WINDOWVALUES
+  );
+  window.position.set(-1, 0, 0);
+
+  polyHouse.add(window);
+
+  const door = createBufferGeometry(doorVertices, doorIndexes, DOORVALUES);
+
+  polyHouse.add(door);
 
   polyHouse.position.set(-20 * UNIT, 0, 30 * UNIT);
 
