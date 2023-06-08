@@ -43,9 +43,6 @@ function createCameras() {
   "use strict";
 
   mainCamera = createPrespectiveCamera(CAMERAVALUES.main);
-
-  controls = new THREE.OrbitControls(mainCamera, renderer.domElement);
-  controls.update();
 }
 
 /////////////////////
@@ -128,10 +125,10 @@ function update() {
 
   if (newMaterialType != null && newMaterialType != currentMaterial) {
     VALUES.forEach((value) => {
-      console.log("1");
       changeMaterial(value.mesh, newMaterialType);
     });
     if (newMaterialType != MATERIALS.BASIC)
+      // Moon emissive
       VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
     currentMaterial = newMaterialType;
   }
@@ -170,14 +167,16 @@ function update() {
 /* DISPLAY */
 /////////////
 function render() {
-  "use strict";
+  ("use strict");
 
+  // only render the secondary scene when asked to
   if (changeMaterialSkyRender) {
     renderer.setRenderTarget(skyTexture);
     renderer.render(secondaryScene, skyCamera);
     changeMaterialSkyRender = false;
   }
 
+  // only render the secondary scene when asked to
   if (changeMaterialGrassRender) {
     renderer.setRenderTarget(grassTexture);
     renderer.render(secondaryScene, grassCamera);
