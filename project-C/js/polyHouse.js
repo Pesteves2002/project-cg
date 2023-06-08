@@ -3,41 +3,6 @@ function createPolyHouse() {
 
   let buffer = new THREE.BufferGeometry();
 
-  const entranceVertices = new Float32Array(
-    [
-      0,
-      0,
-      0, // 0
-      4,
-      0,
-      0, // 1
-      4,
-      7,
-      0, // 2
-      8,
-      7,
-      0, // 3
-      8,
-      0,
-      0, // 4
-      12,
-      0,
-      0, // 5
-      12,
-      7,
-      0, // 6
-      12,
-      9,
-      0, // 7
-      0,
-      9,
-      0, // 8
-      0,
-      7,
-      0, // 9
-    ].map((n) => n * UNIT)
-  );
-
   const windowVertices = new Float32Array(
     [
       0,
@@ -112,16 +77,109 @@ function createPolyHouse() {
       0,
       7,
       0, // 23
+      0,
+      3,
+      0, // 24
+      0,
+      3,
+      19, // 25
+      -12,
+      0,
+      0, // 26
+      -12,
+      9,
+      0, // 27
+      -12,
+      0,
+      19, // 28
+      -12,
+      9,
+      19, // 29
+      -8,
+      0,
+      19, // 30
+      -8,
+      7,
+      19, // 31
+      -4,
+      7,
+      19, // 32
+      -4,
+      0,
+      19, // 33
+      -12,
+      7,
+      19, // 34
     ].map((n) => n * UNIT)
   );
 
-  const entranceIndexes = [
-    0, 1, 2, 0, 2, 9, 3, 4, 5, 3, 5, 6, 6, 7, 8, 6, 8, 9,
-  ];
-
   const windowIndexes = [
-    0, 1, 3, 0, 3, 23, 1, 17, 18, 1, 2, 17, 4, 5, 8, 4, 8, 9, 10, 11, 14, 10,
-    14, 15, 18, 19, 20, 16, 18, 20, 20, 21, 22, 20, 22, 23,
+    0,
+    25,
+    19,
+    0,
+    24,
+    25, // base
+    3,
+    2,
+    24,
+    23,
+    3,
+    24, // left
+    17,
+    20,
+    25,
+    16,
+    20,
+    17, // right
+    21,
+    20,
+    22,
+    22,
+    20,
+    23, // top
+    5,
+    4,
+    8,
+    8,
+    4,
+    9, // midle left
+    10,
+    15,
+    11,
+    11,
+    15,
+    14, // midle right
+    0,
+    22,
+    26,
+    26,
+    22,
+    27, // back
+    26,
+    27,
+    29,
+    28,
+    26,
+    29, // other side
+    28,
+    30,
+    31,
+    28,
+    31,
+    34,
+    19,
+    32,
+    33,
+    19,
+    20,
+    32,
+    20,
+    21,
+    29,
+    20,
+    29,
+    34,
   ];
 
   const roofVertices = new Float32Array(
@@ -184,14 +242,6 @@ function createPolyHouse() {
 
   const polyHouse = new THREE.Group();
 
-  const entrance = createBufferGeometry(
-    entranceVertices,
-    entranceIndexes,
-    HOUSEVALUES
-  );
-
-  polyHouse.add(entrance);
-
   const window = createBufferGeometry(
     windowVertices,
     windowIndexes,
@@ -215,18 +265,7 @@ function createPolyHouse() {
 
   polyHouse.add(chimney);
 
-  const windowPlane = createPlaneHouse(17 * UNIT, 7 * UNIT, WINDOWVALUES);
-  windowPlane.rotation.y = Math.PI / 2;
-  windowPlane.position.set(11 * UNIT, 5 * UNIT, -10 * UNIT);
-
-  polyHouse.add(windowPlane);
-
-  const doorPlane = createPlaneHouse(4 * UNIT, 7 * UNIT, DOORVALUES);
-  doorPlane.position.set(6 * UNIT, 4 * UNIT, -0 * UNIT);
-
-  polyHouse.add(doorPlane);
-
-  polyHouse.position.set(0, 0, 50 * UNIT);
+  polyHouse.position.set(-20 * UNIT, 0, 30 * UNIT);
 
   scene.add(polyHouse);
 }

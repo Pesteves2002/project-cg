@@ -128,6 +128,7 @@ function update() {
 
   if (newMaterialType != null && newMaterialType != currentMaterial) {
     VALUES.forEach((value) => {
+      console.log("1");
       changeMaterial(value.mesh, newMaterialType);
     });
     if (newMaterialType != MATERIALS.BASIC)
