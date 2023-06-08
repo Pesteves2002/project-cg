@@ -20,8 +20,10 @@ let changeGlobalLight = false;
 let changeOvniLightOff = false;
 let changeOvniLightOn = false;
 
-let changeMaterialSky = false;
-let changeMaterialGrass = false;
+let changeMaterialSkyUpdate = false;
+let changeMaterialGrassUpdate = false;
+let changeMaterialSkyRender = true;
+let changeMaterialGrassRender = true;
 
 /////////////////////
 /* CREATE SCENE(S) */
@@ -148,14 +150,16 @@ function update() {
     changeOvniLightOn = false;
   }
 
-  if (changeMaterialSky) {
+  if (changeMaterialSkyUpdate) {
     createStars();
-    changeMaterialSky = false;
+    changeMaterialSkyUpdate = false;
+    changeMaterialSkyRender = true;
   }
 
-  if (changeMaterialGrass) {
+  if (changeMaterialGrassUpdate) {
     createFlowers();
-    changeMaterialGrass = false;
+    changeMaterialGrassUpdate = false;
+    changeMaterialGrassRender = true;
   }
 
   ovni.rotation.y += (Math.PI / 180) * delta;
@@ -166,11 +170,18 @@ function update() {
 /////////////
 function render() {
   "use strict";
-  renderer.setRenderTarget(skyTexture);
-  renderer.render(secondaryScene, skyCamera);
 
-  renderer.setRenderTarget(grassTexture);
-  renderer.render(secondaryScene, grassCamera);
+  if (changeMaterialSkyRender) {
+    renderer.setRenderTarget(skyTexture);
+    renderer.render(secondaryScene, skyCamera);
+    changeMaterialSkyRender = false;
+  }
+
+  if (changeMaterialGrassRender) {
+    renderer.setRenderTarget(grassTexture);
+    renderer.render(secondaryScene, grassCamera);
+    changeMaterialGrassRender = false;
+  }
 
   renderer.setRenderTarget(null);
   renderer.render(scene, mainCamera);
@@ -261,11 +272,11 @@ function onKeyDown(e) {
 
   switch (e.keyCode) {
     case 49: //1
-      changeMaterialGrass = true;
+      changeMaterialGrassUpdate = true;
       break;
 
     case 50: // 2
-      changeMaterialSky = true;
+      changeMaterialSkyUpdate = true;
       break;
 
     case 37: //left
