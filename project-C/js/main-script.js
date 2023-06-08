@@ -11,7 +11,7 @@ let ovniLigths = [];
 let globalLight;
 
 let ovniMovement = false;
-let currentMaterial = MATERIALS.STANDART;
+let currentMaterial = MATERIALS.BASIC;
 
 let newMaterialType = null;
 
