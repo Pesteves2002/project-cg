@@ -59,43 +59,45 @@ function createFlowers() {
   secondaryScene.remove(flowers);
   flowers = new THREE.Group();
 
-  for (let i = 0; i < GROUNDVALUES.flowers; i++) {
-    const geometry = new THREE.CircleGeometry(GROUNDVALUES.flowerSize);
+  const grid = GROUNDVALUES.size / Math.sqrt(GROUNDVALUES.flowers);
 
-    geometry.rotateX(-Math.PI / 2);
+  for (
+    let i = GROUNDVALUES.flowerSize + 1;
+    i < GROUNDVALUES.size - 1;
+    i += grid
+  ) {
+    for (
+      let j = GROUNDVALUES.flowerSize + 1;
+      j < GROUNDVALUES.size - 1;
+      j += grid
+    ) {
+      let flower = createFlower();
+      let x = Math.random();
+      let z = Math.random();
+      if (Math.random() < 0.5) {
+        x = -x;
+      }
+      if (Math.random() < 0.5) {
+        z = -z;
+      }
 
-    const material = new THREE.MeshBasicMaterial({
-      color:
-        GROUNDVALUES.colors[
-          Math.floor(Math.random() * GROUNDVALUES.colors.length)
-        ],
-    });
-
-    const mesh = new THREE.Mesh(geometry, material);
-    createValidPosition(mesh);
-
-    flowers.add(mesh);
+      flower.position.set(-i + x, 2, j + z);
+      flowers.add(flower);
+    }
   }
-
   secondaryScene.add(flowers);
 }
 
-function createValidPosition(mesh) {
-  let x, z;
+function createFlower() {
+  const geometry = new THREE.CircleGeometry(GROUNDVALUES.flowerSize);
+  geometry.rotateX(-Math.PI / 2);
 
-  do {
-    x = -Math.random() * GROUNDVALUES.size;
-  } while (
-    x <= -GROUNDVALUES.size + GROUNDVALUES.flowerSize ||
-    x >= 0 - GROUNDVALUES.flowerSize
-  );
+  const material = new THREE.MeshBasicMaterial({
+    color:
+      GROUNDVALUES.colors[
+        Math.floor(Math.random() * GROUNDVALUES.colors.length)
+      ],
+  });
 
-  do {
-    z = Math.random() * GROUNDVALUES.size;
-  } while (
-    z >= GROUNDVALUES.size - GROUNDVALUES.flowerSize ||
-    z <= GROUNDVALUES.flowerSize
-  );
-
-  mesh.position.set(x, 0.2, z);
+  return new THREE.Mesh(geometry, material);
 }
