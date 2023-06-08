@@ -116,6 +116,15 @@ function update() {
     translateOvni();
   }
 
+  if (newMaterialType != null && newMaterialType != currentMaterial) {
+    VALUES.forEach((value) => {
+      changeMaterial(value.mesh, newMaterialType);
+    });
+    if (newMaterialType != MATERIALS.BASIC)
+      VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
+    currentMaterial = newMaterialType;
+  }
+
   ovni.rotation.y += (Math.PI / 180) * delta;
 }
 
@@ -247,31 +256,19 @@ function onKeyDown(e) {
       break;
 
     case 81: //q
-      VALUES.forEach((value) => {
-        changeMaterial(value.mesh, MATERIALS.LAMBERT);
-      });
-      VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
+      newMaterialType = MATERIALS.LAMBERT;
       break;
 
     case 87: // w
-      VALUES.forEach((value) => {
-        changeMaterial(value.mesh, MATERIALS.PHONG);
-      });
-      VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
+      newMaterialType = MATERIALS.PHONG;
       break;
 
     case 69: //e
-      VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
-      VALUES.forEach((value) => {
-        changeMaterial(value.mesh, MATERIALS.TOON);
-      });
-      VALUES[0].mesh[0].material.emissive = MOONVALUES.emissive;
+      newMaterialType = MATERIALS.TOON;
       break;
 
     case 82: //r
-      VALUES.forEach((value) => {
-        changeMaterial(value.mesh, MATERIALS.BASIC);
-      });
+      newMaterialType = MATERIALS.BASIC;
       break;
 
     case 80: // p
