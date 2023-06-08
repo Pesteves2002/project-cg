@@ -45,7 +45,6 @@ const MATERIALVALUES = {
   }),
   chimney: new THREE.MeshStandardMaterial({
     color: 0xaa4a44,
-    side: THREE.DoubleSide,
   }),
   glass: new THREE.MeshStandardMaterial({
     color: 0xadd8e6,

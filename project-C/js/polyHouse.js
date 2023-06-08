@@ -212,32 +212,67 @@ function createPolyHouse() {
       0,
       0,
       0, // 0
-      0,
-      5,
+      -3,
+      3,
       0, // 1
       -3,
       5,
       0, // 2
-      -3,
-      3,
+      0,
+      5,
       0, // 3
       0,
+      3,
+      0, // 4
       0,
-      4, // 4
       0,
-      5,
-      4, // 5
-      -3,
-      5,
-      4, // 6
+      -4, // 5
       -3,
       3,
-      4, // 7
+      -4, // 6
+      -3,
+      5,
+      -4, // 7
+      0,
+      5,
+      -4, // 8
+      0,
+      3,
+      -4, // 9
     ].map((n) => n * UNIT)
   );
 
   const chimneyIndexes = [
-    0, 1, 2, 0, 2, 3, 0, 1, 4, 1, 4, 5, 2, 3, 6, 3, 6, 7, 4, 5, 6, 5, 6, 7,
+    0,
+    4,
+    1,
+    1,
+    3,
+    2,
+    1,
+    4,
+    3, // front
+    5,
+    9,
+    6,
+    6,
+    8,
+    7,
+    6,
+    9,
+    8, // back
+    0,
+    8,
+    3,
+    0,
+    5,
+    8,
+    1,
+    6,
+    2,
+    2,
+    6,
+    7,
   ];
 
   const windowVertices = new Float32Array(
@@ -293,7 +328,7 @@ function createPolyHouse() {
     chimneyIndexes,
     CHIMNEYVALUES
   );
-  chimney.position.set(-4 * UNIT, 11 * UNIT, 3 * UNIT);
+  chimney.position.set(-4 * UNIT, 11 * UNIT, 7 * UNIT);
 
   polyHouse.add(chimney);
 
