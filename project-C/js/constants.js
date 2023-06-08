@@ -62,6 +62,7 @@ const MATERIALVALUES = {
 };
 
 const MATERIALS = {
+  STANDART: "Standart",
   LAMBERT: "Lambert",
   PHONG: "Phong",
   TOON: "Toon",
