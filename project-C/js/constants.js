@@ -301,7 +301,7 @@ const CAMERAVALUES = {
     lookAt: new THREE.Vector3(-GROUNDVALUES.size / 2, 0, GROUNDVALUES.size / 2),
   },
   main: {
-    fov: 70,
+    fov: 90,
     aspect: window.innerWidth / window.innerHeight,
     near: 1,
     far: 1000000,
