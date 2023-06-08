@@ -44,129 +44,6 @@ function setPosition(obj, objectValues) {
   obj.position.copy(objectValues.pos);
 }
 
-function mirrorObject(obj, axis, mirror = false) {
-  const newObj = obj.clone(true);
-  switch (axis) {
-    case AXIS.X:
-      newObj.position.copy(
-        new THREE.Vector3(-obj.position.x, obj.position.y, obj.position.z)
-      );
-      if (mirror) {
-        newObj.scale.x = -obj.scale.x;
-      }
-      break;
-    case AXIS.Y:
-      newObj.position.copy(
-        new THREE.Vector3(obj.position.x, -obj.position.y, obj.position.z)
-      );
-      if (mirror) {
-        newObj.scale.y = -obj.scale.y;
-      }
-      break;
-    case AXIS.Z:
-      newObj.position.copy(
-        new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z)
-      );
-      if (mirror) {
-        newObj.scale.z = -obj.scale.z;
-      }
-      break;
-    default:
-      console.log("Invalid axis");
-      break;
-  }
-  return newObj;
-}
-
-function changePivot(obj, group, offset, axis) {
-  switch (axis) {
-    case AXIS.X:
-      obj.position.copy(
-        new THREE.Vector3(
-          obj.position.x - offset,
-          obj.position.y,
-          obj.position.z
-        )
-      );
-      group.position.copy(
-        new THREE.Vector3(
-          group.position.x + offset,
-          group.position.y,
-          group.position.z
-        )
-      );
-      break;
-    case AXIS.Y:
-      obj.position.copy(
-        new THREE.Vector3(
-          obj.position.x,
-          obj.position.y - offset,
-          obj.position.z
-        )
-      );
-      group.position.copy(
-        new THREE.Vector3(
-          group.position.x,
-          group.position.y + offset,
-          group.position.z
-        )
-      );
-      break;
-    case AXIS.Z:
-      obj.position.copy(
-        new THREE.Vector3(
-          obj.position.x,
-          obj.position.y,
-          obj.position.z - offset
-        )
-      );
-      group.position.copy(
-        new THREE.Vector3(
-          group.position.x,
-          group.position.y,
-          group.position.z + offset
-        )
-      );
-      break;
-    default:
-      console.log("Invalid axis");
-      break;
-  }
-}
-
-function rotateObject(object, rotationValues, axis) {
-  "use strict";
-
-  switch (axis) {
-    case AXIS.X:
-      object.rotation.x = THREE.Math.clamp(
-        object.userData.step * delta + object.rotation.x,
-        rotationValues.min,
-        rotationValues.max
-      );
-      break;
-
-    case AXIS.Y:
-      object.rotation.y += THREE.Math.clamp(
-        object.userData.step * delta + object.rotation.y,
-        rotationValues.min,
-        rotationValues.max
-      );
-      break;
-
-    case AXIS.Z:
-      object.rotation.z += THREE.Math.clamp(
-        object.userData.step * delta + object.rotation.z,
-        rotationValues.min,
-        rotationValues.max
-      );
-      break;
-
-    default:
-      console.log("Invalid axis");
-  }
-}
-
 function translateObject(object, objectValues, offset, axis) {
   "use strict";
 
@@ -227,23 +104,8 @@ function resetSteps() {
   ovni.userData.zStep = 0;
 }
 
-function greaterOrEqualThan(a, b) {
-  return parseFloat(a) >= parseFloat(b);
-}
-
-function lessOrEqualThan(a, b) {
-  return parseFloat(a) <= parseFloat(b);
-}
-
-function equal(a, b) {
-  return Math.abs(parseFloat(a) - parseFloat(b)) < 0.0001;
-}
-
-function outOfBounds(a, b, step) {
-  return step > 0 ? lessOrEqualThan(a, b) : greaterOrEqualThan(a, b);
-}
-
 function translateOvni() {
+  // normalize the vector...
   const normalize = Math.sqrt(
     ovni.userData.xStep ** 2 + ovni.userData.zStep ** 2
   );
