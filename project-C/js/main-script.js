@@ -48,8 +48,9 @@ function createCameras() {
 
   mainCamera = createPrespectiveCamera(CAMERAVALUES.main);
 
-  controls = new THREE.OrbitControls(mainCamera, renderer.domElement);
-  controls.update();
+  // Uncomment to use orbit controls
+  // controls = new THREE.OrbitControls(mainCamera, renderer.domElement);
+  // controls.update();
 }
 
 /////////////////////
@@ -237,8 +238,6 @@ function init() {
   allObjects.position.set(-20 * UNIT, -30 * UNIT, -80 * UNIT);
 
   scene.add(allObjects);
-
-  render();
 
   document.body.appendChild(VRButton.createButton(renderer));
   renderer.xr.enabled = true;
