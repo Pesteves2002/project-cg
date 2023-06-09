@@ -100,8 +100,8 @@ const OVNILIGHTS = {
 
 const TREEPOSITIONS = [
   new THREE.Vector3(-50 * UNIT, 0 * UNIT, 40 * UNIT),
-  new THREE.Vector3(-50 * UNIT, 0 * UNIT, -40 * UNIT),
-  new THREE.Vector3(50 * UNIT, 0 * UNIT, -40 * UNIT),
+  new THREE.Vector3(-80 * UNIT, -3 * UNIT, 40 * UNIT),
+  new THREE.Vector3(50 * UNIT, 5 * UNIT, -40 * UNIT),
   new THREE.Vector3(-50 * UNIT, 0 * UNIT, 0 * UNIT),
   new THREE.Vector3(-180 * UNIT, 0 * UNIT, 0 * UNIT),
   new THREE.Vector3(-100 * UNIT, 0 * UNIT, -60 * UNIT),
