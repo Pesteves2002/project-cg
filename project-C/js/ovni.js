@@ -43,7 +43,7 @@ function createBase() {
 
   spotLight.target = target;
 
-  ovniLigths.push(spotLight);
+  ovniSpotLight = spotLight;
 
   setPosition(base, BASEVALUES);
 

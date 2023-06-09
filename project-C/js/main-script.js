@@ -8,6 +8,8 @@ let ovni;
 
 let ovniLigths = [];
 
+let ovniSpotLight;
+
 let globalLight;
 
 let ovniMovement = false;
@@ -17,8 +19,8 @@ let newMaterialType = null;
 
 let changeGlobalLight = false;
 
-let changeOvniLightOff = false;
-let changeOvniLightOn = false;
+let changeOvniLights = false;
+let changeOvniSpotLight = false;
 
 let changeMaterialSkyUpdate = false;
 let changeMaterialGrassUpdate = false;
@@ -59,20 +61,18 @@ function createAmbientLight() {
   scene.add(light);
 }
 
-function turnOffOvniLights() {
+function toggleOvniLights() {
   "use strict";
 
   ovniLigths.forEach((light) => {
-    light.intensity = 0;
+    light.intensity = light.intensity == 0 ? 1 : 0;
   });
 }
 
-function turnOnOvniLights() {
+function toggleOvniSpotLight() {
   "use strict";
 
-  ovniLigths.forEach((light) => {
-    light.intensity = 1;
-  });
+  ovniSpotLight.intensity = ovniSpotLight.intensity == 0 ? 1 : 0;
 }
 
 function craeteGlobalIllunimation() {
@@ -138,14 +138,14 @@ function update() {
     changeGlobalLight = false;
   }
 
-  if (changeOvniLightOff) {
-    turnOffOvniLights();
-    changeOvniLightOff = false;
+  if (changeOvniLights) {
+    toggleOvniLights();
+    changeOvniLights = false;
   }
 
-  if (changeOvniLightOn) {
-    turnOnOvniLights();
-    changeOvniLightOn = false;
+  if (changeOvniSpotLight) {
+    toggleOvniSpotLight();
+    changeOvniSpotLight = false;
   }
 
   if (changeMaterialSkyUpdate) {
@@ -316,11 +316,11 @@ function onKeyDown(e) {
       break;
 
     case 80: // p
-      changeOvniLightOn = true;
+      changeOvniLights = true;
       break;
 
     case 83: // s
-      changeOvniLightOff = true;
+      changeOvniSpotLight = true;
       break;
 
     case 68: // d
