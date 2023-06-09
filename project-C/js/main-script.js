@@ -171,16 +171,20 @@ function render() {
 
   // only render the secondary scene when asked to
   if (changeMaterialSkyRender) {
+    renderer.xr.enabled = false;
     renderer.setRenderTarget(skyTexture);
     renderer.render(secondaryScene, skyCamera);
     changeMaterialSkyRender = false;
+    renderer.xr.enabled = true;
   }
 
   // only render the secondary scene when asked to
   if (changeMaterialGrassRender) {
+    renderer.xr.enabled = false;
     renderer.setRenderTarget(grassTexture);
     renderer.render(secondaryScene, grassCamera);
     changeMaterialGrassRender = false;
+    renderer.xr.enabled = true;
   }
 
   renderer.setRenderTarget(null);
