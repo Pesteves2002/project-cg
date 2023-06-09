@@ -105,15 +105,20 @@ function resetSteps() {
 }
 
 function translateOvni() {
-  // normalize the vector...
-  const normalize = Math.sqrt(
-    ovni.userData.xStep ** 2 + ovni.userData.zStep ** 2
-  );
+  const xMov = ovniMovementXPos + ovniMovementXNeg;
+  const zMov = ovniMovementZPos + ovniMovementZNeg;
 
-  ovni.userData.step = (ovni.userData.xStep / normalize) * 10;
+  if (xMov == 0 && zMov == 0) {
+    return;
+  }
+
+  // normalize the vector...
+  const normalize = Math.sqrt(Math.pow(xMov, 2) + Math.pow(zMov, 2));
+
+  ovni.userData.step = (xMov / normalize) * 10;
   translateObject(ovni, OVNITRANSLATIONVALUES, 0, AXIS.X);
 
-  ovni.userData.step = (ovni.userData.zStep / normalize) * 10;
+  ovni.userData.step = (zMov / normalize) * 10;
   translateObject(ovni, OVNITRANSLATIONVALUES, 0, AXIS.Z);
 }
 

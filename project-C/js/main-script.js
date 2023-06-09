@@ -29,6 +29,11 @@ let changeMaterialGrassUpdate = false;
 let changeMaterialSkyRender = true;
 let changeMaterialGrassRender = true;
 
+let ovniMovementXPos = 0;
+let ovniMovementZPos = 0;
+let ovniMovementXNeg = 0;
+let ovniMovementZNeg = 0;
+
 /////////////////////
 /* CREATE SCENE(S) */
 /////////////////////
@@ -122,13 +127,7 @@ function createMoon() {
 function update() {
   "use strict";
 
-  if (ovniMovement) {
-    if (ovni.userData.xStep == 0 && ovni.userData.zStep == 0) {
-      ovniMovement = false;
-      return;
-    }
-    translateOvni();
-  }
+  translateOvni();
 
   if (newMaterialType != null && newMaterialType != currentMaterial) {
     VALUES.forEach((value) => {
@@ -292,23 +291,19 @@ function onKeyDown(e) {
       break;
 
     case 37: //left
-      ovni.userData.zStep = OVNITRANSLATIONVALUES.stepZ;
-      ovniMovement = true;
+      ovniMovementZPos = OVNITRANSLATIONVALUES.stepZ;
       break;
 
     case 38: //up
-      ovni.userData.xStep = -OVNITRANSLATIONVALUES.stepX;
-      ovniMovement = true;
+      ovniMovementXNeg = -OVNITRANSLATIONVALUES.stepX;
       break;
 
     case 39: //right
-      ovni.userData.zStep = -OVNITRANSLATIONVALUES.stepZ;
-      ovniMovement = true;
+      ovniMovementZNeg = -OVNITRANSLATIONVALUES.stepZ;
       break;
 
     case 40: //down
-      ovni.userData.xStep = OVNITRANSLATIONVALUES.stepX;
-      ovniMovement = true;
+      ovniMovementXPos = OVNITRANSLATIONVALUES.stepX;
       break;
 
     case 81: //q
@@ -347,13 +342,16 @@ function onKeyUp(e) {
 
   switch (e.keyCode) {
     case 37: //left
+      ovniMovementZPos = 0;
+      break;
     case 39: //right
-      ovni.userData.zStep = 0;
+      ovniMovementZNeg = 0;
       break;
 
     case 38: //up
+      ovniMovementXNeg = 0;
     case 40: //down
-      ovni.userData.xStep = 0;
+      ovniMovementXPos = 0;
       break;
   }
 }
