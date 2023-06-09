@@ -347,7 +347,7 @@ function createPolyHouse() {
 
   polyHouse.position.set(-10 * UNIT, -6 * UNIT, -20 * UNIT);
 
-  scene.add(polyHouse);
+  return polyHouse;
 }
 
 function createBufferGeometry(vertices, indexes, values) {

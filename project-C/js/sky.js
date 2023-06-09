@@ -26,7 +26,7 @@ function createSkyBox() {
   const mesh = new THREE.Mesh(sphere, material);
   mesh.position.y = -350 * UNIT;
 
-  scene.add(mesh);
+  return mesh;
 }
 
 function createSky() {

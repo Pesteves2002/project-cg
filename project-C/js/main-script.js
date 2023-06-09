@@ -12,6 +12,8 @@ let ovniSpotLight;
 
 let globalLight;
 
+const allObjects = new THREE.Group();
+
 let ovniMovement = false;
 let currentMaterial = MATERIALS.BASIC;
 
@@ -45,6 +47,9 @@ function createCameras() {
   "use strict";
 
   mainCamera = createPrespectiveCamera(CAMERAVALUES.main);
+
+  controls = new THREE.OrbitControls(mainCamera, renderer.domElement);
+  controls.update();
 }
 
 /////////////////////
@@ -106,7 +111,7 @@ function createMoon() {
 
   MOONVALUES.material.emissive = MOONVALUES.emissive;
 
-  scene.add(moon);
+  return moon;
 }
 
 ////////////
@@ -209,25 +214,28 @@ function init() {
 
   createAmbientLight();
 
-  createOvni();
+  allObjects.add(createOvni());
+  allObjects.add(createTrees());
 
-  createTrees();
+  allObjects.add(createPolyHouse());
 
-  createPolyHouse();
-
-  createMoon();
+  allObjects.add(createMoon());
 
   createGrass();
 
-  createPlane();
+  allObjects.add(createPlane());
 
   craeteGlobalIllunimation();
 
   createSky();
 
-  createSkyBox();
+  allObjects.add(createSkyBox());
 
   resetSteps();
+
+  allObjects.position.set(-20 * UNIT, -30 * UNIT, -80 * UNIT);
+
+  scene.add(allObjects);
 
   render();
 
