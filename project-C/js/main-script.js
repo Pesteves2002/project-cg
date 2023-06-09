@@ -87,7 +87,8 @@ function craeteGlobalIllunimation() {
     LIGHTVALUES.global,
     LIGHTVALUES.globalIntensity
   );
-  globalLight.target = ovni;
+
+  globalLight.position.copy(new THREE.Vector3(1, 0, 1));
 
   scene.add(globalLight);
 }
