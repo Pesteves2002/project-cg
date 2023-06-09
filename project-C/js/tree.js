@@ -1,13 +1,17 @@
 function createTrees() {
   "use strict";
 
+  const group = new THREE.Group();
+
   for (let i = 0; i < TREEPOSITIONS.length; i++) {
     const tree = createTree();
     tree.position.copy(TREEPOSITIONS[i]);
     tree.scale.copy(TREESCALES[i]);
     tree.rotation.y += TREEROTATIONS[i];
     scene.add(tree);
+    group.add(tree);
   }
+  return group;
 }
 
 function createTree() {

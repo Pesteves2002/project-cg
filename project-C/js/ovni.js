@@ -5,6 +5,8 @@ function createOvni() {
   ovni.position.copy(OVNIVALUES.pos);
 
   scene.add(ovni);
+
+  return ovni;
 }
 
 function createOvniBody() {

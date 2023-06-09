@@ -25,7 +25,7 @@ function createPlane() {
 
   plane.position.y = -105 * UNIT;
 
-  scene.add(plane);
+  return plane;
 }
 
 function createGrass() {
